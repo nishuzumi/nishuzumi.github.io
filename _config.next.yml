@@ -1,1 +1,29 @@
 scheme: Gemini
+math:
+    katex:
+      enable: true
+custom_file_path:
+  style: source/_data/custom.styl
+# Disqus
+disqus:
+  enable: true
+  shortname: nishuzumi
+  count: true
+  lazyload: false
+  #post_meta_order: 0
+highlight_theme: solarized dark # *changed* 高亮风格
+codeblock:
+  # Code Highlight theme
+  # Available values: normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
+  # See: https://github.com/chriskempson/tomorrow-theme
+  # Add copy button on codeblock
+  theme:
+    light: shades-of-purple
+    dark: atom-one-dark
+  copy_button:
+    enable: true  # *changed* 打开代码复制功能
+    # Show text copy result.
+    show_result: true
+    # Available values: default | flat | mac
+    style: mac  # *changed* 设为mac风格
+fancybox: true

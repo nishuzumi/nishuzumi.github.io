@@ -47,7 +47,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace: ''
   wrap: true
   hljs: false
@@ -106,3 +106,12 @@ deploy:
   type: git
   repo: https://github.com/nishuzumi/nishuzumi.github.io.git
   branch: gh-pages
+  name: nishuzumi
+  email: 2300206764@qq.com
+
+math:
+  engine: 'mathjax' # or 'katex'
+  mathjax:
+    enable: true
+    config:
+      # MathJax config
