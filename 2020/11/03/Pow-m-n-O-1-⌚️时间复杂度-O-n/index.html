@@ -18,23 +18,26 @@
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta name="description" content="问题1  实现 pow(x, n) ，即计算 x 的 n 次幂函数。 Leetcode链接:🔗 示例 1: 12输入: 2.00000, 10输出: 1024.00000 示例 2: 12输入: 2.10000, 3输出: 9.26100 示例 3: 12输入: 2.00000, -2输出: 0.25000 解释: 2−2&#x3D;122&#x3D;14&#x3D;0.252^{-2} &#x3D; \frac {1}{2^2}">
+  <meta name="description" content="问题1  实现 pow(x, n) ，即计算 x 的 n 次幂函数。 Leetcode链接:🔗 示例 1:  输入: 2.00000, 10 输出: 1024.00000  示例 2:  输入: 2.10000, 3 输出: 9.26100  示例 3:  输入: 2.00000, -2 输出: 0.25000  解释: 2−2&#x3D;122&#x3D;14&#x3D;0.252^{-2}&#x3D;\frac{1}{2^2}&#x3D;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pow(m,n) O(1)&lt;⌚️时间复杂度&lt;O(n)">
+<meta property="og:title" content="Pow(m,n) O(1) &lt; ⌚️时间复杂度 &lt; O(n)">
 <meta property="og:url" content="http://example.com/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/index.html">
 <meta property="og:site_name" content="盒子笔记">
-<meta property="og:description" content="问题1  实现 pow(x, n) ，即计算 x 的 n 次幂函数。 Leetcode链接:🔗 示例 1: 12输入: 2.00000, 10输出: 1024.00000 示例 2: 12输入: 2.10000, 3输出: 9.26100 示例 3: 12输入: 2.00000, -2输出: 0.25000 解释: 2−2&#x3D;122&#x3D;14&#x3D;0.252^{-2} &#x3D; \frac {1}{2^2}">
+<meta property="og:description" content="问题1  实现 pow(x, n) ，即计算 x 的 n 次幂函数。 Leetcode链接:🔗 示例 1:  输入: 2.00000, 10 输出: 1024.00000  示例 2:  输入: 2.10000, 3 输出: 9.26100  示例 3:  输入: 2.00000, -2 输出: 0.25000  解释: 2−2&#x3D;122&#x3D;14&#x3D;0.252^{-2}&#x3D;\frac{1}{2^2}&#x3D;">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n-2020-11-04-16-27-37.png">
 <meta property="article:published_time" content="2020-11-03T12:29:54.000Z">
-<meta property="article:modified_time" content="2020-11-04T05:21:44.013Z">
+<meta property="article:modified_time" content="2020-11-04T09:00:27.678Z">
 <meta property="article:author" content="BoxChen">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n-2020-11-04-16-27-37.png">
 
 
 <link rel="canonical" href="http://example.com/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/">
@@ -50,7 +53,7 @@
   };
 </script>
 
-  <title>Pow(m,n) O(1)<⌚️时间复杂度<O(n) | 盒子笔记</title>
+  <title>Pow(m,n) O(1) < ⌚️时间复杂度 < O(n) | 盒子笔记</title>
   
 
 
@@ -153,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%981"><span class="nav-number">1.</span> <span class="nav-text"> 问题1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-powx-n-%E5%8D%B3%E8%AE%A1%E7%AE%97-x-%E7%9A%84-n-%E6%AC%A1%E5%B9%82%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text"> 实现 pow(x, n) ，即计算 x 的 n 次幂函数。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 说明:</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%981"><span class="nav-number">1.</span> <span class="nav-text"> 问题1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-powx-n-%E5%8D%B3%E8%AE%A1%E7%AE%97-x-%E7%9A%84-n-%E6%AC%A1%E5%B9%82%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text"> 实现 pow(x, n) ，即计算 x 的 n 次幂函数。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 说明:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">1.2.</span> <span class="nav-text"> 思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 代码</span></a></li></ol></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -225,7 +228,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Pow(m,n) O(1)<⌚️时间复杂度<O(n)
+          Pow(m,n) O(1) < ⌚️时间复杂度 < O(n)
         </h1>
 
         <div class="post-meta-container">
@@ -243,7 +246,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-04 13:21:44" itemprop="dateModified" datetime="2020-11-04T13:21:44+08:00">2020-11-04</time>
+        <time title="修改时间：2020-11-04 17:00:27" itemprop="dateModified" datetime="2020-11-04T17:00:27+08:00">2020-11-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -255,10 +258,24 @@
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E4%B8%AD%E7%AD%89/" itemprop="url" rel="index"><span itemprop="name">中等</span></a>
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E4%B8%AD%E7%AD%89%E9%9A%BE%E5%BA%A6/" itemprop="url" rel="index"><span itemprop="name">中等难度</span></a>
         </span>
     </span>
 
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/03/Pow-m-n-O-1-⌚️时间复杂度-O-n/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
   
 </div>
 
@@ -273,16 +290,32 @@
 <h3 id="实现-powx-n-即计算-x-的-n-次幂函数"><a class="markdownIt-Anchor" href="#实现-powx-n-即计算-x-的-n-次幂函数"></a> 实现 pow(x, n) ，即计算 x 的 n 次幂函数。</h3>
 <p>Leetcode链接:<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/powx-n/">🔗</a><br />
 示例 1:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 2.00000, 10</span><br><span class="line">输出: 1024.00000</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输入: 2.00000, 10<br />
+输出: 1024.00000</p>
+</blockquote>
 <p>示例 2:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 2.10000, 3</span><br><span class="line">输出: 9.26100</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输入: 2.10000, 3<br />
+输出: 9.26100</p>
+</blockquote>
 <p>示例 3:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 2.00000, -2</span><br><span class="line">输出: 0.25000</span><br></pre></td></tr></table></figure>
-<p>解释: <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mn>2</mn><mn>2</mn></msup></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">2^{-2} = \frac {1}{2^2} = \frac {1}{4} = 0.25</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7463142857142857em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">2</span><span class="mord">5</span></span></span></span></p>
+<blockquote>
+<p>输入: 2.00000, -2<br />
+输出: 0.25000</p>
+</blockquote>
+<p>解释: <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mn>2</mn><mn>2</mn></msup></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">2^{-2}=\frac{1}{2^2}=\frac{1}{4}=0.25</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7463142857142857em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">2</span><span class="mord">5</span></span></span></span></p>
 <h4 id="说明"><a class="markdownIt-Anchor" href="#说明"></a> 说明:</h4>
 <p>-100.0 &lt; x &lt; 100.0<br />
-n 是 32 位有符号整数，其数值范围是 [<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">−</mi><msup><mn>2</mn><mn>31</mn></msup><mo separator="true">,</mo><mi mathvariant="normal"> </mi><msup><mn>2</mn><mn>31</mn></msup><mi mathvariant="normal"> </mi><mi mathvariant="normal">−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">−2^{31}, 2^{31} − 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"> </span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord"> </span><span class="mord">−</span><span class="mord">1</span></span></span></span>] 。</p>
-
+n 是 32 位有符号整数，其数值范围是 [<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mrow><mi mathvariant="normal">−</mi><mn>2</mn></mrow><mn>31</mn></msup></mrow><annotation encoding="application/x-tex">{−2}^{31}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.931778em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord"><span class="mord">−</span><span class="mord">2</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.848448em;"><span style="top:-3.09734em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>31</mn></msup><mi mathvariant="normal">−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{31}−1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord">−</span><span class="mord">1</span></span></span></span>] 。</p>
+<h3 id="思路"><a class="markdownIt-Anchor" href="#思路"></a> 思路</h3>
+<p>假设现在输入x为4，n为5，计算结果应该为<code>4 * 4 * 4 * 4 * 4 = 1024</code>。<br />
+如果在直接进行<code>for</code>的情况下，时间复杂度应该为O(N)</p>
+<p>如果将n转化为二进制，结果为<code>1001</code>。然后我们写出每个位上的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">x^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.664392em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span></span></span></span></span></span></span></span>的结果。</p>
+<img src="/images/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n-2020-11-04-16-27-37.png" class="">
+<p>可以看到，当把二进制位上为1的数相乘时，结果为正确答案。也就是<code>256 * 4 = 1024</code></p>
+<h4 id="代码"><a class="markdownIt-Anchor" href="#代码"></a> 代码</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pow</span>(<span class="params">x,n</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> mem = x</span><br><span class="line">    <span class="keyword">let</span> result = <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">n &gt; <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">n &amp; <span class="number">2</span> != <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">            result *= mem</span><br><span class="line">        &#125;</span><br><span class="line">        mem *= mem</span><br><span class="line">        n &gt;&gt;= <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -312,6 +345,13 @@ n 是 32 位有符号整数，其数值范围是 [<span class="katex"><span cl
 
 
       
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -361,6 +401,8 @@ n 是 32 位有符号整数，其数值范围是 [<span class="katex"><span cl
 
   
   <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
@@ -396,6 +438,37 @@ n 是 32 位有符号整数，其数值范围是 [<span class="katex"><span cl
   
 
   
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nishuzumi.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/";
+    this.page.identifier = "2020/11/03/Pow-m-n-O-1-⌚️时间复杂度-O-n/";
+    this.page.title = "Pow(m,n) O(1) < ⌚️时间复杂度 < O(n)";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
 
 </body>
 </html>
