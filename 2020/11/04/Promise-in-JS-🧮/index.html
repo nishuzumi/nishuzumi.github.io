@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="前言 下面的内容为Promise的JS全实现，但是效率并不如原生Promise，因为原生Promise使用了微任务，而为了模拟同样的效果，只能使用宏任务setTimeout来替代。 为了防止在原生的Promise对象上进行修改，导致某些错误的功能误打误撞正确了，所以使用一个新的名称，取名为Bromise。 同时一下内容可以通过promise aplus test。并且能通过MDN上各种用例。 同">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Promise in JS 🧮">
+<meta property="og:url" content="http://example.com/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/index.html">
+<meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 下面的内容为Promise的JS全实现，但是效率并不如原生Promise，因为原生Promise使用了微任务，而为了模拟同样的效果，只能使用宏任务setTimeout来替代。 为了防止在原生的Promise对象上进行修改，导致某些错误的功能误打误撞正确了，所以使用一个新的名称，取名为Bromise。 同时一下内容可以通过promise aplus test。并且能通过MDN上各种用例。 同">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Promise-in-JS-%F0%9F%A7%AE-Promise.png">
+<meta property="article:published_time" content="2020-11-04T15:02:17.000Z">
+<meta property="article:modified_time" content="2020-11-06T03:17:32.124Z">
+<meta property="article:author" content="BoxChen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Promise-in-JS-%F0%9F%A7%AE-Promise.png">
+
+
+<link rel="canonical" href="http://example.com/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Promise in JS 🧮 | 盒子笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">盒子笔记</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%90%86%E8%A7%A3%E6%88%91%E7%9A%84%E7%8C%9C%E6%B5%8B"><span class="nav-number">2.</span> <span class="nav-text"> 我的理解(我的猜测)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0bromise"><span class="nav-number">3.</span> <span class="nav-text"> 实现Bromise</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#constructor-then-resolvepromise"><span class="nav-number">3.1.</span> <span class="nav-text"> constructor then resolvePromise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#catch-finally-resolve"><span class="nav-number">3.2.</span> <span class="nav-text"> catch finally resolve</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#all-race-allsettled-any"><span class="nav-number">3.3.</span> <span class="nav-text"> all race allSettled any</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text"> 完整代码</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BoxChen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Promise in JS 🧮
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-04 23:02:17" itemprop="dateCreated datePublished" datetime="2020-11-04T23:02:17+08:00">2020-11-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-06 11:17:32" itemprop="dateModified" datetime="2020-11-06T11:17:32+08:00">2020-11-06</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/04/Promise-in-JS-🧮/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>下面的内容为Promise的JS全实现，但是效率并不如原生Promise，因为原生Promise使用了微任务，而为了模拟同样的效果，只能使用宏任务setTimeout来替代。</p>
+<p>为了防止在原生的Promise对象上进行修改，导致某些错误的功能误打误撞正确了，所以使用一个新的名称，取名为Bromise。<br />
+同时一下内容可以通过promise aplus test。并且能通过MDN上各种用例。</p>
+<p>同时，如果你能看完并且理解，那么任何Promise的顺序问题，都不再是问题。<br />
+同时，任何Promise的实现问题，也不会再是问题。</p>
+<a id="more"></a>
+<h2 id="我的理解我的猜测"><a class="markdownIt-Anchor" href="#我的理解我的猜测"></a> 我的理解(我的猜测)</h2>
+<p>Promise在js中的本质其实就是一个具有自动处理多个回调的高阶语法糖。嗯，其实就是可以解决因为callback地狱导致的多层嵌套问题，实质上其实是把递归转化为了迭代来进行逻辑处理。</p>
+<p>在Promise中，传入构造函数中的函数将会被<strong>立刻执行</strong>，而其他的内容，则会被安排微任务处理阶段进行处理。同时微任务的执行时机为宏任务结束后，所以，他会比任何在本次循环中的setTimeout或者其他类似的宏任务<strong>都优先执行</strong>。<br />
+所以这还涉及到一个小问题，如果当前代码循环中，不交出控制权会怎么样？<br />
+例如</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bool = <span class="literal">false</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(bool)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="function"><span class="title">while</span>(<span class="params"><span class="number">1</span></span>)</span>&#123;</span><br><span class="line">    bool = !bool</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实你执行一次就会发现，你已经永远的失去了他的控制权，而且<code>setTimeout</code>内容将会永远的不能触发。这是因为js本质其实是在不断的循环解决任务。你也可以认为是这样。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">while</span>(<span class="params"><span class="number">1</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> currencyMacro = World.macros</span><br><span class="line">    World.macros = []</span><br><span class="line">    macroTakss(currencyMacro)</span><br><span class="line">    <span class="keyword">let</span> currencyMicro = World.micros</span><br><span class="line">    World.currencyMicro = []</span><br><span class="line">    microTasks(currencyMicro)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而如果我们直接创建一个文件，并且运行，那么这些代码一定是运行在<code>macroTasks</code>中。而如果调用了<code>setTimeout</code>，则将会在下次的<code>macroTasks</code>运行。<br />
+所以说，当你在<code>while</code>中触发了<strong>无限循环</strong>。导致js无法进入下一个循环流程。那么你将永远的停留在那不可到达的彼岸。</p>
+<p>因此，可以很明显的了解到<code>promise</code>的部分执行流程。同时你也可以写出20%有关输出先后的问题。那么还剩下80%。<br />
+举个例子(出自<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903987183894535#heading-2">掘金</a>)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;外部promise&quot;</span>);</span><br><span class="line">    resolve();</span><br><span class="line">&#125;)</span><br><span class="line">    .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;外部第一个then&quot;</span>);</span><br><span class="line">        <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">&quot;内部promise&quot;</span>);</span><br><span class="line">            resolve();</span><br><span class="line">        &#125;)</span><br><span class="line">            .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&quot;内部第一个then&quot;</span>);</span><br><span class="line">            &#125;)</span><br><span class="line">            .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&quot;内部第二个then&quot;</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;外部第二个then&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">/** output:</span></span><br><span class="line"><span class="comment">        外部promise</span></span><br><span class="line"><span class="comment">        外部第一个then</span></span><br><span class="line"><span class="comment">        内部promise</span></span><br><span class="line"><span class="comment">        内部第一个then</span></span><br><span class="line"><span class="comment">        内部第二个then</span></span><br><span class="line"><span class="comment">        外部第二个then</span></span><br><span class="line"><span class="comment">    */</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;外部promise&quot;</span>);</span><br><span class="line">    resolve();</span><br><span class="line">&#125;)</span><br><span class="line">    .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;外部第一个then&quot;</span>);</span><br><span class="line">        <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">&quot;内部promise&quot;</span>);</span><br><span class="line">            resolve();</span><br><span class="line">        &#125;)</span><br><span class="line">            .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&quot;内部第一个then&quot;</span>);</span><br><span class="line">            &#125;)</span><br><span class="line">            .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">&quot;内部第二个then&quot;</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;外部第二个then&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">/** output:</span></span><br><span class="line"><span class="comment">        外部promise</span></span><br><span class="line"><span class="comment">        外部第一个then</span></span><br><span class="line"><span class="comment">        内部promise</span></span><br><span class="line"><span class="comment">        内部第一个then</span></span><br><span class="line"><span class="comment">        外部第二个then</span></span><br><span class="line"><span class="comment">        内部第二个then</span></span><br><span class="line"><span class="comment">    */</span></span><br></pre></td></tr></table></figure>
+<p>如果你不知道为什么少了一个<code>return</code>就导致后面两行的输出顺序发生了改变，那么请君与我一同研究一下<code>promise</code>的写法。</p>
+<h2 id="实现bromise"><a class="markdownIt-Anchor" href="#实现bromise"></a> 实现Bromise</h2>
+<h3 id="constructor-then-resolvepromise"><a class="markdownIt-Anchor" href="#constructor-then-resolvepromise"></a> constructor then resolvePromise</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PENDING = <span class="string">&quot;pending&quot;</span></span><br><span class="line"><span class="keyword">const</span> Fulfilled = <span class="string">&quot;fulfilled&quot;</span></span><br><span class="line"><span class="keyword">const</span> Reject = <span class="string">&quot;reject&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Bromise</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> self = <span class="built_in">this</span></span><br><span class="line">    <span class="built_in">this</span>.status = PENDING</span><br><span class="line">    <span class="built_in">this</span>.onResolve = []</span><br><span class="line">    <span class="built_in">this</span>.onReject = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onResolve</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (self.status != PENDING) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        self.status = Fulfilled</span><br><span class="line">        self.value = value</span><br><span class="line">        self.onResolve.forEach(<span class="function"><span class="params">cb</span> =&gt;</span> cb());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onReject</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (self.status != PENDING) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        self.reason = reason</span><br><span class="line">        self.status = Reject</span><br><span class="line">        self.onReject.forEach(<span class="function"><span class="params">cb</span> =&gt;</span> cb());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fn(onResolve, onReject)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        onReject(e)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码非常简单，可以说是promise最简单的部分。其中的fn其实是我们在创建Promise时候传入的执行函数。比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// doSomething</span></span><br><span class="line">    resolve()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>显而易见的，我们每当完成任务的时候，都会调用传入的参数<code>resolve</code>，而这个<code>resolve</code>则是构造函数中的<code>onResolve</code>方法。这个方法会依次执行挂在<code>this.onResolve,this.onReject</code>上面的函数。而这个两个数组，模拟的是微任务中的promise部分。<br />
+接着是第二个重要的部分<code>resolvePromise</code>，这个<code>resolvePromise</code>和<code>Promise.resolve</code>并不是一个函数，请注意。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolveBromise</span>(<span class="params">promise, x, resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (promise === x) &#123;</span><br><span class="line">        reject(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">&quot;Chaining cycle&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!(x &amp;&amp; <span class="keyword">typeof</span> x === <span class="string">&#x27;object&#x27;</span> || <span class="keyword">typeof</span> x === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        resolve(x)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> used;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> then = x.then</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> then === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">            then.call(x, <span class="function">(<span class="params">y</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (used) <span class="keyword">return</span></span><br><span class="line">                used = <span class="literal">true</span></span><br><span class="line">                resolveBromise(promise, y, resolve, reject)</span><br><span class="line">            &#125;, <span class="function">(<span class="params">r</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (used) <span class="keyword">return</span></span><br><span class="line">                used = <span class="literal">true</span></span><br><span class="line">                reject(r)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (used) <span class="keyword">return</span></span><br><span class="line">            used = <span class="literal">true</span></span><br><span class="line">            resolve(x)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (used) <span class="keyword">return</span></span><br><span class="line">        used = <span class="literal">true</span></span><br><span class="line">        reject(e)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实和<code>Promise.resolve</code>的实际效果差不多，但是他保证了第一个参数promise和第二个参数x不是同一个对象，因此不会出现无限<code>resolvePromise</code>。<br />
+上面这段代码的主要作用是把不是thenable的值resolve返回，把是thenable的运行后继续这个判断，直到返回值。</p>
+<p>接下来实现最重要的<code>then</code>,整个Promise其实就这三个部分，至于其他的catch，finally，都是一些小封装。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Bromise.prototype.then = <span class="function"><span class="keyword">function</span> (<span class="params">onResolve, onReject</span>) </span>&#123;</span><br><span class="line">    onResolve = <span class="keyword">typeof</span> onResolve === <span class="string">&#x27;function&#x27;</span> ? onResolve : <span class="function"><span class="params">value</span> =&gt;</span> value</span><br><span class="line">    onReject = <span class="keyword">typeof</span> onReject === <span class="string">&#x27;function&#x27;</span> ? onReject : <span class="function"><span class="params">reason</span> =&gt;</span> &#123; <span class="keyword">throw</span> reason &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> self = <span class="built_in">this</span></span><br><span class="line">    <span class="keyword">let</span> result = <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (self.status === PENDING) &#123;</span><br><span class="line">            self.onResolve.push(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        resolveBromise(result, onResolve(self.value), resolve, reject)</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                        reject(e)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">            self.onReject.push(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        resolveBromise(result, onReject(self.reason), resolve, reject)</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                        reject(e)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> callTarget = self.status === Fulfilled?onResolve:onReject</span><br><span class="line">                    resolveBromise(result, callTarget(self.status === Fulfilled?self.value:self.reason), resolve, reject)</span><br><span class="line">                &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                    reject(e)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这个方法，如果想要理解，那么要注意几点。<br />
+1.Promise会立刻执行构造时传入的函数，因此，then中构造的Promise会立刻执行，但是内容均为创建微任务，也就是说，<strong>then的内容，被立刻的分到了下一个微任务循环中</strong><br />
+2.每当你调用<code>then</code>，你都会获得一个新的Promise，因此，你接下来如果继续调用then，<strong>只会和上个Promise关联</strong><br />
+3.虽然setTimeout有先来后到的顺序机制，但是注意，在一个Promise结束的时候，他会立刻执行他两个任务序列，也就是<code>this.onResolve,this.onReject</code>，但是，还请注意，<strong>这两个序列的具体内容，将会在下一个微任务中运行</strong><br />
+4.当你在一个then中返回了一个Promise，这么那个then自身的Promise状态，将会由返回值来决定。</p>
+<p>请注意，这个4将会是很多很多问题的关键。那么为什么return的Promise会接管原本的Promise的状态？<br />
+答案就在<code>then</code>的代码中。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> callTarget = self.status === Fulfilled?onResolve:onReject</span><br><span class="line">    resolveBromise(result, callTarget(self.status === Fulfilled?self.value:self.reason), resolve, reject)</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    reject(e)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 如果你把它简化一下。假设默认的只会出现Fulfilled状态。那么这段代码应该为</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    resolveBromise(result, onResolve(self.value), resolve, reject)</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    reject(e)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//而上文提到过，resolvePromise的作用是 “把不是thenable的值resolve返回，把是thenable的运行后继续这个判断，直到返回值。”</span></span><br><span class="line"><span class="comment">//因此，作为return返回的Promise，此时将会被注入到self.value中，并且传递到resolvePromise当中</span></span><br></pre></td></tr></table></figure>
+<p>所以，我们可以变相的认为，因为<code>return &lt;Thenable&gt;</code>的逻辑，导致<code>Thenalbe</code>的逻辑被强制的提升。也就是说，任务执行提前了。<br />
+通俗易懂的说，外层<code>then</code>的状态，将会由<strong>return的Promise的状态</strong>来决定。<s>称之为紧急提升</s>。可以认为是<strong>强制下沉</strong></p>
+<img src="/images/Promise-in-JS-%F0%9F%A7%AE-Promise.png" class="" width="828" height="678" title="Promise的内部布局">
+<p>所以说，你可以简单的认为有这样几个队列。</p>
+<ul>
+<li>Next:将会在下次微任务循环执行时执行</li>
+<li>OnResolve:将会在自身Promise执行resolve完成后下一个微任务循环执行</li>
+<li>OnReject:将会在自身Promise执行reject完成后下一个微任务循环执行<br />
+请注意，OnResolve和OnReject只会有一个队列被执行。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">r,j</span>)=&gt;</span>&#123; <span class="comment">//Promise1</span></span><br><span class="line">    r()</span><br><span class="line">&#125;).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;<span class="comment">//Promise2</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">r,j</span>)=&gt;</span>&#123;<span class="comment">//Promise3</span></span><br><span class="line">        r()</span><br><span class="line">    &#125;).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;<span class="comment">//Promise4</span></span><br><span class="line">        </span><br><span class="line">    &#125;).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;<span class="comment">//Promise5</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;over&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>我们来分析一下上面的代码。很明显的可以看出他们的关联链应该是<code>Promise1-&gt;Promise2-&gt;Promise3-&gt;Promise4-&gt;Promise5</code>，而我们<code>return new Promise</code>的返回值，其实应该是<code>Promise5</code>。所以<code>Promise2</code>的执行结束时间被强制的下沉到了<code>Promise5</code>的结束时间。<br />
+但是如果没有<code>return</code>，而是直接<code>new Promise</code>，会如何？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">r,j</span>)=&gt;</span>&#123; <span class="comment">//Promise1</span></span><br><span class="line">    r()</span><br><span class="line">&#125;).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;<span class="comment">//Promise2</span></span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">r,j</span>)=&gt;</span>&#123;<span class="comment">//Promise3</span></span><br><span class="line">        r()</span><br><span class="line">    &#125;).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;<span class="comment">//Promise4</span></span><br><span class="line">        </span><br><span class="line">    &#125;).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;<span class="comment">//Promise5</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;over&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;<span class="comment">//Promise6</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;first&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>此时的关联链应该是<code>Promise1-&gt;Promise2</code>，因为没有返回<code>Promise3(Promise5)</code>，所以导致<code>Promise2</code>的结束时间会在<code>then</code>执行完成后立刻结束，而不需要等待其他的<code>Promise</code>运行。这就是为什么如果不return会产生不一样的运行结果。<br />
+那么为什么在上面的例子中，输出顺序是<code>first -&gt; over</code>？<br />
+因为当如果then的内部没有进行<code>thenable</code>返回，那么就会按照注册时间顺序进行执行。如上文的代码。他们的注册时间顺序应该是。<br />
+1.Promise2(Next)<br />
+2.Promise4(Next)<br />
+3.Promise5(Wait for Promise4)<br />
+4.Promise6(Wait for Promise2)<br />
+你可以很明显的发现，3和4的执行时间其实是依赖于1和2的。在下一次微任务循环时，会先执行1，然后触发4的任务入队。接着是2，然后触发3的任务入队。也就是会变成这样。<br />
+1.Promise6(Next)<br />
+2.Promise5(Next)<br />
+所以，这就解释了为什么没有<code>return &lt;Thenable&gt;</code>内容时，执行顺序会不一样。</p>
+<p>到这里，如果看完并且理解了内容。那么我可以保证你能100%的解决任何的Promise问题。前提是你要能自己实现一个Promise并且让他通过promise-aplus-tests(NPM)，你可以在任何一个版本上修改。也可以一步一步的按照promise aplus的规范进行逐步编写。<br />
+如果这里有人想问，Promise2和Promise4为什么是Next，而不是Wait for啊？<br />
+原因是因为，Promise内部有一个状态判别，如果当前的Promise已经resolve或者reject了，那么接下来的then会被直接推入Next中。而new Promise的时候，传入的fn是会被立刻执行的。所以说，如果在fn中立刻resolve或者reject。那么这个Promise的状态会被立刻标记为fulfilled或者reject。而如果当前Promise的状态为pending，那么接下来的一个then内容会被推入到onResolve和onReject队列中。等待Promise的状态变动。</p>
+<h3 id="catch-finally-resolve"><a class="markdownIt-Anchor" href="#catch-finally-resolve"></a> catch finally resolve</h3>
+<p>有了上面内容的理解，其实对于<code>catch</code>和<code>finally</code>就更好理解了。而resolve其实就是一个对任何值类型的直接封装📦，让他变成一个Promise。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Bromise.prototype.resolve = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">value <span class="keyword">instanceof</span> Bromise</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">value&amp;&amp;value.then&amp;&amp;<span class="keyword">typeof</span> value.then == <span class="string">&#x27;function&#x27;</span></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">                value.then(resolve,reject)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            resolve(value)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 一个只有onReject的then就是catch</span></span><br><span class="line">Bromise.prototype.catch = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.then(<span class="literal">null</span>,fn)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//是不是非常的眼熟，其实他就是then的默认执行方法前加上了一个fn的中间件</span></span><br><span class="line">Bromise.prototype.finally = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.then(<span class="function">(<span class="params">value</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Bromise.resolve(fn()).then(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> value</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,<span class="function"><span class="params">reason</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Bromise.resolve(fn()).then(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">throw</span> reason</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="all-race-allsettled-any"><a class="markdownIt-Anchor" href="#all-race-allsettled-any"></a> all race allSettled any</h3>
+<p>有了以上代码知识，实现这些功能估计都不在话下了。具体内容我放在了下面的完整代码中。但是我推荐各位自己尝试实现。并且使用MDN上的范例进行测试，以加深印象。</p>
+<h2 id="完整代码"><a class="markdownIt-Anchor" href="#完整代码"></a> 完整代码</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PENDING = <span class="string">&quot;pending&quot;</span></span><br><span class="line"><span class="keyword">const</span> Fulfilled = <span class="string">&quot;fulfilled&quot;</span></span><br><span class="line"><span class="keyword">const</span> Reject = <span class="string">&quot;reject&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Bromise</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> self = <span class="built_in">this</span></span><br><span class="line">    <span class="built_in">this</span>.status = PENDING</span><br><span class="line">    <span class="built_in">this</span>.onResolve = []</span><br><span class="line">    <span class="built_in">this</span>.onReject = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onResolve</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (self.status != PENDING) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        self.status = Fulfilled</span><br><span class="line">        self.value = value</span><br><span class="line">        self.onResolve.forEach(<span class="function"><span class="params">cb</span> =&gt;</span> cb());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onReject</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (self.status != PENDING) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        self.reason = reason</span><br><span class="line">        self.status = Reject</span><br><span class="line">        self.onReject.forEach(<span class="function"><span class="params">cb</span> =&gt;</span> cb());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fn(onResolve, onReject)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        onReject(e)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.prototype.then = <span class="function"><span class="keyword">function</span> (<span class="params">onResolve, onReject</span>) </span>&#123;</span><br><span class="line">    onResolve = <span class="keyword">typeof</span> onResolve === <span class="string">&#x27;function&#x27;</span> ? onResolve : <span class="function"><span class="params">value</span> =&gt;</span> value</span><br><span class="line">    onReject = <span class="keyword">typeof</span> onReject === <span class="string">&#x27;function&#x27;</span> ? onReject : <span class="function"><span class="params">reason</span> =&gt;</span> &#123; <span class="keyword">throw</span> reason &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> self = <span class="built_in">this</span></span><br><span class="line">    <span class="keyword">let</span> result = <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (self.status === PENDING) &#123;</span><br><span class="line">            self.onResolve.push(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        resolveBromise(result, onResolve(self.value), resolve, reject)</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                        reject(e)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">            self.onReject.push(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        resolveBromise(result, onReject(self.reason), resolve, reject)</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                        reject(e)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> callTarget = self.status === Fulfilled?onResolve:onReject</span><br><span class="line">                    resolveBromise(result, callTarget(self.status === Fulfilled?self.value:self.reason), resolve, reject)</span><br><span class="line">                &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                    reject(e)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolveBromise</span>(<span class="params">promise, x, resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (promise === x) &#123;</span><br><span class="line">        reject(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">&quot;Chaining cycle&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!(x &amp;&amp; <span class="keyword">typeof</span> x === <span class="string">&#x27;object&#x27;</span> || <span class="keyword">typeof</span> x === <span class="string">&#x27;function&#x27;</span>)) &#123;</span><br><span class="line">        resolve(x)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> used;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> then = x.then</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> then === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">            then.call(x, <span class="function">(<span class="params">y</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (used) <span class="keyword">return</span></span><br><span class="line">                used = <span class="literal">true</span></span><br><span class="line">                resolveBromise(promise, y, resolve, reject)</span><br><span class="line">            &#125;, <span class="function">(<span class="params">r</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (used) <span class="keyword">return</span></span><br><span class="line">                used = <span class="literal">true</span></span><br><span class="line">                reject(r)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (used) <span class="keyword">return</span></span><br><span class="line">            used = <span class="literal">true</span></span><br><span class="line">            resolve(x)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (used) <span class="keyword">return</span></span><br><span class="line">        used = <span class="literal">true</span></span><br><span class="line">        reject(e)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.resolve = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">value <span class="keyword">instanceof</span> Bromise</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">s,j</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">value&amp;&amp;value.then&amp;&amp;<span class="keyword">typeof</span> value.then === <span class="string">&#x27;function&#x27;</span></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">                value.then(s,j)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            s(value)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.reject = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">x,y</span>)=&gt;</span>&#123;</span><br><span class="line">        y(value)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.prototype.catch = <span class="function"><span class="keyword">function</span>(<span class="params">onReject</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.then(<span class="literal">null</span>,onReject)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.prototype.finally = <span class="function"><span class="keyword">function</span>(<span class="params">cb</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Bromise.resolve(cb()).then(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> value</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,<span class="function"><span class="params">reason</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Bromise.resolve(cb()).then(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">            <span class="keyword">throw</span> reason</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.all = <span class="function"><span class="keyword">function</span>(<span class="params">promises</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">s,j</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">0</span></span><br><span class="line">        <span class="keyword">let</span> result = [];</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">promises.length == <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> s(result)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> deal = <span class="function"><span class="keyword">function</span> (<span class="params">i,data</span>)</span>&#123;</span><br><span class="line">            result[i] = data</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params">++index == promises.length</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> s(result)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i = <span class="number">0</span>;i&lt;promises.length;i++</span>)</span>&#123;</span><br><span class="line">            Bromise.resolve(promises[i]).then(<span class="function">(<span class="params">value</span>)=&gt;</span>&#123;</span><br><span class="line">                deal(i,value)</span><br><span class="line">            &#125;,<span class="function"><span class="params">err</span>=&gt;</span>&#123;</span><br><span class="line">                j(err)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.race = <span class="function"><span class="keyword">function</span>(<span class="params">promises</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> one <span class="keyword">of</span> promises</span>)</span>&#123;</span><br><span class="line">            Bromise.resolve(one).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;</span><br><span class="line">                resolve(value)</span><br><span class="line">            &#125;,<span class="function"><span class="params">err</span>=&gt;</span>&#123;</span><br><span class="line">                reject(err)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.any = <span class="function"><span class="keyword">function</span>(<span class="params">promises</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(promises.length === <span class="number">0</span>) <span class="keyword">return</span> reject()</span><br><span class="line">        <span class="keyword">let</span> pending = <span class="number">0</span></span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> one <span class="keyword">of</span> promises</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(! one <span class="keyword">instanceof</span> Bromise) <span class="keyword">continue</span></span><br><span class="line">            ++pending</span><br><span class="line">            one.then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;</span><br><span class="line">                resolve(value)</span><br><span class="line">            &#125;,<span class="function"><span class="params">err</span>=&gt;</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(--pending == <span class="number">0</span>) reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">&quot;No Promise in Promise.any was resolved&quot;</span>))</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">pending == <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">            resolve()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.allSettled = <span class="function"><span class="keyword">function</span>(<span class="params">promises</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> result = []</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">promises.length === <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> resolve(result)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> one <span class="keyword">of</span> promises</span>)</span>&#123;</span><br><span class="line">            Bromise.resolve(one).then(<span class="function"><span class="params">value</span>=&gt;</span>&#123;</span><br><span class="line">                result.push(&#123; <span class="attr">status</span>: <span class="string">&quot;fulfilled&quot;</span>, <span class="attr">value</span>: value &#125;)</span><br><span class="line">            &#125;,<span class="function"><span class="params">reason</span>=&gt;</span>&#123;</span><br><span class="line">                result.push(&#123; <span class="attr">status</span>: <span class="string">&quot;rejected&quot;</span>, <span class="attr">reason</span>: reason &#125;)</span><br><span class="line">            &#125;).finally(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">                <span class="function"><span class="title">if</span>(<span class="params">result.length &gt;= promises.length</span>)</span>&#123;</span><br><span class="line">                    resolve(result)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Bromise.defer = Bromise.deferred = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> dfd = &#123;&#125;;</span><br><span class="line">    dfd.promise = <span class="keyword">new</span> Bromise(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        dfd.resolve = resolve;</span><br><span class="line">        dfd.reject = reject;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> dfd;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = Bromise</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/" rel="prev" title="Pow(m,n) O(1) < ⌚️时间复杂度 < O(n)">
+                  <i class="fa fa-chevron-left"></i> Pow(m,n) O(1) < ⌚️时间复杂度 < O(n)
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BoxChen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nishuzumi.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/";
+    this.page.identifier = "2020/11/04/Promise-in-JS-🧮/";
+    this.page.title = "Promise in JS 🧮";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
