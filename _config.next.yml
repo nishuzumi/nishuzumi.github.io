@@ -27,3 +27,12 @@ codeblock:
     # Available values: default | flat | mac
     style: mac  # *changed* 设为mac风格
 fancybox: true
+avatar:
+  url: /images/avatar.jpg
+  rounded: true
+back2top:
+  enable: true
+  # Back to top in sidebar.
+  sidebar: true
+  # Scroll percent label in b2t button.
+  scrollpercent: true

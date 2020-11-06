@@ -555,7 +555,7 @@ Bromise.any = function(promises){
         if(promises.length === 0) return reject()
         let pending = 0
         for(let one of promises){
-            if(! one instanceof Bromise) continue
+            if(!(one instanceof Bromise)) continue
             ++pending
             one.then(value=>{
                 resolve(value)
