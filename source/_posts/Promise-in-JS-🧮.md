@@ -2,6 +2,12 @@
 title: "Promise in JS \U0001F9EE"
 date: 2020-11-04 23:02:17
 tags:
+- Promise
+- 代码实现
+categories:
+- [笔记]
+- [JS]
+- [前端]
 ---
 ## 前言
 下面的内容为Promise的JS全实现，但是效率并不如原生Promise，因为原生Promise使用了微任务，而为了模拟同样的效果，只能使用宏任务setTimeout来替代。
@@ -51,7 +57,7 @@ new Promise((resolve, reject) => {
 })
     .then(() => {
         console.log("外部第一个then");
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             console.log("内部promise");
             resolve();
         })
