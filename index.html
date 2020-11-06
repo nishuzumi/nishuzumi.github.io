@@ -155,6 +155,8 @@
 
         <section class="site-overview-wrap sidebar-panel">
           <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BoxChen"
+      src="/images/avatar.jpg">
   <p class="site-author-name" itemprop="name">BoxChen</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -162,13 +164,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
@@ -177,6 +183,10 @@
 
         </section>
       </div>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
     </div>
   </aside>
   <div class="sidebar-dimmer"></div>
@@ -185,10 +195,6 @@
     </header>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -207,10 +213,138 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">一次表现极差面试的事后题目分析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-06 11:37:37 / 修改时间：16:41:27" itemprop="dateCreated datePublished" datetime="2020-11-06T11:37:37+08:00">2020-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">面试题</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/06/一次表现极差面试的事后题目分析/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>总之就是一次表现很差的面试，但是面试官的态度一直是很好，不过也让我压力倍增。。。人人往往会恐惧那美好事物背后的真相。</p>
+<p>面试内容如下:<br />
+2. setTimeout和requestAnimationFrame 优劣对比？<br />
+3. 如何开启浏览器硬件加速能力<br />
+4. JS 有哪些数据类型？<br />
+5. 如何区分数据类型？<br />
+6. instanceof 相关内容，下列的值? 实现一个myInstanceof(left, right)<br />
+[] instanceof Array<br />
+Array instanceof Function<br />
+[] instanceof Function<br />
+7. CSS BFC的概念，形成及作用<br />
+8. CSS画一个圆形；画一个平行四边形<br />
+9. 封装一个原生的ajax方法  ajax(method, url, data, cb)<br />
+10. 取出 <a target="_blank" rel="noopener" href="https://baidu.com?code=RDjaisduf&amp;confirm=true#newArchar">https://baidu.com?code=RDjaisduf&amp;confirm=true#newArchar</a> 上的参数<br />
+11. 编写方法，统计任意页面html元素种类和个数</p>
+<table>
+<thead>
+<tr>
+<th>面试官的态度</th>
+<th>我的表现</th>
+<th>我对我的评分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>😊</td>
+<td>💩</td>
+<td>10/100</td>
+</tr>
+</tbody>
+</table>
+<p>简单来说就是懵逼了，说实话，对这些基础内容，我的掌握程度确实不高。实在是羞愧。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="BoxChen">
       <meta itemprop="description" content="">
     </span>
@@ -239,7 +373,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-06 11:17:32" itemprop="dateModified" datetime="2020-11-06T11:17:32+08:00">2020-11-06</time>
+        <time title="修改时间：2020-11-06 12:34:15" itemprop="dateModified" datetime="2020-11-06T12:34:15+08:00">2020-11-06</time>
       </span>
 
   
@@ -308,7 +442,7 @@
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="BoxChen">
       <meta itemprop="description" content="">
     </span>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="前言 总之就是一次表现很差的面试，但是面试官的态度一直是很好，不过也让我压力倍增。。。人人往往会恐惧那美好事物背后的真相。 面试内容如下: 2. setTimeout和requestAnimationFrame 优劣对比？ 3. 如何开启浏览器硬件加速能力 4. JS 有哪些数据类型？ 5. 如何区分数据类型？ 6. instanceof 相关内容，下列的值? 实现一个myInstanceof(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次表现极差面试的事后题目分析">
+<meta property="og:url" content="http://example.com/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 总之就是一次表现很差的面试，但是面试官的态度一直是很好，不过也让我压力倍增。。。人人往往会恐惧那美好事物背后的真相。 面试内容如下: 2. setTimeout和requestAnimationFrame 优劣对比？ 3. 如何开启浏览器硬件加速能力 4. JS 有哪些数据类型？ 5. 如何区分数据类型？ 6. instanceof 相关内容，下列的值? 实现一个myInstanceof(">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-06T03:37:37.000Z">
+<meta property="article:modified_time" content="2020-11-06T08:41:27.302Z">
+<meta property="article:author" content="BoxChen">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="二面">
+<meta property="article:tag" content="基础知识">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>一次表现极差面试的事后题目分析 | 盒子笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">盒子笔记</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94"><span class="nav-number">2.</span> <span class="nav-text"> 解答</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#settimeout%E5%92%8Crequestanimationframe-%E4%BC%98%E5%8A%A3%E5%AF%B9%E6%AF%94"><span class="nav-number">2.1.</span> <span class="nav-text"> setTimeout和requestAnimationFrame 优劣对比？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%BC%80%E5%90%AF%E6%B5%8F%E8%A7%88%E5%99%A8%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E8%83%BD%E5%8A%9B"><span class="nav-number">2.2.</span> <span class="nav-text"> 如何开启浏览器硬件加速能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text"> JS 有哪些数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.4.</span> <span class="nav-text"> 如何区分数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#instanceof-%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9%E4%B8%8B%E5%88%97%E7%9A%84%E5%80%BC-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAmyinstanceofleft-right"><span class="nav-number">2.5.</span> <span class="nav-text"> instanceof 相关内容，下列的值? 实现一个myInstanceof(left, right)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#css-bfc%E7%9A%84%E6%A6%82%E5%BF%B5%E5%BD%A2%E6%88%90%E5%8F%8A%E4%BD%9C%E7%94%A8"><span class="nav-number">2.6.</span> <span class="nav-text"> CSS BFC的概念，形成及作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#css%E7%94%BB%E4%B8%80%E4%B8%AA%E5%9C%86%E5%BD%A2%E7%94%BB%E4%B8%80%E4%B8%AA%E5%B9%B3%E8%A1%8C%E5%9B%9B%E8%BE%B9%E5%BD%A2"><span class="nav-number">2.7.</span> <span class="nav-text"> CSS画一个圆形；画一个平行四边形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E5%8E%9F%E7%94%9F%E7%9A%84ajax%E6%96%B9%E6%B3%95-ajaxmethod-url-data-cb"><span class="nav-number">2.8.</span> <span class="nav-text"> 封装一个原生的ajax方法  ajax(method, url, data, cb)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%87%BA-httpsbaiducomcoderdjaisdufconfirmtruenewarchar-%E4%B8%8A%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">2.9.</span> <span class="nav-text"> 取出 https:&#x2F;&#x2F;baidu.com?code&#x3D;RDjaisduf&amp;confirm&#x3D;true#newArchar 上的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E6%96%B9%E6%B3%95%E7%BB%9F%E8%AE%A1%E4%BB%BB%E6%84%8F%E9%A1%B5%E9%9D%A2html%E5%85%83%E7%B4%A0%E7%A7%8D%E7%B1%BB%E5%92%8C%E4%B8%AA%E6%95%B0"><span class="nav-number">2.10.</span> <span class="nav-text"> 编写方法，统计任意页面html元素种类和个数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text"> 总结</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BoxChen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">BoxChen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一次表现极差面试的事后题目分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-06 11:37:37 / 修改时间：16:41:27" itemprop="dateCreated datePublished" datetime="2020-11-06T11:37:37+08:00">2020-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">面试题</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/06/一次表现极差面试的事后题目分析/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>总之就是一次表现很差的面试，但是面试官的态度一直是很好，不过也让我压力倍增。。。人人往往会恐惧那美好事物背后的真相。</p>
+<p>面试内容如下:<br />
+2. setTimeout和requestAnimationFrame 优劣对比？<br />
+3. 如何开启浏览器硬件加速能力<br />
+4. JS 有哪些数据类型？<br />
+5. 如何区分数据类型？<br />
+6. instanceof 相关内容，下列的值? 实现一个myInstanceof(left, right)<br />
+[] instanceof Array<br />
+Array instanceof Function<br />
+[] instanceof Function<br />
+7. CSS BFC的概念，形成及作用<br />
+8. CSS画一个圆形；画一个平行四边形<br />
+9. 封装一个原生的ajax方法  ajax(method, url, data, cb)<br />
+10. 取出 <a target="_blank" rel="noopener" href="https://baidu.com?code=RDjaisduf&amp;confirm=true#newArchar">https://baidu.com?code=RDjaisduf&amp;confirm=true#newArchar</a> 上的参数<br />
+11. 编写方法，统计任意页面html元素种类和个数</p>
+<table>
+<thead>
+<tr>
+<th>面试官的态度</th>
+<th>我的表现</th>
+<th>我对我的评分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>😊</td>
+<td>💩</td>
+<td>10/100</td>
+</tr>
+</tbody>
+</table>
+<p>简单来说就是懵逼了，说实话，对这些基础内容，我的掌握程度确实不高。实在是羞愧。</p>
+<a id="more"></a>
+<h2 id="解答"><a class="markdownIt-Anchor" href="#解答"></a> 解答</h2>
+<h3 id="settimeout和requestanimationframe-优劣对比"><a class="markdownIt-Anchor" href="#settimeout和requestanimationframe-优劣对比"></a> setTimeout和requestAnimationFrame 优劣对比？</h3>
+<p>requestAnimationFrame特点</p>
+<ul>
+<li>requestAnimationFrame由浏览器引擎保证调用时间间隔</li>
+<li>当用户无法观察到，比如缩小到后台。requestAnimationFrame将会停止执行。知道重新获得焦点。</li>
+<li>requestAnimationFrame会随着浏览器重绘间隔一起，并在重绘之前调用<br />
+相比setTimeout，优势很明显</li>
+<li>无需计算间隔，浏览器保证调用时机</li>
+<li>不会产生无效处理，当显示器刷新率不够高时，多次处理只会降低性能。</li>
+</ul>
+<h3 id="如何开启浏览器硬件加速能力"><a class="markdownIt-Anchor" href="#如何开启浏览器硬件加速能力"></a> 如何开启浏览器硬件加速能力</h3>
+<p>浏览器设置打开。<br />
+面试官同时还问了<strong>如何使用代码开启</strong><br />
+如果是在浏览器设置关闭的情况下使用代码开启，我到现在都是不知道的。<br />
+查阅了很多资料，也只看到了如何触发硬件加速相关的css内容,比如：</p>
+<ul>
+<li><code>transform: translate3d(0,0,0);</code></li>
+<li>使用<code>&lt;canvas&gt; or &lt;video&gt;</code></li>
+<li>调整元素覆盖，比如<code>z-index</code></li>
+<li>或者使用<code>filter</code></li>
+</ul>
+<p>这些都会触发浏览器的独立复合图层绘制。</p>
+<h3 id="js-有哪些数据类型"><a class="markdownIt-Anchor" href="#js-有哪些数据类型"></a> JS 有哪些数据类型</h3>
+<p>Number String Null Undefined Bool Symbol Object Bigint<br />
+说实话，我没写全，这是让我非常羞愧难当的。</p>
+<h3 id="如何区分数据类型"><a class="markdownIt-Anchor" href="#如何区分数据类型"></a> 如何区分数据类型</h3>
+<p>typeof instanceOf toString</p>
+<h3 id="instanceof-相关内容下列的值-实现一个myinstanceofleft-right"><a class="markdownIt-Anchor" href="#instanceof-相关内容下列的值-实现一个myinstanceofleft-right"></a> instanceof 相关内容，下列的值? 实现一个myInstanceof(left, right)</h3>
+<p>[] instanceof Array //true<br />
+Array instanceof Function // true<br />
+[] instanceof Function // false</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myInstanceof</span>(<span class="params">left,right</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> o = left.__proto__</span><br><span class="line">    <span class="keyword">let</span> p = right.prototype</span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">o != <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">o === p</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        o = o.__proto__</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>instanceOf</code>是用于查找对象的原型是否出现在构造函数的原型链上。</p>
+<h3 id="css-bfc的概念形成及作用"><a class="markdownIt-Anchor" href="#css-bfc的概念形成及作用"></a> CSS BFC的概念，形成及作用</h3>
+<p><strong>重点</strong>，因为我不会。<br />
+BFC全名Block Formatting Context——块格式化上下文。<br />
+特点：</p>
+<ul>
+<li>和函数一样，一个块包裹的内容上下文就是包裹内容的全部</li>
+<li>一个BFC中的操作只会影响到当前的BFC</li>
+</ul>
+<p>形成：</p>
+<ol>
+<li>根元素</li>
+<li>float不为none的元素</li>
+<li>overflow不为visiable</li>
+<li>display为inline-block，table-cell，table-caption，flow-root，flex，inline-flex，grid，inline-grid</li>
+<li>position为absolute，或者fixed</li>
+<li>display中的值带有table</li>
+<li>contain为layout，content，paint</li>
+<li>多列容器，如column-count或column-width不为auto</li>
+<li>column-span为all的始终创建新的BFC</li>
+</ol>
+<p>作用：</p>
+<ol>
+<li>适应两栏布局</li>
+<li>可以阻止元素被浮动元素覆盖</li>
+<li>可以包含浮动元素——清除内部浮动</li>
+<li>分属于不同的BFC时可以阻止margin重叠</li>
+</ol>
+<p>推荐阅读<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903476774830094">掘金</a></p>
+<h3 id="css画一个圆形画一个平行四边形"><a class="markdownIt-Anchor" href="#css画一个圆形画一个平行四边形"></a> CSS画一个圆形；画一个平行四边形</h3>
+<iframe scrolling="no" width="500" height="300" src="https://jsfiddle.net/nLgkt4q9/embedded/html,css,result/dark" frameborder="0" loading="lazy" allowfullscreen></iframe>
+<h3 id="封装一个原生的ajax方法-ajaxmethod-url-data-cb"><a class="markdownIt-Anchor" href="#封装一个原生的ajax方法-ajaxmethod-url-data-cb"></a> 封装一个原生的ajax方法  ajax(method, url, data, cb)</h3>
+<p>本来背的乱熟的东西，因为大脑短路，惨遭毒手。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *<span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>data </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajax</span>(<span class="params">method,url,data,cb</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> u = <span class="keyword">new</span> URL(url)</span><br><span class="line">    method = method.toLowerCase()</span><br><span class="line">    <span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">    <span class="keyword">if</span>(method == <span class="string">&#x27;get&#x27;</span>) <span class="built_in">Object</span>.keys(data).forEach(<span class="function"><span class="params">key</span>=&gt;</span>u.searchParams.append(key,data[key]))</span><br><span class="line">    xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">xhr.readyState === <span class="number">4</span> &amp;&amp; xhr.status == <span class="number">200</span> || xhr.status == <span class="number">304</span></span>)</span>&#123;</span><br><span class="line">            cb(xhr.responseText)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    xhr.open(method,u.toString(),<span class="literal">true</span>)</span><br><span class="line">    <span class="keyword">let</span> postData = <span class="literal">null</span></span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">method == <span class="string">&#x27;post&#x27;</span></span>)</span>&#123;</span><br><span class="line">        xhr.setRequestHeader(<span class="string">&#x27;Content-Type&#x27;</span>,<span class="string">&#x27;application/x-www-form-urlencoded&#x27;</span>)</span><br><span class="line">        postData = <span class="built_in">Object</span>.keys(data).map(<span class="function"><span class="params">key</span>=&gt;</span><span class="string">`<span class="subst">$&#123;key&#125;</span>=<span class="subst">$&#123;data[key]&#125;</span>`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    xhr.send(postData)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，post时需要设置<code>setRequestHeader</code>，并且内容为<code>application/x-www-form-urlencoded</code></p>
+<h3 id="取出-httpsbaiducomcoderdjaisdufconfirmtruenewarchar-上的参数"><a class="markdownIt-Anchor" href="#取出-httpsbaiducomcoderdjaisdufconfirmtruenewarchar-上的参数"></a> 取出 <a target="_blank" rel="noopener" href="https://baidu.com?code=RDjaisduf&amp;confirm=true#newArchar">https://baidu.com?code=RDjaisduf&amp;confirm=true#newArchar</a> 上的参数</h3>
+<p>两种方法，我只写出了第一种。<br />
+第一种：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parse</span>(<span class="params">url</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> raw = url.split(<span class="string">&quot;?&quot;</span>)[<span class="number">1</span>].split(<span class="string">&#x27;#&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">let</span> result = &#123;&#125;</span><br><span class="line">    raw.split(<span class="string">&quot;&amp;&quot;</span>).forEach(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> [key,value] = data.split(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">        result[key] = value</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二种：<br />
+面试官其实已经明示了使用URL对象😭，但是我真没用过，煞费面试官一片苦心。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parse</span>(<span class="params">url</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> result = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> [key,value] <span class="keyword">of</span> <span class="keyword">new</span> URL(url).searchParams.entries())&#123;</span><br><span class="line">        result[key] = value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="编写方法统计任意页面html元素种类和个数"><a class="markdownIt-Anchor" href="#编写方法统计任意页面html元素种类和个数"></a> 编写方法，统计任意页面html元素种类和个数</h3>
+<p>面试的时候只写出来了思路，但是没有完整答出。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countAll</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> elements = <span class="built_in">document</span>.getElementsByTagName(<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">    <span class="keyword">let</span> result = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> element <span class="keyword">of</span> elements</span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">result[element.tagName] == <span class="literal">undefined</span></span>)</span>&#123;</span><br><span class="line">            result[element.tagName] = <span class="number">1</span></span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            result[element.tagName]++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>个人还是高估了自己的水平，实在是愧对江东父老，也对浪费了面试官时间和浪费了面试的机会感到非常的羞愧。必将全力以赴，应对下一次挑战。<br />
+加油！打工人！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JS/" rel="tag"># JS</a>
+              <a href="/tags/CSS/" rel="tag"># CSS</a>
+              <a href="/tags/%E4%BA%8C%E9%9D%A2/" rel="tag"># 二面</a>
+              <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 基础知识</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/" rel="prev" title="Promise in JS 🧮">
+                  <i class="fa fa-chevron-left"></i> Promise in JS 🧮
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BoxChen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nishuzumi.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/";
+    this.page.identifier = "2020/11/06/一次表现极差面试的事后题目分析/";
+    this.page.title = "一次表现极差面试的事后题目分析";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
