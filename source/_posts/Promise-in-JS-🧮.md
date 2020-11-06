@@ -9,6 +9,10 @@ tags:
 为了防止在原生的Promise对象上进行修改，导致某些错误的功能误打误撞正确了，所以使用一个新的名称，取名为Bromise。
 同时一下内容可以通过promise aplus test。并且能通过MDN上各种用例。
 
+同时，如果你能看完并且理解，那么任何Promise的顺序问题，都不再是问题。
+同时，任何Promise的实现问题，也不会再是问题。
+
+<!-- more -->
 ## 我的理解(我的猜测)
 Promise在js中的本质其实就是一个具有自动处理多个回调的高阶语法糖。嗯，其实就是可以解决因为callback地狱导致的多层嵌套问题，实质上其实是把递归转化为了迭代来进行逻辑处理。
 
@@ -104,6 +108,8 @@ new Promise((resolve, reject) => {
 如果你不知道为什么少了一个`return`就导致后面两行的输出顺序发生了改变，那么请君与我一同研究一下`promise`的写法。
 
 ## 实现Bromise
+
+### constructor then resolvePromise
 ```js
 const PENDING = "pending"
 const Fulfilled = "fulfilled"
@@ -258,16 +264,101 @@ try {
 //因此，作为return返回的Promise，此时将会被注入到self.value中，并且传递到resolvePromise当中
 ```
 所以，我们可以变相的认为，因为`return <Thenable>`的逻辑，导致`Thenalbe`的逻辑被强制的提升。也就是说，任务执行提前了。
-通俗易懂的说，外层`then`的状态，将会由**return的Promise的状态**来决定。~~称之为紧急提升~~
+通俗易懂的说，外层`then`的状态，将会由**return的Promise的状态**来决定。~~称之为紧急提升~~。可以认为是**强制下沉**
 
-{% 初始状态的Promise /images/Promise-in-JS-🧮-Promise.png %}
+{% img /images/Promise-in-JS-🧮-Promise.png 828 678 'Promise的内部布局'%}
 
 所以说，你可以简单的认为有这样几个队列。
-|Next|OnResolve|OnReject|
-|----|---------|--------|
-|将会在下次微任务循环执行时执行|将会在自身Promise执行resolve完成后下一个微任务循环执行|将会在自身Promise执行reject完成后下一个微任务循环执行|
 
+- Next:将会在下次微任务循环执行时执行
+- OnResolve:将会在自身Promise执行resolve完成后下一个微任务循环执行
+- OnReject:将会在自身Promise执行reject完成后下一个微任务循环执行
+请注意，OnResolve和OnReject只会有一个队列被执行。
 
+```js
+new Promise((r,j)=>{ //Promise1
+    r()
+}).then(value=>{//Promise2
+    return new Promise((r,j)=>{//Promise3
+        r()
+    }).then(value=>{//Promise4
+        
+    }).then(value=>{//Promise5
+        console.log('over')
+    })
+})
+```
+我们来分析一下上面的代码。很明显的可以看出他们的关联链应该是`Promise1->Promise2->Promise3->Promise4->Promise5`，而我们`return new Promise`的返回值，其实应该是`Promise5`。所以`Promise2`的执行结束时间被强制的下沉到了`Promise5`的结束时间。
+但是如果没有`return`，而是直接`new Promise`，会如何？
+```js
+new Promise((r,j)=>{ //Promise1
+    r()
+}).then(value=>{//Promise2
+    new Promise((r,j)=>{//Promise3
+        r()
+    }).then(value=>{//Promise4
+        
+    }).then(value=>{//Promise5
+        console.log('over')
+    })
+}).then(value=>{//Promise6
+    console.log('first')
+})
+```
+此时的关联链应该是`Promise1->Promise2`，因为没有返回`Promise3(Promise5)`，所以导致`Promise2`的结束时间会在`then`执行完成后立刻结束，而不需要等待其他的`Promise`运行。这就是为什么如果不return会产生不一样的运行结果。
+那么为什么在上面的例子中，输出顺序是`first -> over`？  
+因为当如果then的内部没有进行`thenable`返回，那么就会按照注册时间顺序进行执行。如上文的代码。他们的注册时间顺序应该是。
+1.Promise2(Next)
+2.Promise4(Next)
+3.Promise5(Wait for Promise4)
+4.Promise6(Wait for Promise2)
+你可以很明显的发现，3和4的执行时间其实是依赖于1和2的。在下一次微任务循环时，会先执行1，然后触发4的任务入队。接着是2，然后触发3的任务入队。也就是会变成这样。
+1.Promise6(Next)
+2.Promise5(Next)
+所以，这就解释了为什么没有`return <Thenable>`内容时，执行顺序会不一样。
+
+到这里，如果看完并且理解了内容。那么我可以保证你能100%的解决任何的Promise问题。前提是你要能自己实现一个Promise并且让他通过promise-aplus-tests(NPM)，你可以在任何一个版本上修改。也可以一步一步的按照promise aplus的规范进行逐步编写。
+如果这里有人想问，Promise2和Promise4为什么是Next，而不是Wait for啊？
+原因是因为，Promise内部有一个状态判别，如果当前的Promise已经resolve或者reject了，那么接下来的then会被直接推入Next中。而new Promise的时候，传入的fn是会被立刻执行的。所以说，如果在fn中立刻resolve或者reject。那么这个Promise的状态会被立刻标记为fulfilled或者reject。而如果当前Promise的状态为pending，那么接下来的一个then内容会被推入到onResolve和onReject队列中。等待Promise的状态变动。
+
+### catch finally resolve
+有了上面内容的理解，其实对于`catch`和`finally`就更好理解了。而resolve其实就是一个对任何值类型的直接封装📦，让他变成一个Promise。
+```js
+Bromise.prototype.resolve = function(value){
+    if(value instanceof Bromise){
+        return value
+    }
+    return new Bromise((resolve,reject)=>{
+        if(value&&value.then&&typeof value.then == 'function'){
+            setTimeout(()=>{
+                value.then(resolve,reject)
+            })
+        }else{
+            resolve(value)
+        }
+    })
+}
+// 一个只有onReject的then就是catch
+Bromise.prototype.catch = function(fn){
+    return this.then(null,fn)
+}
+
+//是不是非常的眼熟，其实他就是then的默认执行方法前加上了一个fn的中间件
+Bromise.prototype.finally = function(fn){
+    return this.then((value)=>{
+        return Bromise.resolve(fn()).then(()=>{
+            return value
+        })
+    },reason=>{
+        return Bromise.resolve(fn()).then(()=>{
+            throw reason
+        })
+    })
+}
+```
+
+### all race allSettled any
+有了以上代码知识，实现这些功能估计都不在话下了。具体内容我放在了下面的完整代码中。但是我推荐各位自己尝试实现。并且使用MDN上的范例进行测试，以加深印象。
 
 ## 完整代码
 ```js
