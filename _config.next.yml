@@ -11,15 +11,14 @@ disqus:
   count: true
   lazyload: false
   #post_meta_order: 0
-highlight_theme: solarized dark # *changed* 高亮风格
 codeblock:
   # Code Highlight theme
   # Available values: normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
   # See: https://github.com/chriskempson/tomorrow-theme
   # Add copy button on codeblock
   theme:
-    light: shades-of-purple
-    dark: atom-one-dark
+    light: monokai-sublime
+    dark: monokai-sublime
   copy_button:
     enable: true  # *changed* 打开代码复制功能
     # Show text copy result.
