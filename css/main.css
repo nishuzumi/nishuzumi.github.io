@@ -17,10 +17,10 @@
   --btn-default-hover-bg: #222;
   --btn-default-hover-color: #fff;
   --btn-default-hover-border-color: #222;
-  --highlight-background: #2d2b57;
-  --highlight-foreground: #e3dfff;
-  --highlight-gutter-background: #3f3d67;
-  --highlight-gutter-foreground: #d0cdee;
+  --highlight-background: #23241f;
+  --highlight-foreground: #f8f8f2;
+  --highlight-gutter-background: #383934;
+  --highlight-gutter-foreground: #e2e2dc;
 }
 html {
   line-height: 1.15; /* 1 */
@@ -361,101 +361,88 @@ td {
   top: -5px;
   transform: rotate(-45deg);
 }
-/**
- * Shades of Purple Theme â for Highlightjs.
- *
- * @author (c) Ahmad Awais <https://twitter.com/mrahmadawais/>
- * @link GitHub Repo â https://github.com/ahmadawais/Shades-of-Purple-HighlightJS
- * @version 1.5.0
- */
+/*
+
+Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-license.org/
+
+*/
 
 .hljs {
   display: block;
   overflow-x: auto;
-  /* Custom font is optional */
-  /* font-family: 'Operator Mono', 'Fira Code', 'Menlo', 'Monaco', 'Courier New', 'monospace';  */
   padding: 0.5em;
-  background: #2d2b57;
-  font-weight: normal;
-}
-
-.hljs-title {
-  color: #fad000;
-  font-weight: normal;
-}
-
-.hljs-name {
-  color: #a1feff;
-}
-
-.hljs-tag {
-  color: #ffffff;
-}
-
-.hljs-attr {
-  color: #f8d000;
-  font-style: italic;
-}
-
-.hljs-built_in,
-.hljs-selector-tag,
-.hljs-section {
-  color: #fb9e00;
-}
-
-.hljs-keyword {
-  color: #fb9e00;
+  background: #23241f;
 }
 
 .hljs,
+.hljs-tag,
 .hljs-subst {
-  color: #e3dfff;
+  color: #f8f8f2;
 }
 
-.hljs-string,
-.hljs-attribute,
-.hljs-symbol,
+.hljs-strong,
+.hljs-emphasis {
+  color: #a8a8a2;
+}
+
 .hljs-bullet,
-.hljs-addition,
-.hljs-code,
-.hljs-regexp,
-.hljs-selector-class,
-.hljs-selector-attr,
-.hljs-selector-pseudo,
-.hljs-template-tag,
 .hljs-quote,
-.hljs-deletion {
-  color: #4cd213;
-}
-
-.hljs-meta,
-.hljs-meta-string {
-  color: #fb9e00;
-}
-
-.hljs-comment {
-  color: #ac65ff;
-}
-
-.hljs-keyword,
-.hljs-selector-tag,
+.hljs-number,
+.hljs-regexp,
 .hljs-literal,
-.hljs-name,
+.hljs-link {
+  color: #ae81ff;
+}
+
+.hljs-code,
+.hljs-title,
+.hljs-section,
+.hljs-selector-class {
+  color: #a6e22e;
+}
+
 .hljs-strong {
-  font-weight: normal;
-}
-
-.hljs-literal,
-.hljs-number {
-  color: #fa658d;
+  font-weight: bold;
 }
 
 .hljs-emphasis {
   font-style: italic;
 }
 
-.hljs-strong {
-  font-weight: bold;
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-name,
+.hljs-attr {
+  color: #f92672;
+}
+
+.hljs-symbol,
+.hljs-attribute {
+  color: #66d9ef;
+}
+
+.hljs-params,
+.hljs-class .hljs-title {
+  color: #f8f8f2;
+}
+
+.hljs-string,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-selector-id,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-variable {
+  color: #e6db74;
+}
+
+.hljs-comment,
+.hljs-deletion,
+.hljs-meta {
+  color: #75715e;
 }
 
 .highlight:hover .copy-btn,
@@ -2796,4 +2783,14 @@ ul.breadcrumb li:last-child {
   .post-body {
     font-size: inherit !important;
   }
+}
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+p,
+.excerpt,
+.behind,
+.meta,
+.post li {
+  font-weight: 300;
 }

@@ -25,29 +25,33 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="盒子笔记">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="前言 🎤 说实话，yield这东西，在平时使用的是真的真的非常非常的少，他的出现频率对于大多人来说不亚于在Virtual Studio中随便打一个字符然后出现一个超级长的自动补全内容，而且这个超长自动补全恰好是你需要的内容一样的低概率。 但是，如果对于一些特殊情况，而且你恰好有适用场景，那么这个yield可以说是一把利剑。 而Babel中，把async转化成原生代码的插件transform-a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神奇的yield和奇妙的await">
+<meta property="og:url" content="http://example.com/2020/11/06/%E7%A5%9E%E5%A5%87%E7%9A%84yield%E5%92%8C%E5%A5%87%E5%A6%99%E7%9A%84await/index.html">
 <meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 🎤 说实话，yield这东西，在平时使用的是真的真的非常非常的少，他的出现频率对于大多人来说不亚于在Virtual Studio中随便打一个字符然后出现一个超级长的自动补全内容，而且这个超长自动补全恰好是你需要的内容一样的低概率。 但是，如果对于一些特殊情况，而且你恰好有适用场景，那么这个yield可以说是一把利剑。 而Babel中，把async转化成原生代码的插件transform-a">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-06T10:25:59.000Z">
+<meta property="article:modified_time" content="2020-11-07T04:54:53.445Z">
 <meta property="article:author" content="BoxChen">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2020/11/06/%E7%A5%9E%E5%A5%87%E7%9A%84yield%E5%92%8C%E5%A5%87%E5%A6%99%E7%9A%84await/">
 
 
 <script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>盒子笔记</title>
+  <title>神奇的yield和奇妙的await | 盒子笔记</title>
   
 
 
@@ -137,7 +141,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -150,6 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yield"><span class="nav-number">2.</span> <span class="nav-text"> YIELD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bsync"><span class="nav-number">3.</span> <span class="nav-text"> BSYNC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text"> 结语 👨‍🏫</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -201,11 +206,12 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
       
 
       
-    
+
+  
 
 
 <div class="post-block">
@@ -225,10 +231,9 @@
       <meta itemprop="name" content="盒子笔记">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/06/%E7%A5%9E%E5%A5%87%E7%9A%84yield%E5%92%8C%E5%A5%87%E5%A6%99%E7%9A%84await/" class="post-title-link" itemprop="url">神奇的yield和奇妙的await</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          神奇的yield和奇妙的await
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -272,7 +277,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
 <p>说实话，yield这东西，在平时使用的是真的真的非常非常的少，他的出现频率对于大多人来说不亚于在Virtual Studio中随便打一个字符然后出现一个超级长的自动补全内容，而且这个超长自动补全恰好是你需要的内容一样的低概率。</p>
 <p>但是，如果对于一些特殊情况，而且你恰好有适用场景，那么这个yield可以说是一把利剑。</p>
 <p>而Babel中，把async转化成原生代码的插件<code>transform-async-to-generator</code>也是利用了yield进行。所以，在理解await之前，必须要先理解yield。</p>
@@ -313,7 +318,6 @@
 <h2 id="结语"><a class="markdownIt-Anchor" href="#结语"></a> 结语 👨‍🏫</h2>
 <p>其实async的原理和yield的原理是差不多的。我觉得他只是一个对yield进行封装的高阶语法糖。但是，async的性能是要远远高出连续then的，最重要的原因是，async只开辟了两个栈空间，而直接使用Promise.then，v8就需要保存之前的栈环境。当然了，更加具体的优化，就是由v8来进行处理了。</p>
 
-      
     </div>
 
     
@@ -321,389 +325,18 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">一次表现极差面试的事后题目分析</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-06 11:37:37 / 修改时间：17:53:28" itemprop="dateCreated datePublished" datetime="2020-11-06T11:37:37+08:00">2020-11-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">面试题</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/CSS/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/06/一次表现极差面试的事后题目分析/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>总之就是一次表现很差的面试，但是面试官的态度一直是很好，不过也让我压力倍增。。。人人往往会恐惧那美好事物背后的真相。</p>
-<p>面试内容如下:<br />
-2. setTimeout和requestAnimationFrame 优劣对比？<br />
-3. 如何开启浏览器硬件加速能力<br />
-4. JS 有哪些数据类型？<br />
-5. 如何区分数据类型？<br />
-6. instanceof 相关内容，下列的值? 实现一个myInstanceof(left, right)<br />
-[] instanceof Array<br />
-Array instanceof Function<br />
-[] instanceof Function<br />
-7. CSS BFC的概念，形成及作用<br />
-8. CSS画一个圆形；画一个平行四边形<br />
-9. 封装一个原生的ajax方法  ajax(method, url, data, cb)<br />
-10. 取出 <a target="_blank" rel="noopener" href="https://baidu.com?code=RDjaisduf&amp;confirm=true#newArchar">https://baidu.com?code=RDjaisduf&amp;confirm=true#newArchar</a> 上的参数<br />
-11. 编写方法，统计任意页面html元素种类和个数</p>
-<table>
-<thead>
-<tr>
-<th>面试官的态度</th>
-<th>我的表现</th>
-<th>我对我的评分</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>😊</td>
-<td>💩</td>
-<td>10/100</td>
-</tr>
-</tbody>
-</table>
-<p>简单来说就是懵逼了，说实话，对这些基础内容，我的掌握程度确实不高。实在是羞愧。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/" class="post-title-link" itemprop="url">Promise in JS 🧮</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-04 23:02:17" itemprop="dateCreated datePublished" datetime="2020-11-04T23:02:17+08:00">2020-11-04</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-06 18:33:43" itemprop="dateModified" datetime="2020-11-06T18:33:43+08:00">2020-11-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/04/Promise-in-JS-🧮/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>下面的内容为Promise的JS全实现，但是效率并不如原生Promise，因为原生Promise使用了微任务，而为了模拟同样的效果，只能使用宏任务setTimeout来替代。</p>
-<p>为了防止在原生的Promise对象上进行修改，导致某些错误的功能误打误撞正确了，所以使用一个新的名称，取名为Bromise。<br />
-同时一下内容可以通过promise aplus test。并且能通过MDN上各种用例。</p>
-<p>同时，如果你能看完并且理解，那么任何Promise的顺序问题，都不再是问题。<br />
-同时，任何Promise的实现问题，也不会再是问题。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/04/Promise-in-JS-%F0%9F%A7%AE/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/06/%E4%B8%80%E6%AC%A1%E8%A1%A8%E7%8E%B0%E6%9E%81%E5%B7%AE%E9%9D%A2%E8%AF%95%E7%9A%84%E4%BA%8B%E5%90%8E%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90/" rel="prev" title="一次表现极差面试的事后题目分析">
+                  <i class="fa fa-chevron-left"></i> 一次表现极差面试的事后题目分析
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/" class="post-title-link" itemprop="url">Pow(m,n) O(1) < ⌚️时间复杂度 < O(n)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-03 20:29:54" itemprop="dateCreated datePublished" datetime="2020-11-03T20:29:54+08:00">2020-11-03</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-06 11:17:51" itemprop="dateModified" datetime="2020-11-06T11:17:51+08:00">2020-11-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E4%B8%AD%E7%AD%89%E9%9A%BE%E5%BA%A6/" itemprop="url" rel="index"><span itemprop="name">中等难度</span></a>
-        </span>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/03/Pow-m-n-O-1-⌚️时间复杂度-O-n/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="问题1-实现-powx-n-即计算-x-的-n-次幂函数"><a class="markdownIt-Anchor" href="#问题1-实现-powx-n-即计算-x-的-n-次幂函数"></a> 问题1 实现 pow(x, n) ，即计算 x 的 n 次幂函数。</h2>
-<p>Leetcode链接:<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/powx-n/">🔗</a><br />
-示例 1:</p>
-<blockquote>
-<p>输入: 2.00000, 10<br />
-输出: 1024.00000</p>
-</blockquote>
-<p>示例 2:</p>
-<blockquote>
-<p>输入: 2.10000, 3<br />
-输出: 9.26100</p>
-</blockquote>
-<p>示例 3:</p>
-<blockquote>
-<p>输入: 2.00000, -2<br />
-输出: 0.25000</p>
-</blockquote>
-<p>解释: <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mn>2</mn><mn>2</mn></msup></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">2^{-2}=\frac{1}{2^2}=\frac{1}{4}=0.25</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7463142857142857em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">2</span><span class="mord">5</span></span></span></span></p>
-<p><strong>说明</strong></p>
-<p>-100.0 &lt; x &lt; 100.0<br />
-n 是 32 位有符号整数，其数值范围是 [<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mrow><mi mathvariant="normal">−</mi><mn>2</mn></mrow><mn>31</mn></msup></mrow><annotation encoding="application/x-tex">{−2}^{31}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.931778em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord"><span class="mord">−</span><span class="mord">2</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.848448em;"><span style="top:-3.09734em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>31</mn></msup><mi mathvariant="normal">−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{31}−1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord">−</span><span class="mord">1</span></span></span></span>] 。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/03/Pow-m-n-O-1-%E2%8C%9A%EF%B8%8F%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6-O-n/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+            <div class="post-nav-item">
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          </div>
     </footer>
   </article>
 </div>
@@ -712,11 +345,15 @@ n 是 32 位有符号整数，其数值范围是 [<span class="katex"><span cl
 
 
 
-  
-
-
 
       
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -813,6 +450,26 @@ n 是 32 位有符号整数，其数值范围是 [<span class="katex"><span cl
   }
   // defer loading until the whole page loading is completed
   window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2020/11/06/%E7%A5%9E%E5%A5%87%E7%9A%84yield%E5%92%8C%E5%A5%87%E5%A6%99%E7%9A%84await/";
+    this.page.identifier = "2020/11/06/神奇的yield和奇妙的await/";
+    this.page.title = "神奇的yield和奇妙的await";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
 </script>
 
 </body>
