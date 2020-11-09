@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="前言 🎤 先来句毒鸡汤  “What I Cannot create, I do not understand” — Richard Feynman  作为JS家族中的四大天王，new，apply，bind，call。可谓是出现频率极高，虽然用法简单，效果清晰，但是我也一直没去仔细了解过他们的运行机制和实现方法。千载难逢的机会，那就来一步一步的仔细研究一下。 先说明，new是一个关键词，而bi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="new,apply,bind,call 四大天王">
+<meta property="og:url" content="http://example.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/index.html">
+<meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 🎤 先来句毒鸡汤  “What I Cannot create, I do not understand” — Richard Feynman  作为JS家族中的四大天王，new，apply，bind，call。可谓是出现频率极高，虽然用法简单，效果清晰，但是我也一直没去仔细了解过他们的运行机制和实现方法。千载难逢的机会，那就来一步一步的仔细研究一下。 先说明，new是一个关键词，而bi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-08T12:21:01.000Z">
+<meta property="article:modified_time" content="2020-11-09T13:57:57.531Z">
+<meta property="article:author" content="BoxChen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>new,apply,bind,call 四大天王 | 盒子笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">盒子笔记</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new"><span class="nav-number">2.</span> <span class="nav-text"> new 🆕</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.1.</span> <span class="nav-text"> 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#apply"><span class="nav-number">3.</span> <span class="nav-text"> apply 🍎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-2"><span class="nav-number">3.1.</span> <span class="nav-text"> 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bind"><span class="nav-number">4.</span> <span class="nav-text"> bind 🩹</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-3"><span class="nav-number">4.1.</span> <span class="nav-text"> 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#call-%EF%B8%8F"><span class="nav-number">5.</span> <span class="nav-text"> call ☎️</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text"> 结语 👨‍🏫</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BoxChen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">BoxChen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          new,apply,bind,call 四大天王
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-08 20:21:01" itemprop="dateCreated datePublished" datetime="2020-11-08T20:21:01+08:00">2020-11-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-09 21:57:57" itemprop="dateModified" datetime="2020-11-09T21:57:57+08:00">2020-11-09</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/08/new-bind-apply-call-四大天王/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
+<p>先来句毒鸡汤</p>
+<blockquote>
+<p>“What I Cannot create, I do not understand” — Richard Feynman</p>
+</blockquote>
+<p>作为JS家族中的四大天王，new，apply，bind，call。可谓是出现频率极高，虽然用法简单，效果清晰，但是我也一直没去仔细了解过他们的运行机制和实现方法。千载难逢的机会，那就来一步一步的仔细研究一下。</p>
+<p>先说明，new是一个关键词，而bind，apply，call，均为Function.prototype中的方法。</p>
+<a id="more"></a>
+<h2 id="new"><a class="markdownIt-Anchor" href="#new"></a> new 🆕</h2>
+<p>先看定义</p>
+<blockquote>
+<p>new 运算符创建一个用户定义的对象类型的实例或具有构造函数的内置对象的实例。<br />
+嗯，MDN上面的内容很是学术。简单说就是创建一个对象。</p>
+</blockquote>
+<h3 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注意，任何与实现无关的新特性或者语法我都会用上，比如这个可变参数</span></span><br><span class="line"><span class="comment">// 下面是一个非常常见的实现方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bNew</span>(<span class="params">Target,...args</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> thisValue = <span class="built_in">Object</span>.create(Target.prototype) <span class="comment">// 创建一个新对象 并把新对象的__proto__指向传入参数</span></span><br><span class="line">    <span class="keyword">let</span> result = Target.apply(thisValue,args) <span class="comment">// 提供上下文和参数 运行构造函数</span></span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params"><span class="keyword">typeof</span> result == <span class="string">&#x27;object&#x27;</span> &amp;&amp; result != <span class="literal">null</span></span>)</span>&#123; <span class="comment">// typeof null === &#x27;object&#x27;</span></span><br><span class="line">        <span class="comment">// 如果构造函数中返回了一个对象，那么就以返回对象为结果（Case 1）</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> thisValue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Case 0</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Computer</span>(<span class="params">cpu,mem</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.cpu = cpu</span><br><span class="line">    <span class="built_in">this</span>.mem = mem</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(bNew(Computer,<span class="string">&#x27;4H&#x27;</span>,<span class="string">&quot;8G&quot;</span>))<span class="comment">// Computer &#123; cpu: &#x27;4H&#x27;, mem: &#x27;8G&#x27; &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">new</span> Computer(<span class="string">&#x27;4H&#x27;</span>,<span class="string">&#x27;8G&#x27;</span>)) <span class="comment">// Computer &#123; cpu: &#x27;4H&#x27;, mem: &#x27;8G&#x27; &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(bNew(Computer,<span class="string">&#x27;4H&#x27;</span>,<span class="string">&quot;8G&quot;</span>).__proto__ === <span class="keyword">new</span> Computer(<span class="string">&#x27;4H&#x27;</span>,<span class="string">&#x27;8G&#x27;</span>).__proto__) <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Case 1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Factory</span>(<span class="params">cpu</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Computer(cpu,<span class="string">&quot;8G&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(bNew(Factory,<span class="string">&#x27;4H&#x27;</span>))<span class="comment">// Computer &#123; cpu: &#x27;4H&#x27;, mem: &#x27;8G&#x27; &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">new</span> Factory(<span class="string">&quot;4H&quot;</span>)) <span class="comment">// Computer &#123; cpu: &#x27;4H&#x27;, mem: &#x27;8G&#x27; &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(bNew(Factory,<span class="string">&#x27;4H&#x27;</span>).__proto__ === <span class="keyword">new</span> Factory(<span class="string">&#x27;4H&#x27;</span>).__proto__) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>就这么简单，无他，唯手熟尔。（指记忆的方法）</p>
+<h2 id="apply"><a class="markdownIt-Anchor" href="#apply"></a> apply 🍎</h2>
+<blockquote>
+<p>apply() 方法调用一个具有给定this值的函数，以及以一个数组（或类数组对象）的形式提供的参数。<br />
+刚刚我们在实现<code>new</code>的时候，以及用过了<code>apply</code>方法。所以会稍微有些了解。<br />
+其实就是把某个函数的this换成了传入的第一个参数并且执行。而且和call的区别不大，两者区别是apply接受参数以数组形式传递，而call为列表形式。</p>
+</blockquote>
+<h3 id="实现-2"><a class="markdownIt-Anchor" href="#实现-2"></a> 实现</h3>
+<p>看了一下资料，发现现在主流的做法都是，将一个函数的<code>this</code>传入，因为函数的<code>this</code>表示了它本身，如果让目标函数中添加一个新的方法，那么那个方法中的this则会被默认指向到其对象。比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> count = &#123;</span><br><span class="line">    x:<span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line">count.add = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.x ++</span><br><span class="line">&#125;</span><br><span class="line">count.add()</span><br><span class="line"><span class="built_in">console</span>.log(count.x) <span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+<p>同理</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> Count = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.x =<span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Count.prototype.add = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.x++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c1 = <span class="keyword">new</span> Count()</span><br><span class="line"></span><br><span class="line"><span class="comment">//==== 模拟 ====//</span></span><br><span class="line">c1[<span class="string">&#x27;mockApply&#x27;</span>] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.x += <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line">c1.mockApply()</span><br><span class="line"><span class="built_in">console</span>.log(c1) <span class="comment">// Count &#123; x: 10, mockApply: [Function] &#125;</span></span><br></pre></td></tr></table></figure>
+<p>很明显，我们的mockApply方法已经获得了目标对象的this，也就是说，把函数都运行在这个目标对象上，那么就可以实现apply的功能。而获取函数的方法也很简单。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.getSelf = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">x</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test.getSelf()(<span class="number">10</span>) <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+<p>那么准备工作已经结束，我们就开始来编写自己的apply。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.bpply = <span class="function"><span class="keyword">function</span>(<span class="params">target,args</span>)</span>&#123;</span><br><span class="line">    target = target || <span class="built_in">global</span></span><br><span class="line">    <span class="keyword">let</span> methodName = <span class="string">`mock<span class="subst">$&#123;<span class="built_in">Math</span>.random()&#125;</span>`</span></span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">target.hasOwnProperty(methodName)</span>)</span>&#123;</span><br><span class="line">        methodName = <span class="string">`mock<span class="subst">$&#123;<span class="built_in">Math</span>.random()&#125;</span>`</span> <span class="comment">// 希望永远不会执行到这里</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    target[methodName] = <span class="built_in">this</span></span><br><span class="line">    <span class="keyword">let</span> result = target[methodName](...args)</span><br><span class="line">    <span class="keyword">delete</span> target[methodName] <span class="comment">// 假装无事发生过</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Math</span>.max.bpply(<span class="literal">null</span>,[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> Count = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">this</span>.x =<span class="number">0</span> &#125;</span><br><span class="line"></span><br><span class="line">Count.prototype.add = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="built_in">this</span>.x++ &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c1 = <span class="keyword">new</span> Count()</span><br><span class="line"><span class="keyword">let</span> c2 = <span class="keyword">new</span> Count()</span><br><span class="line">c2.x = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// c2.add.apply(c1) c1.x = 1 ; c2.x = 10</span></span><br><span class="line">c2.add.bpply(c1) <span class="comment">// c1.x = 1;c2.x = 10</span></span><br></pre></td></tr></table></figure>
+<p>简单来说就是获取this，然后执行函数，再最后处理痕迹。</p>
+<h2 id="bind"><a class="markdownIt-Anchor" href="#bind"></a> bind 🩹</h2>
+<p>什么是bind？bind是一个把函数的this进行指定，并且创建一个新的函数。当新函数被调用时，将会在this参数上执行bind的函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="keyword">let</span> reduce = <span class="built_in">Array</span>.prototype.shift.bind(x) <span class="comment">//bind</span></span><br><span class="line">reduce() <span class="comment">// call bind</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(x) <span class="comment">//[2,3]</span></span><br></pre></td></tr></table></figure>
+<h3 id="实现-3"><a class="markdownIt-Anchor" href="#实现-3"></a> 实现</h3>
+<p>bind的介绍中有一句话</p>
+<blockquote>
+<p>绑定函数也可以使用 new 运算符构造，它会表现为目标函数已经被构建完毕了似的。提供的 this 值会被忽略，但前置参数仍会提供给模拟函数。<br />
+所以需要注意一下</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//以下代码将使用新特性方便代码理解</span></span><br><span class="line"><span class="built_in">Function</span>.prototype.bBind = <span class="function"><span class="keyword">function</span>(<span class="params">that,...args</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> target = <span class="built_in">this</span></span><br><span class="line">    <span class="keyword">let</span> F = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.prototype) <span class="comment">// 不要忘记了 当前this指向的是Function.prototype 而Function.prototype.prototype是不存在的</span></span><br><span class="line">        F.prototype = <span class="built_in">this</span>.prototype</span><br><span class="line">    <span class="keyword">let</span> bound = <span class="function"><span class="keyword">function</span>(<span class="params">...newArgs</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> finalArgs = args.concat(newArgs) <span class="comment">// 合并两次参数 你可以认为是 xx.bBind(that,args...)(newArgs...)</span></span><br><span class="line">        <span class="keyword">return</span> target.apply(<span class="built_in">this</span> <span class="keyword">instanceof</span> F ? <span class="built_in">this</span> : that,finalArgs) </span><br><span class="line">        <span class="comment">//注意这个this指向的是bound。当返回的bound函数被用作为构造函数的时候(new bound)，忽略之前绑定的this，也就是忽略that</span></span><br><span class="line">    &#125;</span><br><span class="line">    bound.prototype = <span class="keyword">new</span> F()</span><br><span class="line">    <span class="keyword">return</span> bound</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然这个实现其实有问题。比如：</p>
+<blockquote>
+<p>这部分实现依赖于 Array.prototype.slice()， Array.prototype.concat()， Function.prototype.apply() 这些原生方法。<br />
+这部分实现创建的函数并没有 caller 以及会在 get，set 或者 deletion 上抛出 TypeError错误的 arguments 属性这两个不可改变的“毒药” 。（假如环境支持Object.defineProperty()， 或者实现支持__defineGetter__ 和 <strong>defineSetter</strong> 扩展）<br />
+这部分实现创建的函数有 prototype 属性。（正确的绑定函数没有）<br />
+这部分实现创建的绑定函数所有的 length 属性并不是同ECMA-262标准一致的：它创建的函数的 length 是0，而在实际的实现中根据目标函数的 length 和预先指定的参数个数可能会返回非零的 length。</p>
+</blockquote>
+<p>也就是说，当你对某个function去获取length的时候，返回的内容是你必须提供参数的数量。而使用这个方法bind的结果不具有这个特性。<br />
+如果你想知道更加完整的符合规范的实现。可以看<a target="_blank" rel="noopener" href="https://github.com/Raynos/function-bind/blob/master/implementation.js">这个</a></p>
+<h2 id="call-️"><a class="markdownIt-Anchor" href="#call-️"></a> call ☎️</h2>
+<p>有人可能有疑问，为什么没有call！！😠</p>
+<p>还记得call和apply的区别吗？</p>
+<blockquote>
+<p>注意：该方法的语法和作用与 apply() 方法类似，只有一个区别，就是 call() 方法接受的是一个参数列表，而 apply() 方法接受的是一个包含多个参数的数组。 - MDN</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lazy man create a lazy call</span></span><br><span class="line"><span class="built_in">Function</span>.prototype.ball = <span class="function"><span class="keyword">function</span>(<span class="params">that,...args</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Function</span>.prototype.apply(that,args)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结语"><a class="markdownIt-Anchor" href="#结语"></a> 结语 👨‍🏫</h2>
+<p>其实多实现一点这种js的底层函数，有利于理解或者加深自己对js的认知。但是往往很多情况下，会越理解越混乱。。所以，当你遇到一些你不懂的操作，一些你不知道什么含义的逻辑，我推荐你还是把那一部分代码注释了，然后看看注释前和注释后的结果，往往这样你可以获得更深刻的理解。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/08/proto-%E5%92%8C-prototype/" rel="prev" title="__proto__ 和 prototype">
+                  <i class="fa fa-chevron-left"></i> __proto__ 和 prototype
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BoxChen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nishuzumi.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://example.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/";
+    this.page.identifier = "2020/11/08/new-bind-apply-call-四大天王/";
+    this.page.title = "new,apply,bind,call 四大天王";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
