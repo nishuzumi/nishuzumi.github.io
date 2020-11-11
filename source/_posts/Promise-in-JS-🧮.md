@@ -608,3 +608,18 @@ Bromise.defer = Bromise.deferred = function () {
 
 module.exports = Bromise
 ```
+
+### 2020-11-10补充 Promise的值穿透
+Promise的值穿透发生在一种情况下。当调用`Promise.then`的时候，如果传入的参数并非为一个函数，那么就会将当前Promise的value作为结果，传入到下一个then之中。而如果下一个then的内容依然不是函数，那么会继续的进行穿透。
+
+具体代码体现为：
+```js
+then
+...
+    onResolve = typeof onResolve === 'function' ? onResolve : value => value //当传入类型不为function时，自动的变成一个穿透函数
+...
+```
+非常大意，只纠结于Promise的运行流程，从而忘记了一些基础的处理，惭愧。
+
+### 2020-11-11补充 queueMicroTask
+你可以把代码中所有的setTimeout改为queueMicroTask(nodejs > v11) || process.nextTick(only node js)，这样你会获得更快的速度。具体表现在使用promise-aplus-test进行测试时，可以比setTimeout快2s。

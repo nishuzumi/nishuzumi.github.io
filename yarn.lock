@@ -703,6 +703,21 @@ hexo-theme-next@^8.0.2:
   resolved "https://registry.yarnpkg.com/hexo-theme-next/-/hexo-theme-next-8.0.2.tgz#6f9ee15e231241c209ac2fe687b764ed00a926e7"
   integrity sha512-rTqJoD0FNt6lVvU5MTfYVltNOIfOJSDjO3MdAYknPcOogtoqGu8UypiEz8bYwFNNwIRsFExJUl7IBsVrMlOR4Q==
 
+hexo-util@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/hexo-util/-/hexo-util-2.1.0.tgz#2c691a034a05d4ed254696c2e99d7cb686fdd350"
+  integrity sha512-TXt6z7rj5BEDig7aZZjfHa7qFKGOtUlQoVHvQh0GS99fGp1JxWbllosI173kOcrzor/uubtGk+5nRzhELZyeZw==
+  dependencies:
+    bluebird "^3.5.2"
+    camel-case "^4.0.0"
+    cross-spawn "^7.0.0"
+    deepmerge "^4.2.2"
+    highlight.js "^10.0.0"
+    htmlparser2 "^4.0.0"
+    prismjs "^1.17.1"
+    strip-indent "^3.0.0"
+    striptags "^3.1.1"
+
 hexo-util@^1.0.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/hexo-util/-/hexo-util-1.9.1.tgz#15dc10d0dca474c978cdba9c20e8d0417ac993de"
@@ -733,6 +748,13 @@ hexo-util@^2.0.0, hexo-util@^2.2.0, hexo-util@^2.4.0:
     prismjs "^1.17.1"
     strip-indent "^3.0.0"
     striptags "^3.1.1"
+
+hexo-word-counter@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/hexo-word-counter/-/hexo-word-counter-0.0.2.tgz#8da66f33f3b27881e8429076d80647cc8309567a"
+  integrity sha512-QCYQaxUQh0n9bxmD2FkZ3Vgz7mpJOs1XRZtiZNhrSxW+gSoFxg22EC09VvV9V7Vt3H9vfsHdvNKH6PoZ8k1h0w==
+  dependencies:
+    hexo-util "2.1.0"
 
 hexo@^5.0.0:
   version "5.2.0"

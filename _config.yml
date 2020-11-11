@@ -115,3 +115,11 @@ math:
     enable: true
     config:
       # MathJax config
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
+  exclude_codeblock: false
+  awl: 2
+  wpm: 300
