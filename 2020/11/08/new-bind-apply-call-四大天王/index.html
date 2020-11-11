@@ -22,13 +22,13 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+    var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
   <meta name="description" content="前言 🎤 先来句毒鸡汤  “What I Cannot create, I do not understand” — Richard Feynman  作为JS家族中的四大天王，new，apply，bind，call。可谓是出现频率极高，虽然用法简单，效果清晰，但是我也一直没去仔细了解过他们的运行机制和实现方法。千载难逢的机会，那就来一步一步的仔细研究一下。 先说明，new是一个关键词，而bi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="new,apply,bind,call 四大天王">
-<meta property="og:url" content="http://example.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/index.html">
+<meta property="og:url" content="https://binzinstar.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/index.html">
 <meta property="og:site_name" content="盒子笔记">
 <meta property="og:description" content="前言 🎤 先来句毒鸡汤  “What I Cannot create, I do not understand” — Richard Feynman  作为JS家族中的四大天王，new，apply，bind，call。可谓是出现频率极高，虽然用法简单，效果清晰，但是我也一直没去仔细了解过他们的运行机制和实现方法。千载难逢的机会，那就来一步一步的仔细研究一下。 先说明，new是一个关键词，而bi">
 <meta property="og:locale" content="zh_CN">
@@ -38,7 +38,7 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/">
+<link rel="canonical" href="https://binzinstar.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/">
 
 
 <script class="page-configurations">
@@ -219,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -507,7 +507,7 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://example.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/";
+    this.page.url = "https://binzinstar.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/";
     this.page.identifier = "2020/11/08/new-bind-apply-call-四大天王/";
     this.page.title = "new,apply,bind,call 四大天王";
     };
