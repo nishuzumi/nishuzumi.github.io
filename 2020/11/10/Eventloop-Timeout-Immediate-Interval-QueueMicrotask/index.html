@@ -25,12 +25,12 @@
     var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta name="description" content="前言 🎤 本文的目的在于，一次性推翻80%人构建好的关于Event Loop的知识体系和一次性的完整的理解Nodejs(13以上)和浏览器中的Event Loop。  划分 首先进行一下基础概念的划分。 Node下特有的  Immediate process.nextTick  浏览器中特有的:🈚️ 双方共有的：  queueMicroTask (nodejs &gt; v11) setTi">
+  <meta name="description" content="前言 🎤 本文的目的在于，一次性推翻80%人构建好的关于Event Loop的知识体系和一次性的完整的理解Nodejs(13以上)和浏览器中的Event Loop。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="♻️Eventloop,⏱️Timeout,⚡️Immediate,⭕️Interval,🧾QueueMicrotask">
 <meta property="og:url" content="https://binzinstar.com/2020/11/10/Eventloop-Timeout-Immediate-Interval-QueueMicrotask/index.html">
 <meta property="og:site_name" content="盒子笔记">
-<meta property="og:description" content="前言 🎤 本文的目的在于，一次性推翻80%人构建好的关于Event Loop的知识体系和一次性的完整的理解Nodejs(13以上)和浏览器中的Event Loop。  划分 首先进行一下基础概念的划分。 Node下特有的  Immediate process.nextTick  浏览器中特有的:🈚️ 双方共有的：  queueMicroTask (nodejs &gt; v11) setTi">
+<meta property="og:description" content="前言 🎤 本文的目的在于，一次性推翻80%人构建好的关于Event Loop的知识体系和一次性的完整的理解Nodejs(13以上)和浏览器中的Event Loop。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://binzinstar.com/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-14-11-56.png">
 <meta property="og:image" content="https://binzinstar.com/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-13-00-10.png">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://binzinstar.com/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-16-30-53.png">
 <meta property="og:image" content="https://binzinstar.com/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-19-11-53.png">
 <meta property="article:published_time" content="2020-11-10T06:08:58.000Z">
-<meta property="article:modified_time" content="2020-11-11T11:26:32.160Z">
+<meta property="article:modified_time" content="2020-11-11T11:50:03.282Z">
 <meta property="article:author" content="BoxChen">
 <meta property="article:tag" content="JS">
 <meta property="article:tag" content="前端">
@@ -260,7 +260,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-11 19:26:32" itemprop="dateModified" datetime="2020-11-11T19:26:32+08:00">2020-11-11</time>
+        <time title="修改时间：2020-11-11 19:50:03" itemprop="dateModified" datetime="2020-11-11T19:50:03+08:00">2020-11-11</time>
       </span>
 
   
@@ -305,6 +305,7 @@
     <div class="post-body" itemprop="articleBody">
         <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
 <p>本文的目的在于，一次性推翻80%人构建好的关于Event Loop的知识体系和一次性的完整的理解Nodejs(13以上)和浏览器中的Event Loop。</p>
+<a id="more"></a>
 <h2 id="划分"><a class="markdownIt-Anchor" href="#划分"></a> 划分</h2>
 <p>首先进行一下基础概念的划分。<br />
 Node下特有的</p>

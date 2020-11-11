@@ -245,7 +245,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-11 19:26:32" itemprop="dateModified" datetime="2020-11-11T19:26:32+08:00">2020-11-11</time>
+        <time title="修改时间：2020-11-11 19:50:03" itemprop="dateModified" datetime="2020-11-11T19:50:03+08:00">2020-11-11</time>
       </span>
 
   
@@ -290,212 +290,14 @@
     <div class="post-body" itemprop="articleBody">
           <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
 <p>本文的目的在于，一次性推翻80%人构建好的关于Event Loop的知识体系和一次性的完整的理解Nodejs(13以上)和浏览器中的Event Loop。</p>
-<h2 id="划分"><a class="markdownIt-Anchor" href="#划分"></a> 划分</h2>
-<p>首先进行一下基础概念的划分。<br />
-Node下特有的</p>
-<ul>
-<li>Immediate</li>
-<li>process.nextTick</li>
-</ul>
-<p>浏览器中特有的:🈚️</p>
-<p>双方共有的：</p>
-<ul>
-<li>queueMicroTask (nodejs &gt; v11)</li>
-<li>setTimeout</li>
-<li>setInterval</li>
-</ul>
-<h3 id="宏任务"><a class="markdownIt-Anchor" href="#宏任务"></a> 宏任务</h3>
-<p>这里补充一下宏任务</p>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Node</th>
-<th>Browser</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>setTimeout</td>
-<td>✅</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>setInterval</td>
-<td>✅</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>I/O</td>
-<td>✅</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>setImmediate</td>
-<td>✅</td>
-<td>❌</td>
-</tr>
-<tr>
-<td>mouseover(之类的事件)</td>
-<td>❌</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>Web API大部分异步返回方法(XHR,fetch)</td>
-<td>❌</td>
-<td>✅</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>逗知识：其实setTimeout和setInterval也属于Web API</p>
-</blockquote>
-<h3 id="宏任务注意️️️️️浏览器中"><a class="markdownIt-Anchor" href="#宏任务注意️️️️️浏览器中"></a> 宏任务：注意⚠️⚠️⚠️⚠️⚠️(浏览器中)</h3>
-<p><code>requestAnimationFrame</code>和<code>render</code>不为宏任务，也不为微任务。他们两个的触发时机在宏任务和微任务之外。<br />
-<code>requestAnimationFrame</code>的触发时机在<code>render</code>之前。而<code>render</code>的触发时机在<strong>所有微任务处理结束</strong>之后。<br />
-但是他们的触发顺序为<code>microTask-&gt;requestAnimationFrame-&gt;render</code></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">requestAnimationFrame(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;animation&#x27;</span>)&#125;)</span><br><span class="line">queueMicrotask(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;micro&#x27;</span>)&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">micro</span></span><br><span class="line"><span class="comment">animation</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<h3 id="微任务"><a class="markdownIt-Anchor" href="#微任务"></a> 微任务</h3>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Node</th>
-<th>Browser</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Promise.then catch finally</td>
-<td>✅</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>MutationObserver</td>
-<td>❌</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>queueMicrotask</td>
-<td>✅</td>
-<td>✅</td>
-</tr>
-</tbody>
-</table>
-<h3 id="微任务注意️️️️️"><a class="markdownIt-Anchor" href="#微任务注意️️️️️"></a> 微任务：注意⚠️⚠️⚠️⚠️⚠️</h3>
-<p><strong><code>process.nextTick</code>不是微任务</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">queueMicrotask(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;micro&#x27;</span>)&#125;)</span><br><span class="line">process.nextTick(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;i am not micro&#x27;</span>)&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">i am not micro</span></span><br><span class="line"><span class="comment">micro</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<p>如果以上两个注意，都让你原有的知识大厦倾倒，那么请继续往下看，看完后你将会得到一切的答案。</p>
-<h2 id="nodejs"><a class="markdownIt-Anchor" href="#nodejs"></a> Nodejs</h2>
-<p>先看官方定义</p>
-<img src="/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-14-11-56.png" class="">
-<blockquote>
-<p>阶段概述<br />
-定时器：本阶段执行已经被 setTimeout() 和 setInterval() 的调度回调函数。<br />
-待定回调：执行延迟到下一个循环迭代的 I/O 回调。<br />
-idle, prepare：仅系统内部使用。<br />
-轮询：检索新的 I/O 事件;执行与 I/O 相关的回调（几乎所有情况下，除了关闭的回调函数，那些由计时器和 setImmediate() 调度的之外），其余情况 node 将在适当的时候在此阻塞。<br />
-检测：setImmediate() 回调函数在这里执行。<br />
-关闭的回调函数：一些关闭的回调函数，如：socket.on(‘close’, …)。<br />
-在每次运行的事件循环之间，Node.js 检查它是否在等待任何异步 I/O 或计时器，如果没有的话，则完全关闭。</p>
-</blockquote>
-<p>简单来说就是我都不知道他在说什么，😄。<br />
-所以我特意找了一张比较容易看懂的图，来简单的概括一下这些学术语言。</p>
-<img src="/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-13-00-10.png" class="">
-<p>图片来自互联网</p>
-<p>细心的同学已经看出来了，在图片的中间的红色区域写着<code>process.nextTick</code>和<code>microTasks</code>。</p>
-<h3 id="第一个重点"><a class="markdownIt-Anchor" href="#第一个重点"></a> 第一个重点</h3>
-<p><strong>在Node中，nextTick和microTask会在每一个阶段执行结束后被立刻执行。</strong>。</p>
-<blockquote>
-<p>他们不属于任何阶段，但是他们又属于任何阶段 ——Box</p>
-</blockquote>
-<p>简单的来说，在Node中，每一个处理阶段结束，都会执行并清空<code>nextTick</code>和<code>microTask</code>的任务。<br />
-而Node中，分为四个阶段</p>
-<ul>
-<li>setTimeout和setInterval的到期回调执行阶段</li>
-<li>IO轮询阶段</li>
-<li>处理setImmediate的回调阶段</li>
-<li>处理某些关闭句柄的回掉阶段<br />
-反复执行。<br />
-所以说，在这个四个阶段执行间隔中，只要出现了任何<code>nextTick</code>或者<code>microTask</code>都会被执行知道清空</li>
-</ul>
-<h3 id="第二个重点"><a class="markdownIt-Anchor" href="#第二个重点"></a> 第二个重点</h3>
-<p>先说重点然后看代码：<strong>在处理nextTick和microTask时，会一直循环直到两个任务队列清空，如果你在他们的逻辑中循环创建了新的任务，那么将无法离开这个阶段</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;timeout&#x27;</span>);</span><br><span class="line"><span class="function"><span class="title">if</span>(<span class="params"><span class="literal">true</span></span>)</span>&#123; <span class="comment">// flag 1</span></span><br><span class="line">    process.nextTick(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;next timeout&#x27;</span>)&#125;)</span><br><span class="line">    <span class="keyword">let</span> loop = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        process.nextTick(loop)</span><br><span class="line">    &#125;</span><br><span class="line">    process.nextTick(loop)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">if</span>(<span class="params"><span class="literal">true</span></span>)</span>&#123; <span class="comment">// flag 2</span></span><br><span class="line">    queueMicrotask(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;micro&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> micro = <span class="function">()=&gt;</span>&#123;queueMicrotask(micro)&#125;</span><br><span class="line">    queueMicrotask(micro)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">setImmediate(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;immediate&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>可以尝试把flag1或者flag2处的true改成false，只要有任何一个循环存在，那么都无法离开这个<strong>尾部处理阶段</strong>——我自己编的名词。</p>
-<h3 id="第三个重点"><a class="markdownIt-Anchor" href="#第三个重点"></a> 第三个重点</h3>
-<ul>
-<li><strong>每个尾部处理阶段一定会执行，就算当前阶段什么都没做，但是依然会执行</strong></li>
-<li><strong>尾部处理阶段顺序是nextTick-&gt;queueMicroTask 也就是 tickTask-&gt;microTask，并且这个顺序是固定的，不可以翻转，也不可以回退</strong></li>
-</ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;timeout&#x27;</span>);</span><br><span class="line"></span><br><span class="line">queueMicrotask(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;micro&#x27;</span>)</span><br><span class="line">    process.nextTick(<span class="function">()=&gt;</span>&#123; <span class="comment">// 在microTask之前执行的tickTask一旦执行完成，那么在同一个尾部阶段是不会继续被执行的。</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;next&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">setImmediate(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;immediate&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">timeout</span></span><br><span class="line"><span class="comment">micro</span></span><br><span class="line"><span class="comment">next</span></span><br><span class="line"><span class="comment">immediate</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<h3 id="第四个重点"><a class="markdownIt-Anchor" href="#第四个重点"></a> 第四个重点</h3>
-<p><strong>事件循环有一种维持在poll阶段的倾向</strong><br />
-在poll阶段时，会进行一些判定处理，比如会进行计算，大概会在这个阶段停留多久——一般根据下一个要被执行的<code>setTimeout</code>或者<code>setInterval</code>来决定。<br />
-然后会在可停留时间中进行等待。直到需要执行<code>timer</code>的时候才会退出。<br />
-举个例子，假设进入poll时，又一个100ms以后的才会被执行的setTimeout，那么，就会尝试在这100ms之中，尽可能的等待IO事件触发，并处理。每当处理完后依然会判断，是否需要退出。<br />
-所以在大多数情况下，Nodejs都会在poll阶段运行。并且，会尝试清空所有返回的IO事件的回调（这个不是无限制的，有一个硬性限制）。</p>
-<p>与此同时，这里有出现来个新问题。</p>
-<blockquote>
-<p>如果回调队列中有大量的回调完成事件并且他们会堵塞100ms以上，那么setTimeout(fn,10)会怎么样<br />
-这里就是一个很有趣的地方了。</p>
-</blockquote>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;start&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> globalStart = <span class="built_in">Date</span>.now()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">call</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    fs.readFile(__filename, callback);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> i =<span class="number">0</span>;i&lt;<span class="number">20</span>;i++</span>)</span>&#123;</span><br><span class="line">    call(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> start = <span class="built_in">Date</span>.now()</span><br><span class="line">        <span class="function"><span class="title">while</span>(<span class="params"><span class="built_in">Date</span>.now() - start &lt; <span class="number">100</span></span>)</span>&#123;&#125;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`done:<span class="subst">$&#123;i&#125;</span>`</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">Date</span>.now()-globalStart&#125;</span>ms`</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;timeout&#x27;</span>)</span><br><span class="line">&#125;,<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
-<p>这段代码中模拟了每次IO调用超过100ms，并且触发了20次，同时也创建了一个timeout为10ms的任务。感兴趣的可以猜一猜他的运行结果？<br />
-运行结果</p>
-<img src="/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-15-18-42.png" class="">
-<p>很明显，在有些情况下，还没等poll中回调全部执行完成，就直接开始进入了下一个循环，而有些情况，又是执行完了全部的回调才进入下一个阶段。<br />
-不过这里不是我们讨论的重点，因为这个想说的是<code>pending callbacks</code>这个阶段。我们可以看到有些<code>done:x</code>是在已经打印了timeout之后才出现。那么也就可以说明，已经从poll阶段循环到了timer阶段，最后在<code>pending callbacks</code>触发回调。所以这个就是<code>pending callbacks</code>阶段的作用。<br />
-有些人可能保持怀疑的态度，认为并没有进入<code>pending callbacks</code>，可能之前的<code>read</code>事件并没有返回，所以重新进入了poll进行等待。我只能告诉你，我确实也无法证明他们究竟是在<code>pending callbacks</code>还是<code>poll</code>阶段被执行，如果有更好的方法，还请多多赐教。</p>
-<h3 id="第五个重点"><a class="markdownIt-Anchor" href="#第五个重点"></a> 第五个重点</h3>
-<p><strong>setImmediate也没有那么的immediate</strong><br />
-所有人都知道<code>setImmediate</code>的执行一般会比<code>setTimeout</code>优先，但是其实他们也存在相反的情况。有时候是<code>immediate</code>快，有时候是<code>timeout</code>快，这种情况在直接写出</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;timeout&#x27;</span>)&#125;,<span class="number">0</span>)</span><br><span class="line">setImmediate(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;immediate&#x27;</span>)&#125;)</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">有时候</span></span><br><span class="line"><span class="comment">timeout</span></span><br><span class="line"><span class="comment">immediate</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">有时候</span></span><br><span class="line"><span class="comment">immediate</span></span><br><span class="line"><span class="comment">timeout</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<p>这种毫无意义的代码下会更容易出现。所以为什么会有这种情况？</p>
-<img src="/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-15-59-29.png" class="">
-<p><a target="_blank" rel="noopener" href="https://medium.com/softup-technologies/node-js-internals-event-loop-in-action-59cde8ff7e8d">图片来源</a><br />
-简单的来说，在进入事件循环之前，你只需要进行js代码执行。那么这里也会产生耗时，所以，这里的运算时间就充满了不确定性。也许在运行<code>setTimeout(fn,1)</code>的那一瞬间，当前的ms可能为10，但是当node执行完所有代码之后，导入了一大堆杂七杂八的库，此时的ms可能已经成为了14，很明显，<code>setTimeout</code>被优先执行。那么如果说，当前的ms可能还是10，那么就会跳过<code>timer</code>阶段，所以看起来就像是<code>setImmediate</code>优先执行。那么有人可能会问，为啥要<code>setTimeout(fn,1)</code>，而不是<code>setTimeout(fn,0)</code>？这就是下一个重点。</p>
-<h3 id="第六个重点"><a class="markdownIt-Anchor" href="#第六个重点"></a> 第六个重点</h3>
-<p><strong>在Nodejs下，<code>setTimeout</code>的最小延迟数是1，最大数为2147483647，如果小于或者大于最大，那么都会被修改为1</strong><br />
-这里其实没啥好说的，就是这么设计的。不过有趣的是，最小为1其实是向浏览器看齐而这么做的。（源码的注释中是这么写的😄）</p>
-<h3 id="第七个重点"><a class="markdownIt-Anchor" href="#第七个重点"></a> 第七个重点</h3>
-<p><strong>Promise.then中使用的微任务，和microTask为同一等级</strong>（存疑）<br />
-为什么有个存疑🤨，因为从表现上来看，没有错误，但是我并没有去阅读详细的代码来证明它的确定性。<br />
-运行代码如下</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">queueMicrotask(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;micro&#x27;</span>)&#125;)</span><br><span class="line"><span class="built_in">Promise</span>.resolve(<span class="number">1</span>).then(<span class="function">(<span class="params">v</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(v)</span><br><span class="line">&#125;)</span><br><span class="line">queueMicrotask(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(<span class="string">&#x27;micro2&#x27;</span>)&#125;)</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">micro</span></span><br><span class="line"><span class="comment">1</span></span><br><span class="line"><span class="comment">micro2</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<p>但是，根据这个结论来看，<code>Promise.then</code>就是一个微任务。并没有高人一等。</p>
-<h2 id="browser"><a class="markdownIt-Anchor" href="#browser"></a> Browser</h2>
-<img src="/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-16-30-53.png" class="">
-<p>是不是看起来和Node的Event loop有很大的不同？如果我告诉你可以这么理解，会不会更好？</p>
-<blockquote>
-<p>Browser中，去除了<code>pending callbacks</code>,<code>poll</code>,<code>check</code>,<code>close callbacks</code>,并全部塞入<code>timer</code>，微任务处理时机不变<br />
-但是有一点小问题，就是事件循环的结束时机。但是等会会讲。</p>
-</blockquote>
-<p>而浏览器中的执行顺序是这样。<code>one macroTask-&gt;all microTask-&gt;requestAnimationFrame-&gt;render</code>。<br />
-而且，和Node相似的是，他们的<code>setTimeout</code>或者<code>setInterval</code>都是尽可能的执行（时间无法保证完全符合预期）。<br />
-还有一点，那就是<code>Web API</code>，在浏览器中，所有涉及到<code>Web API</code>的内容都交给C++引擎进行处理。也就是说，当你的<code>setTimeout</code>到底预计时间了，就算你的js引擎被某个<code>while(true)</code>给堵住了，这个<code>setTimeout</code>的内容依然会被推入到一个<code>TaskQueue</code>之中。等待下一次<code>Event Loop</code>的取出。</p>
-<h3 id="重点一"><a class="markdownIt-Anchor" href="#重点一"></a> 重点一</h3>
-<p><strong>在浏览器中，微任务的执行时机是在调用栈清空时</strong><br />
-<strong>浏览器中一次性只执行一个宏任务</strong></p>
-<p>浏览器中的宏任务处理方式和Node稍微有一点点不同，Node会在一个阶段把所有到期任务都执行完成。而浏览器中，是会在执行完成一个宏观任务时清空微任务队列。而且微任务队列不会收到网络相应或者其他类型的回掉任务干扰。也就是说，和Node一样，如果你在微任务中无限创建新的微任务，那么你基本可以和这个页面说再见了👋。<br />
-如果不信，可以试试这个。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> call = <span class="function">()=&gt;</span>&#123;queueMicrotask(call)&#125;</span><br><span class="line">queueMicrotask(call)</span><br></pre></td></tr></table></figure>
-<h3 id="重点二"><a class="markdownIt-Anchor" href="#重点二"></a> 重点二</h3>
-<p><strong><code>setTimeout</code>的最小时间为1ms，而当嵌套等级达到一定时（跟随浏览器，3-5层），为4ms</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> startTime = <span class="built_in">Date</span>.now()</span><br><span class="line"><span class="keyword">let</span> call = <span class="function">()=&gt;</span>&#123;<span class="built_in">setTimeout</span>(call);<span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">Date</span>.now() - startTime&#125;</span>`</span>)&#125;</span><br><span class="line">call()</span><br></pre></td></tr></table></figure>
-<img src="/images/Eventloop-Timeout-Immediate-Interval-QueueMicrotask-2020-11-11-19-11-53.png" class="">
-<p>不要问1到哪去了，如果实在不懂可以重新看文章，还是不懂可以悄悄问我，咱们别丢人。</p>
-<h3 id="重点三"><a class="markdownIt-Anchor" href="#重点三"></a> 重点三</h3>
-<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
-<ul>
-<li>process.nextTick不是微任务</li>
-<li>requestAnimationFrame也不是微任务</li>
-<li>Promise.then中的创建方式就是创建微任务，并且和queueMicrotask同级</li>
-<li>setTimeout(fn,0)并不是0，最小为1</li>
-<li>如果你还不懂，可以直接问我，如果你有更好的想法，那么我们一起构建更好的文章，如果你不懂而且也不问我，那么我直接切腹自尽😭。</li>
-<li>有些内容我可能没有写出来，或者你有任何疑问，我都会补充在文章之中。</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/10/Eventloop-Timeout-Immediate-Interval-QueueMicrotask/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
