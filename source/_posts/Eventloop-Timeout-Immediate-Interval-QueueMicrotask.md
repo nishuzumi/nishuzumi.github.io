@@ -2,6 +2,7 @@
 title: '♻️Eventloop,⏱️Timeout,⚡️Immediate,⭕️Interval,🧾QueueMicrotask'
 date: 2020-11-10 14:08:58
 tags:
+catagories:
 - [JS]
 - [前端]
 - [All In Code]

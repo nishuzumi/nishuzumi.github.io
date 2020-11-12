@@ -17,7 +17,7 @@ codeblock:
   # See: https://github.com/chriskempson/tomorrow-theme
   # Add copy button on codeblock
   theme:
-    light: monokai-sublime
+    light: atom-one-dark
     dark: monokai-sublime
   copy_button:
     enable: true  # *changed* 打开代码复制功能
