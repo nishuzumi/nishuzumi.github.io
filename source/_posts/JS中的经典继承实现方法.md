@@ -125,7 +125,7 @@ Object.breate = function(p){
 
 在我研究JS的时候，我就一直在思考这些问题，随着我的不断深入，我感觉我对prototype的形象越发的了解，虽然我现在并不能100%的肯定，我理解的prototype就一定是正确的，但是我觉得八九不离十。
 
-### Prototype可以类似的理解成一个实例对象
+### Prototype是一个实例对象
 - prototype可以被对象随意覆盖
 - 可以随时修改prototype的属性
 - prototype中的修改会影响到所有继承当前prototype的对象。
@@ -135,61 +135,64 @@ Object.breate = function(p){
 
 这里其实有个非常非常神奇的特性。
 
-### Prototype != Prototype
-当你进行对某个构造函数赋值对象时，真正获得目标参数的，是__proto__，而不是它真正意义上的prototype。
+### Prototype ?= Prototype
+请注意⚠️，构造对象，也就是Function，在搞乱我们对原型链对理解这件事上面，占有很大一笔责任。  
+一个普通对构造对象，它同时有着两个属性,`__proto__`表示继承的上一个原型,`prototype`表示当前构造函数中的原型。
+而当他被构造后，会产生新的情况。最重要的是**构造函数中的prototype会转移到实例对象的__proto__之中**  
+因此，如果你直接赋值一个构造好的实例到子类的prototype时，一切都恰恰刚好。  
+而如果你在父类对象的构造函数中赋值了实例属性，那么这些属性也会成为子类prototype的一部分。
 ```js
-function A(){}
-A.prototype.x = 1
-
-function B(){}
-B.prototype = new A() //Object A
-// B.prototype.__proto__ === Object A
+//伪代码
+//构造对象结构
+let A = {
+    prototype:{
+        __proto__:{x:1},
+        y:2,
+        constructor:function(){}
+    }
+}
+//实例对象结构
+let newA = new A()
+newA == {
+    __proto__:{
+        __proto__:{x:1},
+        y:2,
+        constructor:function(){}
+    }
+}
+//继承了A的B
+let B = {
+    prototype:{
+        __proto__:{
+            __proto__:{x:1},
+            y:2,
+            constructor:function(){}
+        }
+    },
+}
+//实例化B
+let newB = new B()
+newB == {
+    __proto__:{
+        __proto__:{
+            __proto__:{x:1},
+            y:2,
+            constructor:function(){}
+        }
+    }
+}
 ```
-但是如果你对他进行直接赋值prototype，情况又回不一样。
-```js
-function A(){}
-A.prototype.x = 1
-
-function B(){}
-B.prototype = A.prototype
-B.prototype.x = 2
-// A.prototype.x === 2
-// B.prototype.x === 2
-```
-此时的双方共享一个prototype，即使B修改prototype，A也会收到影响。
-
-所以，我认为，在对prototype进行赋值的时候，如果赋值内容为一个prototype，那么他们会共享一个prototype内容，如果赋值的内容为`new Object`，那么赋值的时候，`__proto__`会被赋值为`(new Object)`。
-有人会疑惑，为什么我不写成：赋值的对象为一个实例对象？
-因为，如果你赋值一个实例对象的时候，结果又会发生变化。
-```js
-function A(){}
-A.prototype.x = 1
-
-function B(){}
-let c = new A()
-B.prototype = c
-B.prototype.x = 2
-console.log(A.prototype.x,B.prototype.x) // 1 2
-console.log(c.x) // 2
-```
-当然，还有人会想，如果我直接赋值一个构造对象，会怎么样？  
-这里的结果和上面其实是一样的，整个prototype的内容都塞满了构造对象中的各种属性。  
-
-自然，有些聪明的小伙伴可能想到了，如果我修改`prototype.__proto__`，岂不是就修改了A的prototype？  
-没错，你的猜想完全正确🙆‍♂️。
-```js
-function A(){}
-A.prototype.x = 1
-
-function B(){}
-B.prototype = new A() //Object A
-B.prototype.x = 2
-B.prototype.__proto__.x = 3
-console.log(B.prototype.x,A.prototype.x) // 2 3
-```
-
+prototype的谜题解开了。
 ### Prototype结论
-通过上面的论述，我们可以发现，prototype的内容赋值可能并不完全由js进行掌控。很明显的是，这部分的内容会随着代码而改变。也就是说，只有当你`xx.prototype = new XX()`或者`xx.prototype = Object.create(XX.prototype)`时，你才能获得正确的结果。否则，都将会变成错误的答案。
+经过多次研究发现，实际上的prototype机制异常的简单。重点就两个。
+- 实例对象中不存在prototype
+- 在构造对象中，如果这个对象被构造，那么构造对象的`prototype`将会变成实例对象的`__proto__`
+```js
+function A(){}
+let a = new A()
+console.log(a.__proto__ === A.prototype)
+```
+- 
 
 还记得我们一开始是怎么实现继承的吗？
 ```js
@@ -202,5 +205,48 @@ console.log(B.prototype.x,A.prototype.x) // 2 3
 {% img /images/JS中的经典继承实现方法-2020-11-12-18-17-11.png %}  
 现在明白为什么需要创建一个新函数了吗？
 
+不过，其实这种继承有着少量的缺点，下面看一看Babel是如何实现继承的。
+## Babel
+```js
+function _inherits(subClass, superClass) {
+    // 喜闻乐见的Object.create
+    subClass.prototype = Object.create(superClass.prototype, {
+        //第二个参数的说明详细见MDN，这里的作用类似于 subClass.prototype.constructor = subClass
+        constructor: {
+            value: subClass,
+            enumerable: false,
+            writable: true,
+            configurable: true;
+        }
+    })
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; 
+    // 设置subClass中__proto__属性，将其设置为superClass的构造函数
+    // 这个举动的作用是将赋值于构造函数上的方法进行继承，在es6中是class{static xx(){}}中的static
+}
+
+function A(){}
+function B(){}
+A.StaticMethod = ()=>{} // 可以认为是静态方法
+A.prototype.hello = ()=>{} // 可以认为是对象实例化后的方法
+```
+一个小例子
+```js
+function A(){}
+function B(){}
+B.C = function(){
+    console.log('static')
+}
+console.log(A instanceof B)
+_inherits(A,B)
+let a = new A()
+console.log(a instanceof B)
+A.C()
+/*
+false
+true
+static
+*/
+```
+这里其实也反应了JS原型链的机制，当你在一个对象上面调用方法时，无论是实例对象还是构造对象，JS都会从其`__proto__`中查找方法，如果找不到就在`__proto__.__proto__`中继续查找，直到为`null`。
 ## 结语 👨‍🏫
 prototype真的是js中非常重要的一个部分，我觉得每个前端开发者都需要好好理解掌握prototype中的每一个细节。
