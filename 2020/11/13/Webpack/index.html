@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="前言 🎤 众所周知，Webpack是一个静态模块打包工具，主要用于将多个JS文件进行打包成一个，这个是webpack最早的作用。随之时间的推移发展，webpack添加了许多新的功能，并且也增加了强大的定制能力，因此，Webpack也变得复杂了起来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小小说说Webpack">
+<meta property="og:url" content="https://binzinstar.com/2020/11/13/Webpack/index.html">
+<meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 🎤 众所周知，Webpack是一个静态模块打包工具，主要用于将多个JS文件进行打包成一个，这个是webpack最早的作用。随之时间的推移发展，webpack添加了许多新的功能，并且也增加了强大的定制能力，因此，Webpack也变得复杂了起来。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://binzinstar.com/images/Webpack-2020-11-15-15-38-34.png">
+<meta property="article:published_time" content="2020-11-13T11:17:37.000Z">
+<meta property="article:modified_time" content="2020-11-15T07:46:00.460Z">
+<meta property="article:author" content="BoxChen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://binzinstar.com/images/Webpack-2020-11-15-15-38-34.png">
+
+
+<link rel="canonical" href="https://binzinstar.com/2020/11/13/Webpack/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>小小说说Webpack | 盒子笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">盒子笔记</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack%E8%87%AA%E5%B7%B1%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">2.</span> <span class="nav-text"> Webpack自己做了什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#all-in-one"><span class="nav-number">2.1.</span> <span class="nav-text"> All in One</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tree-shaking-%E5%92%8C-chunk-%E5%87%8F%E9%87%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text"> tree shaking 和 chunk 减重方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tree-shaking"><span class="nav-number">2.2.1.</span> <span class="nav-text"> tree shaking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chunk"><span class="nav-number">2.2.2.</span> <span class="nav-text"> chunk</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#loader"><span class="nav-number">2.3.</span> <span class="nav-text"> Loader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#plugin"><span class="nav-number">2.4.</span> <span class="nav-text"> Plugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#devserver"><span class="nav-number">3.</span> <span class="nav-text"> devServer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hmr"><span class="nav-number">4.</span> <span class="nav-text"> HMR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text"> 总结 👨‍🏫</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BoxChen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">BoxChen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/13/Webpack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          小小说说Webpack
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-13 19:17:37" itemprop="dateCreated datePublished" datetime="2020-11-13T19:17:37+08:00">2020-11-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-15 15:46:00" itemprop="dateModified" datetime="2020-11-15T15:46:00+08:00">2020-11-15</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/13/Webpack/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/13/Webpack/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
+<p>众所周知，Webpack是一个静态模块打包工具，主要用于将多个JS文件进行打包成一个，这个是webpack最早的作用。随之时间的推移发展，webpack添加了许多新的功能，并且也增加了强大的定制能力，因此，Webpack也变得复杂了起来。</p>
+<a id="more"></a>
+<h2 id="webpack自己做了什么"><a class="markdownIt-Anchor" href="#webpack自己做了什么"></a> Webpack自己做了什么</h2>
+<p>Webpack的Loader和Plugin机制允许用户自定义一些解析方式和功能。但是在一个没有配置Loader和Plugin的Webpack内容下，它自身主要做了什么工作呢？</p>
+<h3 id="all-in-one"><a class="markdownIt-Anchor" href="#all-in-one"></a> All in One</h3>
+<p>webpack的打包功能，最主要的就是将多个使用到的JS文件进行打包，从而进入一个文件之中。原理是通过多个IIFE创建多个独立的作用域，同时替换原生的<code>require</code>方法，通过<code>__webpack_require__</code>来实现无需文件系统的require方式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">__webpack_require__</span>(<span class="params">moduleId</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 缓存检测</span></span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">__webpack_module_cache__[moduleId]</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> __webpack_module_cache__[moduleId].exports;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 创建一个标准的module模型</span></span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">module</span> = __webpack_module_cache__[moduleId] = &#123;</span><br><span class="line">        <span class="built_in">exports</span>: &#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 执行IIFE函数</span></span><br><span class="line">    __webpack_modules__[moduleId](<span class="built_in">module</span>, <span class="built_in">module</span>.exports, __webpack_require__);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回结果</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">module</span>.exports;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不过请注意，这其中只针对<code>require()</code>，并不能运用于含有<code>import</code>的文件。如果打包时文件中含有<code>import</code>，则会出现更为复杂的<code>__webpack_require__</code>。</p>
+<h3 id="tree-shaking-和-chunk-减重方式"><a class="markdownIt-Anchor" href="#tree-shaking-和-chunk-减重方式"></a> tree shaking 和 chunk 减重方式</h3>
+<p>如果把所有内容打包到一个文件之中，其实没啥坏处，有时还是件好事情。但是在某些情况下，它就不再是一件美差事了。<br />
+比如，我们老生常谈的，如果修改了一个文件，则需要更新整个bundle的问题。<br />
+再或者就是，一些固定的vendor文件其实没有改变，但是如果更新，客户端依然需要获取整个文件。<br />
+还有就是，比如在lodash中，我只用到了一两个方法，但是最后给我打包了整个lodash进来。<br />
+这些情况，在webpack中其实都有考虑。主要到就是用<code>tree shaking</code>和<code>chunk</code>进行处理。</p>
+<h4 id="tree-shaking"><a class="markdownIt-Anchor" href="#tree-shaking"></a> tree shaking</h4>
+<p><code>tree shaking</code>说白了就是把没有用到的一些代码给它剔除了，在打包的时候不使用它。而它基于的就是ES6的静态模块结构。<br />
+通过判断是否使用过或者import过来进行标记，将从未使用过的代码部分给剔除，来达到<code>tree shaking</code>的效果。<br />
+但是，<code>tree shaking</code>只会对没有使用过对代码进行标记，但是不会主动进行处理，只有当设置为<code>production</code>或者使用了某些具有压缩功能当插件时，才会把没有使用的函数代码进行剔除。</p>
+<h4 id="chunk"><a class="markdownIt-Anchor" href="#chunk"></a> chunk</h4>
+<p>chunk是webpack中一种文件分割方式，最简单的chunk是将两个完全不相关的entry进行分离，当这样他们两个的代码不会复合到一个文件里面，减少了部分的加载量，但是往往最沉重的代码是在vendor之中，比如<code>lodash</code>之类的第三方库，因为默认情况下生成chunk会导致将有关联的代码全部放入一个bundle之中。那么，这部分可以公用的第三方库就不能得到缓存机制的便利。比如我从一个页面A进入，接着专跳到页面B，那么这两个文件我都需要进行加载，而且lodash也加载了两次，非常的浪费。如果能把lodash这部分代码拿出来，单独加载，就能剩下很多资源。</p>
+<p>所以webpack又提供了更加详细的分割方式，提供了将import超过1次以上的代码进行单独生成。而在实际加载过程中,分为两种情况。<br />
+如果你是提取common而分割的模块，那么chunk文件则就是一个立即函数，通过将包含实际代码的IIFE注册到self(window)到一个数组中，在需要到时候被触发。<br />
+如果你是动态导入的模块，那么webpack是使用了jsonp来进行异步加载，通过加载完成后调用回调然后注册新加载的内容，执行完成后触发onload回调，接着执行下面的内容。这部分的异步代码使用了Promise进行管理。</p>
+<h3 id="loader"><a class="markdownIt-Anchor" href="#loader"></a> Loader</h3>
+<p>loader 让 webpack 能够去处理那些非 JavaScript 文件，比如<code>import css</code>，这种情况。loader在本质上来说就是一个对源代码进行转换的转换器,让其变成可以执行的原生js代码。loader中可以指定使用什么loader处理，处理什么样的文件。同时你还可以使用Babel这样的编译器，让一些新语言特性能被比较老旧的环境所支持。<br />
+但是请明确一点，Loader自身只是个处理模式，并没有具体功能，一切功能都由具体的loader进行实现。</p>
+<p>同时<code>Loader</code>中支持两种方法，第一种是<code>pitch</code>，另外一种是直接导出函数。两者可以兼容。<br />
+而且他们的执行顺序有点像一个洋葱🧅。并且为从左到右执行。层级分别为<code>Pitch A -&gt; Pitch B -&gt; Pitch C -&gt; content -&gt; C -&gt; B -&gt; A</code>。要注意的是，在<code>Pitch</code>中一般会进行一些数据传递或者其他的功能。而在直接方法中则会进行编译。同时，如果在<code>Pitch</code>阶段<code>return</code>了字符串，那么将会直接跳到同级直接方法之后。<code>Pitch A -&gt; Pitch B(return 'xxx')-&gt;A</code>。</p>
+<h3 id="plugin"><a class="markdownIt-Anchor" href="#plugin"></a> Plugin</h3>
+<p>Plugin是在Webpack运行过程中的一种插入手段。它会在可以监听预先设定好的一些hook，并且进行一些操作和更新。在内部通过<code>Compiler</code>对象进行钩子注册。不过要注意的是<code>Compiler</code>并不是真正的编译器，它主要还是用于存放监听在编译周期内的hook，以方便注册和执行。<br />
+而如果你想编写Plugin，那么重点需要关注的是<code>compilation</code>其中的内容。</p>
+<p><strong>如果说Loader是基于字符串替换的话，那么Plugin就是在整个分析过程中获取非常多的处理好的数据，比如AST等等来进行第二次的处理。</strong></p>
+<h2 id="devserver"><a class="markdownIt-Anchor" href="#devserver"></a> devServer</h2>
+<p>这是Webpack提供的为数不多的外部功能。<br />
+你可以在<code>webpack.config.js</code>对它进行配置。它的功能非常多，比如</p>
+<ul>
+<li>可以设定一个小型服务器，用来运行编译后的文件。</li>
+<li>开启热更新功能</li>
+<li>提供HTTPS访问方式</li>
+<li>通过模拟服务端来进行Proxy从而解决跨域问题</li>
+<li>甚至可以在mock服务器api</li>
+</ul>
+<h2 id="hmr"><a class="markdownIt-Anchor" href="#hmr"></a> HMR</h2>
+<p>Hot Module Replacement（HMR），是我第一次见到Webpack时觉得最不可思议的功能。优雅，伟大而且充满神秘感。<br />
+当然这个HMR不是说自动刷新页面。</p>
+<p>Webpack的HMR原理其实比较简单易懂。总结下来就是这张图：</p>
+<img src="/images/Webpack-2020-11-15-15-38-34.png" class="">  
+<p>在Compiler编译时，会进行增量更新判别，同时会生成完整的bundle文件和增量更新代码，而在浏览器运行的bundle中，带有和HMR服务器通讯部分会获得通知，并且会获得更新后的代码。最后，浏览器的<code>HMR Runtime</code>会判断影响范围，并且替换被影响的模块。当然，如果无法识别的时候，则会触发整页刷新。</p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结 👨‍🏫</h2>
+<p>Webpack是一个拓展性非常非常高的打包工具，它做到了不单单是打包📦的功能，甚至可以说它做到了一个编译器的全部流程，你可以在任何地方接入这个流程。你甚至可以自己创造新的语法，然后轻松简单的使用Loader进行内容替换。在我了解Webpack之前，我一直不能理解它是什么，是编译器？是打包工具？是压缩混淆工具？其实，都不是，但是又可以认为都是。他就好像是一个简单的工厂，但是提供了你对这个工厂进行任意改造的超强大自定义能力。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/12/JS%E4%B8%AD%E7%9A%84%E7%BB%8F%E5%85%B8%E7%BB%A7%E6%89%BF%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95/" rel="prev" title="JS中的经典继承实现方法与原型的深入探讨">
+                  <i class="fa fa-chevron-left"></i> JS中的经典继承实现方法与原型的深入探讨
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BoxChen</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">47k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:19</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nishuzumi.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://binzinstar.com/2020/11/13/Webpack/";
+    this.page.identifier = "2020/11/13/Webpack/";
+    this.page.title = "小小说说Webpack";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
