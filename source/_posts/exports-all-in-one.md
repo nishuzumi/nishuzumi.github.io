@@ -32,7 +32,7 @@ exports = {name:'apple'}
 module.exports.name !== 'apple' // true
 module.exports === exports // false
 ```
-非常的简单易懂，如果你希望加深影响，可以看看这一段代码。
+非常的简单易懂，如果你希望加深印象，可以看看这一段代码。
 ```js
 function __webpack_require__(moduleId) {
     // 缓存检测
