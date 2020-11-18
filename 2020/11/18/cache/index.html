@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="前言 🎤 Web中的缓存包含多个方面，从服务端的缓存机制到客户端的缓存机制，缺一不可，并且缓存在用户体验方面非常重要，本文将会记录和补充Web中的各种缓存内容。 本文主要以MDN为基础，进行其他的细节补充。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web缓存">
+<meta property="og:url" content="https://binzinstar.com/2020/11/18/cache/index.html">
+<meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 🎤 Web中的缓存包含多个方面，从服务端的缓存机制到客户端的缓存机制，缺一不可，并且缓存在用户体验方面非常重要，本文将会记录和补充Web中的各种缓存内容。 本文主要以MDN为基础，进行其他的细节补充。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://binzinstar.com/images/cache-2020-11-18-19-13-05.png">
+<meta property="article:published_time" content="2020-11-18T09:16:05.000Z">
+<meta property="article:modified_time" content="2020-11-18T11:13:09.208Z">
+<meta property="article:author" content="BoxChen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://binzinstar.com/images/cache-2020-11-18-19-13-05.png">
+
+
+<link rel="canonical" href="https://binzinstar.com/2020/11/18/cache/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Web缓存 | 盒子笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">盒子笔记</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-number">2.</span> <span class="nav-text"> 缓存的目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E6%8E%A7%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text"> 缓存控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-control"><span class="nav-number">3.1.</span> <span class="nav-text"> Cache-control</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#no-store-%E4%B8%8D%E5%82%A8%E5%AD%98"><span class="nav-number">3.1.1.</span> <span class="nav-text"> no-store （不储存）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#no-cache-%E7%9C%8B%E7%9D%80%E5%AD%98"><span class="nav-number">3.1.2.</span> <span class="nav-text"> no-cache （看着存）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#private%E5%92%8Cpublic-%E7%BB%99%E4%B8%8D%E7%BB%99%E4%B8%AD%E9%97%B4%E4%BA%BA%E5%AD%98"><span class="nav-number">3.1.3.</span> <span class="nav-text"> private和public （给不给中间人存）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#max-age-%E8%BF%87%E6%9C%9F"><span class="nav-number">3.1.4.</span> <span class="nav-text"> max-age (过期)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#must-revalidate-%E9%9C%80%E8%A6%81%E9%87%8D%E6%96%B0%E9%AA%8C%E8%AF%81"><span class="nav-number">3.1.5.</span> <span class="nav-text"> must-revalidate （需要重新验证）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text"> 处理机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E6%A0%A1%E9%AA%8C"><span class="nav-number">5.</span> <span class="nav-text"> 缓存校验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#etags"><span class="nav-number">5.1.</span> <span class="nav-text"> ETags</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#last-modified"><span class="nav-number">5.2.</span> <span class="nav-text"> Last-Modified</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if-none-match"><span class="nav-number">5.3.</span> <span class="nav-text"> If-None-Match</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if-modified-since"><span class="nav-number">5.4.</span> <span class="nav-text"> If-Modified-Since</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vary-%E5%93%8D%E5%BA%94"><span class="nav-number">6.</span> <span class="nav-text"> Vary 响应</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BoxChen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">BoxChen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/18/cache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Web缓存
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-18 17:16:05 / 修改时间：19:13:09" itemprop="dateCreated datePublished" datetime="2020-11-18T17:16:05+08:00">2020-11-18</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/18/cache/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/18/cache/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
+<p>Web中的缓存包含多个方面，从服务端的缓存机制到客户端的缓存机制，缺一不可，并且缓存在用户体验方面非常重要，本文将会记录和补充Web中的各种缓存内容。<br />
+本文主要以MDN为基础，进行其他的细节补充。</p>
+<a id="more"></a>
+<h2 id="缓存的目标"><a class="markdownIt-Anchor" href="#缓存的目标"></a> 缓存的目标</h2>
+<p>一般情况下，HTTP缓存并不是必选项，但是为了减少请求的发送数量，重用缓存内容，这项工作通常还是必要的。通常情况下HTTP缓存只能缓存<code>GET</code>请求,其他类型来说就显得无力。当然，200，301，404，206等情况，都会进行缓存。</p>
+<h2 id="缓存控制"><a class="markdownIt-Anchor" href="#缓存控制"></a> 缓存控制</h2>
+<h3 id="cache-control"><a class="markdownIt-Anchor" href="#cache-control"></a> Cache-control</h3>
+<p><code>Cache-control</code>是一个HTTP头部中的控制字段。它用于告诉浏览器一些数据缓存要怎么处理。</p>
+<h4 id="no-store-不储存"><a class="markdownIt-Anchor" href="#no-store-不储存"></a> no-store （不储存）</h4>
+<p>不保存任何内容，每次请求都会完全下载</p>
+<h4 id="no-cache-看着存"><a class="markdownIt-Anchor" href="#no-cache-看着存"></a> no-cache （看着存）</h4>
+<p>当<code>Cache-Control:no-cache</code>时，客户端会生成本地资源的相关验证字段，然后和服务器进行验证。如果没有变动或者没有过期，则返回<code>304</code>，浏览器因此会使用本地缓存。</p>
+<h4 id="private和public-给不给中间人存"><a class="markdownIt-Anchor" href="#private和public-给不给中间人存"></a> private和public （给不给中间人存）</h4>
+<p>当为<code>public</code>时，则表示可以被中间人缓存，比如代理，CDN等等。如果指定了public，那么将会缓存一切能缓存的内容。<br />
+默认值为<code>private</code>，这就只会缓存在浏览器之中。</p>
+<h4 id="max-age-过期"><a class="markdownIt-Anchor" href="#max-age-过期"></a> max-age (过期)</h4>
+<p>和<code>Expires</code>不同的是，<code>max-age</code>表示的是，从请求发起时开始，将会有多久的有效时间。<br />
+比如</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Cache</span><span class="params">-Control</span>: <span class="keyword">max</span><span class="params">-age</span>=<span class="number">200000</span></span><br></pre></td></tr></table></figure>
+<h4 id="must-revalidate-需要重新验证"><a class="markdownIt-Anchor" href="#must-revalidate-需要重新验证"></a> must-revalidate （需要重新验证）</h4>
+<p>当有这个标示时，会告诉浏览器缓存或者缓存服务器，当过期时，一定要<a href="#%E7%BC%93%E5%AD%98%E6%A0%A1%E9%AA%8C">缓存校验</a>，不得使用过期资源。</p>
+<h2 id="处理机制"><a class="markdownIt-Anchor" href="#处理机制"></a> 处理机制</h2>
+<p>一个缓存理论上来说可以永久的存在缓存之中，但是如果空间不足，则会尝试驱逐一些缓存。不过要注意的是<strong>缓存并不是到期后就立刻删除</strong>。当一个资源过期时，缓存系统会附加一个<a href="#If-None-Match"><code>If-None-Match</code></a>当请求头，如果目标服务器返回<code>304(Not Modified)</code>，那么就可以继续使用这个缓存，如果已经过期，则会返回新的内容实体。<br />
+而缓存的查找顺序为: <code>Cache-control: max-age=N -&gt; Expires -&gt; Last Modified</code><br />
+值得注意的是，max-age中的单位为秒，自请求发送开始后，返回的资源生命周期就为N秒。当不存在<code>max-age</code>时，则会去寻找<code>Expires</code>并且和头部中的<code>Date</code>进行比较判断，如果前两个都没有，那么就会缓存的寿命就为<code>(Date - Last-Modified) * 0.1</code></p>
+<h2 id="缓存校验"><a class="markdownIt-Anchor" href="#缓存校验"></a> 缓存校验</h2>
+<p>当用户点击刷新时的一瞬间，就会开始缓存验证。如果响应头中含有<code>Cache-control: must-revalidate</code>，那么在浏览的过程中也会触发验证。<br />
+当资源过期后，只有在浏览器返回强校验器或者弱校验器才会进行验证。</p>
+<h3 id="etags"><a class="markdownIt-Anchor" href="#etags"></a> ETags</h3>
+<p><code>Etags</code>是缓存强校验器的一种，如果响应头中含有<code>ETtags</code>，那么客户端可以在后续请求头中带上<code>If-None-Match</code>（值为ETags值）来验证缓存。当不匹配时，返回新的资源实体，当匹配时，返回304.</p>
+<h3 id="last-modified"><a class="markdownIt-Anchor" href="#last-modified"></a> Last-Modified</h3>
+<p><code>Last-Modified</code>则是一种弱校验器，如果请求中含有<code>Last-Modified</code>，那么客户端后续可以带上<code>If-Modified-Since</code>来验证缓存。当缓存可以继续使用时返回304，需要更新时返回200并且更新结果。</p>
+<h3 id="if-none-match"><a class="markdownIt-Anchor" href="#if-none-match"></a> If-None-Match</h3>
+<p><code>If-None-Match</code>的值一般是Etags的值，用于和服务器校验是否资源产生替换。如果没有变更，则返回304，否则200。某种情况下如果能引发服务端的状态变化，则会返回412.值得注意的是，<code>If-None-Match</code>比<code>If-Modified-Since</code>优先级更高。<br />
+如果使用其他方法，比如<code>PUT</code>,则会有其他用途，这里不进行展开。</p>
+<h3 id="if-modified-since"><a class="markdownIt-Anchor" href="#if-modified-since"></a> If-Modified-Since</h3>
+<p>它的效果和<code>If-None-Match</code>差别不大，最大的差异在于参数内容，该首部只允许传递时间字符串，比如<code>Wed, 21 Oct 2015 07:28:00 GMT</code>。同时它也不能用于Put。常见的场景是用于更新没有ETag的缓存实体。</p>
+<h2 id="vary-响应"><a class="markdownIt-Anchor" href="#vary-响应"></a> Vary 响应</h2>
+<p>Vary是一个很有意思的首部。它可以使某些首部的内容作为缓存标示。比如，<code>Vary: User-Agent</code>，这样缓存服务器就会将<code>User-Agent的值</code>作为一个缓存标识。当<code>User-Agent的值</code>与之前请求不同时，则会进行资源的重新获取。</p>
+<img src="/images/cache-2020-11-18-19-13-05.png" class="">
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/18/page-life/" rel="prev" title="页面📃的生命周期小记">
+                  <i class="fa fa-chevron-left"></i> 页面📃的生命周期小记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BoxChen</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">59k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:39</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nishuzumi.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://binzinstar.com/2020/11/18/cache/";
+    this.page.identifier = "2020/11/18/cache/";
+    this.page.title = "Web缓存";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
