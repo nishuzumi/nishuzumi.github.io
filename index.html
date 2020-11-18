@@ -245,7 +245,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-18 13:54:14" itemprop="dateModified" datetime="2020-11-18T13:54:14+08:00">2020-11-18</time>
+        <time title="修改时间：2020-11-18 14:21:19" itemprop="dateModified" datetime="2020-11-18T14:21:19+08:00">2020-11-18</time>
       </span>
 
   
@@ -270,7 +270,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -290,87 +290,14 @@
     <div class="post-body" itemprop="articleBody">
           <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
 <p>在CSS中，最重要而且最万变不离其宗的就是CSS的盒模型，简单的来讲其实就是用一个一个的块进行对页面的布局，因此，了解盒模型的运作规则则是前端中的重中之重。</p>
-<h2 id="block和inline"><a class="markdownIt-Anchor" href="#block和inline"></a> Block和Inline</h2>
-<p>CSS中最广泛的两种盒子——块级盒子和内联盒子。<br />
-一个块级盒子有以下特点</p>
-<ul>
-<li>元素一定会换行（无论宽度是否可以容下多个元素）</li>
-<li>会尝试占用整个父元素的宽度，在一般情况下都会占满</li>
-<li>双边距和边框会推动其他元素</li>
-</ul>
-<p>而内联盒子基本相反</p>
-<ul>
-<li>元素一定不会换行</li>
-<li>垂直方向的边距不会产生任何效果</li>
-<li>水平方向的边距一会把其他元素推开</li>
-<li>width 和 height 属性将不起作用<br />
-但是请注意这只代表<code>inline</code>的效果，不代表<code>inline-box</code>，在<code>inline-box</code>中宽度和高度是有效的。</li>
-</ul>
-<h3 id="️小提示"><a class="markdownIt-Anchor" href="#️小提示"></a> ⚠️小提示</h3>
-<p>在<code>display:inline</code>的情况下，常常会看到一种很奇怪的情况</p>
-<iframe src="https://codepen.io/nishuzumi/embed/LYZvPMN?height=265&theme-id=dark&default-tab=css,result" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen></iframe>
-<p>别怀疑，你的知识没有任何问题，这只是格式化代码带来的副作用而已。</p>
-<iframe src="https://codepen.io/nishuzumi/embed/KKMYKdY?height=265&theme-id=dark&default-tab=css,result" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen></iframe>
-<p>当你把你的换行符删除后，一切都显得那么合理。<br />
-当然，你也可以用一些强修补手段，比如直接缩小margin，把font-size改为0等等。</p>
-<h3 id="️小提示2"><a class="markdownIt-Anchor" href="#️小提示2"></a> ⚠️小提示2</h3>
-<p>display的完整参数签名非常的长，并不是单单的一个参数。在默认情况下，修改<code>display:block</code>是将<strong>内部</strong>显示模式设为了<code>block</code>，而元素自身位置的控制是由<code>display-outside</code>控制，并且<code>display-outside</code>的可选值为<code>block|inline|run-in(实验性)</code>。</p>
-<h2 id="css盒模型"><a class="markdownIt-Anchor" href="#css盒模型"></a> CSS盒模型</h2>
-<h3 id="标准盒模型"><a class="markdownIt-Anchor" href="#标准盒模型"></a> 标准盒模型</h3>
-<p>盒模型分为四个部分</p>
-<ul>
-<li>内容（Content）宽高都设定都是这个区域，但是有可以修改都手段</li>
-<li>内边距（Padding）用于设定距离边框的距离</li>
-<li>边框（Border）顾名思义，就是边框</li>
-<li>外边距（Margin）是外侧区域，用于调整和其他元素的距离<br />
-如图</li>
-</ul>
-<img src="/images/css-block-2020-11-18-11-20-29.png" class="">  
-<p>要注意的是，<strong>宽度，高度默认设置的是Content的宽高</strong>，而且一个元素实际宽度应该是将内容到边框的所有大小加起来（也就是除去外边距）。</p>
-<h3 id="替代ie盒模型"><a class="markdownIt-Anchor" href="#替代ie盒模型"></a> 替代（IE）盒模型</h3>
-<p>没错就是那个IE，早期的IE盒模型就是这种，而且在IE8之前，你都没有办法修改这个盒模型。<br />
-在替代盒模型下，元素的实际宽度和高度设定的是<strong>除了外边距以外的全部内容总和的宽高</strong>。与此同时，你可以使用<code>box-sizing:border-box</code>将标准盒模型切换成替代盒模型。当然你也可以使用<code>box-sizing:content</code>切换成标准盒模型（IE8之前无效）</p>
-<img src="/images/css-block-2020-11-18-11-28-58.png" class="">
-<h2 id="margin-外边距"><a class="markdownIt-Anchor" href="#margin-外边距"></a> Margin 外边距</h2>
-<p>Margin是一个不可见的外边距，一般情况下，设置真值会把其他元素推开（有时候是推自己），设置负值则会拉近（甚至可以重叠）</p>
-<h3 id="外边距重叠"><a class="markdownIt-Anchor" href="#外边距重叠"></a> 外边距重叠</h3>
-<p>在一般情况下，如果有两个元素的外边距同时存在，那么他们就会产生边距重叠的情况。在这种情况下，他们之间的边距将会由最大值来决定。<strong>如果有一方为负数，那么他们的距离则为他们的外边距之和</strong>，<strong>如果两方皆为负数，那么覆盖大小由最小值来决定（绝对值的最大值）</strong></p>
-<h4 id="形成和处理方式"><a class="markdownIt-Anchor" href="#形成和处理方式"></a> 形成和处理方式</h4>
-<p>外边距重叠的形成情况有三种，但是，设定了<code>float</code>和<code>position=absolute</code>的元素不会发生重叠，因为他们已经不进行重叠计算。</p>
-<p><strong>情况一：同一层中的相邻元素</strong><br />
-同级两个元素在默认情况下，会发生外边距重叠。</p>
-<p><strong>情况二：父元素和后代元素因为没有内容而产生重叠</strong><br />
-定义一下内容：</p>
-<ul>
-<li>Content中任何<strong>行内内容</strong></li>
-<li>边框</li>
-<li>内边距</li>
-</ul>
-<ol>
-<li>当没有内容，而且并且没有BFC（块格式化上下文），浮动清除等来隔离父元素和后代元素的<code>margin-top</code></li>
-<li>当没有内容，并且没有高度，最大高度，最小高度来隔离块元素的<code>margin-bottom</code></li>
-</ol>
-<p>重叠的部分最终会溢出到父元素之外。</p>
-<iframe src="https://codepen.io/nishuzumi/embed/rNLbGzo?height=265&theme-id=dark&default-tab=css,result" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen></iframe>
-<p><strong>情况三：空的块元素</strong><br />
-当一个块元素自身的上边距和下边距紧紧的挨着的时候，自身的上下边距会发生重叠。</p>
-<p>一般情况下可以通过插入BFC或者使用BFC把元素进行包裹，都可以解决。</p>
-<h2 id="border-边框"><a class="markdownIt-Anchor" href="#border-边框"></a> Border 边框</h2>
-<p>就是大家熟悉的边框，没什么特殊点。不过有个小知识。</p>
-<img src="/images/css-block-2020-11-18-13-42-45.png" class="">  
-<p>边框的绘制方式如图，可以通过这种方式来画一些几何图形，比如三角形，梯形，圆形（radius），平行四边形（组合两个三角形），等等。</p>
-<h2 id="padding-内边距"><a class="markdownIt-Anchor" href="#padding-内边距"></a> Padding 内边距</h2>
-<p>内边距和外边距有所不同。内边距不允许有负数存在，最小为0.并且内边距默认为透明。<br />
-内边距会将元素推离边框（而不是将边框推离元素）</p>
-<h2 id="内联inline"><a class="markdownIt-Anchor" href="#内联inline"></a> 内联(inline)</h2>
-<p>内联盒子下，会忽略宽高属性，并且在垂直方向上的任何边距不会产生位移，只有水平方向上才会产生。</p>
-<img src="/images/css-block-2020-11-18-13-51-15.png" class="">  
-<h2 id="内联块inline-block"><a class="markdownIt-Anchor" href="#内联块inline-block"></a> 内联块（inline-block）</h2>
-<p>内联块杂糅了<code>inline</code>和<code>block</code>的属性，你可以认为他是一个去掉了<strong>元素换行</strong>的<code>block</code>。</p>
-<img src="/images/css-block-2020-11-18-13-52-59.png" class="">  
-<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结 👨‍🏫</h2>
-<p>CSS中的盒模型是CSS中最为重要的基础，与其相关的还有CSS的BFC，掌握好这两个内容会让你对CSS的理解如虎添翼。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/17/css-block/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1468,7 +1395,7 @@ Array instanceof Function<br />
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:33</span>
+    <span title="站点阅读时长">1:34</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
