@@ -164,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -213,6 +213,206 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/19/deep-clone/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/19/deep-clone/" class="post-title-link" itemprop="url">简单实现深拷贝</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-19 17:28:41 / 修改时间：18:39:00" itemprop="dateCreated datePublished" datetime="2020-11-19T17:28:41+08:00">2020-11-19</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/19/deep-clone/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/19/deep-clone/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
+<p>在JS中，默认的语言特性并没有提供深拷贝功能，只提供了浅拷贝，比如<code>Object.assign()</code>。所以本文将会简单的，通过两种方式实现深拷贝。</p>
+<h2 id="递归"><a class="markdownIt-Anchor" href="#递归"></a> 递归</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy</span>(<span class="params">obj,cache</span>)</span>&#123;</span><br><span class="line">    cache = cache || <span class="keyword">new</span> <span class="built_in">WeakMap</span>()</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params"><span class="keyword">typeof</span> obj != <span class="string">&#x27;object&#x27;</span> || obj === <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 判断是否为对象 不是就直接返回</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(cache.has(obj)) <span class="keyword">return</span> cache.get(obj) <span class="comment">// 查询缓存</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> cloneObj = <span class="built_in">Array</span>.isArray(obj)?[]:&#123;&#125;</span><br><span class="line">    cache.set(obj,cloneObj)</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params">key <span class="keyword">of</span> <span class="built_in">Object</span>.keys(obj)</span>)</span>&#123;</span><br><span class="line">        cloneObj[key] = copy(obj[key],cache) <span class="comment">// 递归掉用</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cloneObj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实想法很简单，不是对象的直接赋值，是对象的看看有没有生成过，没有就调用递归调用，有就直接拿值。为什么要用<code>WeakMap</code>？懂得都懂。</p>
+<h2 id="迭代"><a class="markdownIt-Anchor" href="#迭代"></a> 迭代</h2>
+<p>迭代的想法和递归的有些变动，但是核心思想还是万变不离其宗。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy2</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> cache = <span class="keyword">new</span> <span class="built_in">WeakMap</span>() <span class="comment">// 查找表（不代表拷贝完成）</span></span><br><span class="line">    <span class="keyword">let</span> tasks = []</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">cloneT</span>(<span class="params">o</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span>  <span class="built_in">Array</span>.isArray(o)?[]:&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> obj != <span class="string">&#x27;object&#x27;</span> || !obj) <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> cp = cloneT(obj)</span><br><span class="line">    tasks.push(obj) <span class="comment">// 任务队列，有对象需要拷贝就会放进来</span></span><br><span class="line">    cache.set(obj,cp) <span class="comment">// 设置对应的clone</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">tasks.length &gt; <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> task = tasks.shift() <span class="comment">// 找到一个任务</span></span><br><span class="line">        <span class="keyword">let</span> clone = cache.get(task) <span class="comment">// 找到对应的clone</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> [key,value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(task)</span>)</span>&#123;</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params"><span class="keyword">typeof</span> value != <span class="string">&#x27;object&#x27;</span> || !value</span>)</span>&#123; <span class="comment">// 不是对象直接返回</span></span><br><span class="line">                clone[key] = value</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!cache.has(value))&#123; <span class="comment">// 是对象 但是不在查找表内就创立一个对应的类型 用于写入</span></span><br><span class="line">                tasks.push(value)</span><br><span class="line">                cache.set(value,cloneT(value))</span><br><span class="line">            &#125;</span><br><span class="line">            clone[key] = cache.get(value) <span class="comment">// 设置引用</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结 👨‍🏫</h2>
+<p>总的来说还是很简单的，但是这里面可能没考虑到更多的情况，还有待优化和完善。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/19/request/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/19/request/" class="post-title-link" itemprop="url">请求 in Browser</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-11-19 15:18:15 / 修改时间：15:18:32" itemprop="dateCreated datePublished" datetime="2020-11-19T15:18:15+08:00">2020-11-19</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/19/request/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/19/request/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>0</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/18/event-delegation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -245,7 +445,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-19 14:34:41" itemprop="dateModified" datetime="2020-11-19T14:34:41+08:00">2020-11-19</time>
+        <time title="修改时间：2020-11-19 15:18:59" itemprop="dateModified" datetime="2020-11-19T15:18:59+08:00">2020-11-19</time>
       </span>
 
   
@@ -293,68 +493,14 @@
 <p>捕获和冒泡允许我们实现一种被称为 事件委托 的强大的事件处理模式。<br />
 这个想法是，如果我们有许多以类似方式处理的元素，那么就不必为每个元素分配一个处理程序 —— 而是将单个处理程序放在它们的共同祖先上。</p>
 </blockquote>
-<h2 id="事件的传递"><a class="markdownIt-Anchor" href="#事件的传递"></a> 事件的传递</h2>
-<p>当一个事件发生在具有父元素当元素上时，有两种阶段：<br />
-<strong>捕获阶段</strong><br />
-捕获阶段会从最外层的父元素开始查找，是否注册了相关的事件，比如<code>onclick</code>,如果是，则允许。<br />
-然后他会找到下一层的父元素，继续执行这个流程，直到到达实际点击的元素。<br />
-<strong>冒泡阶段</strong><br />
-冒泡阶段恰好相反，他会先处理自身的<code>onclick</code>，然后找到最近的父元素，并且继续执行，然后再是上上层的父元素，直到到达<code>&lt;html&gt;</code>为止。</p>
-<blockquote>
-<p>豆知识：这两种阶段是微软和网景提出的两种阶段，最后w3c指定了统一标准。并且定义他们的执行顺序为先捕获再冒泡。</p>
-</blockquote>
-<p>同时要注意几点：</p>
-<ul>
-<li>on*系列的执行程序，比如<code>onclick</code>均在冒泡上触发。</li>
-<li>addEventListener(type,callback,capture = false) 第三个参数为false（默认）时，注册为冒泡，否则为捕获</li>
-<li><s>因为微软是老大，所以大家一般默认使用冒泡</s></li>
-</ul>
-<p>同时，在DOM事件中，传播分为三个阶段</p>
-<ul>
-<li>捕获阶段</li>
-<li>目标（到达）阶段 （不常使用）</li>
-<li>冒泡阶段</li>
-</ul>
-<img src="/images/event-delegation-2020-11-19-12-51-31.png" class="">   
-<p>一般来说，我们默认情况下都是在使用冒泡阶段，但是并不是说捕获阶段就没有任何作用。我们可以在捕获阶段中使用<code>event.stopPropagation()</code>来中止捕获或者冒泡阶段的传递。</p>
-<h2 id="事件的处理"><a class="markdownIt-Anchor" href="#事件的处理"></a> 事件的处理</h2>
-<p>因此，当出现冒泡事件时，最先被触发的，自然是元素本身上面的监听程序。当事件触发时，会向元素上的监听器传递一个<code>event</code>对象。<code>event</code>中常用的属性为：</p>
-<ul>
-<li>event.target 触发元素</li>
-<li>event.currentTarget 当前执行程序挂载的元素</li>
-<li>event.eventPhase 当前阶段（capturing=1，target=2，bubbling=3）<br />
-<strong>并且，程序中的<code>this</code>，默认情况下指向<code>event.currentTarget</code>。</strong><br />
-比如，你在<code>body</code>上设定了<code>onclick</code>，当点击<code>body</code>中的<code>button</code>后，如果冒泡达到<code>body.onclick</code>时，event中属性的内容应该分别为</li>
-<li>event.target == button</li>
-<li>event.currentTarget == body</li>
-<li>event.eventPhase == 3</li>
-</ul>
-<p>不过，如果在一个元素上注册了多个监听器，那么他们的执行顺序会按照注册顺序来执行。如果你希望停止执行同一个元素其他的监听器并且停止冒泡，那么可以用<code>event.stopImmediatePropagation()</code>来强制停止。</p>
-<h3 id="️注意"><a class="markdownIt-Anchor" href="#️注意"></a> ⚠️注意</h3>
-<p>不要认为可以优化很多性能而自作主张的在每个监听器上面都阻止冒泡，除非整个程序完全由你掌控。很多函数库或者UI框架或多或少的使用来事件委托功能，如果没有十足的把握，请不要轻易的阻止冒泡或者事件传递。</p>
-<h2 id="事件委托"><a class="markdownIt-Anchor" href="#事件委托"></a> 事件委托</h2>
-<p>事件委托其实就是依赖于事件传递的一种程序设计方式。在处理程序中，用户点击到的元素不一定是真正想要的元素。比如：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// html</span></span><br><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">&#x27;main&#x27;</span>&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">&#x27;button&#x27;</span>&gt;</span><br><span class="line">        &lt;span&gt;😊&lt;<span class="regexp">/span&gt;&lt;span&gt;点我！&lt;/</span>span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="comment">// js</span></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">&#x27;.main&#x27;</span>).addEventListener(<span class="string">&#x27;click&#x27;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">  alert(<span class="built_in">this</span>.tagName+ev.target.tagName) <span class="comment">// DIVSPAN</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>很明显，我们想判断的是它有没有点击按钮，而不是SPAN。<br />
-因此我们可以在代码中进行一些判断，比如:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">object.onclick = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> target = ev.target.closest(<span class="string">&#x27;.button&#x27;</span>) <span class="comment">//判断自身或者上级中是否有可以被选择器选择的元素</span></span><br><span class="line">    <span class="keyword">if</span>(!target) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span>(!object.containts(target)) <span class="keyword">return</span>; <span class="comment">// 如果不是当前元素的后代元素</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
-<p>当一个事件触发时，会将💉事件穿透整个🧅层级结构：</p>
-<ul>
-<li>穿入的情况叫做捕获阶段</li>
-<li>穿到目标的时候叫做到达阶段</li>
-<li>过度穿透的时候叫做冒泡阶段。<br />
-当你使用<code>event.stopPropagation()</code>，会停止继续穿透。</li>
-</ul>
-<p>在使用<code>addEventListener</code>时第三个参数用于设定注册在捕获还是冒泡阶段。<br />
-传递到程序中的<code>event</code>对象中：</p>
-<ul>
-<li>event.target 表示目标元素</li>
-<li>event.currencyTarget(==this) 表示当前处理元素</li>
-<li>event.eventPhase 表示当前阶段</li>
-</ul>
-<p>不要随便的阻止事件传播。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/18/event-delegation/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1113,231 +1259,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/10/Eventloop-Timeout-Immediate-Interval-QueueMicrotask/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/10/Eventloop-Timeout-Immediate-Interval-QueueMicrotask/" class="post-title-link" itemprop="url">♻️Eventloop,⏱️Timeout,⚡️Immediate,⭕️Interval,🧾QueueMicrotask</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-10 14:08:58" itemprop="dateCreated datePublished" datetime="2020-11-10T14:08:58+08:00">2020-11-10</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-12 12:28:29" itemprop="dateModified" datetime="2020-11-12T12:28:29+08:00">2020-11-12</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/10/Eventloop-Timeout-Immediate-Interval-QueueMicrotask/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/10/Eventloop-Timeout-Immediate-Interval-QueueMicrotask/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>6.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>11 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>本文的目的在于，一次性推翻80%人构建好的关于Event Loop的知识体系和一次性的完整的理解Nodejs(13以上)和浏览器中的Event Loop。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/10/Eventloop-Timeout-Immediate-Interval-QueueMicrotask/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/" class="post-title-link" itemprop="url">new,apply,bind,call 四大天王</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-08 20:21:01" itemprop="dateCreated datePublished" datetime="2020-11-08T20:21:01+08:00">2020-11-08</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-09 21:59:25" itemprop="dateModified" datetime="2020-11-09T21:59:25+08:00">2020-11-09</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/08/new-bind-apply-call-四大天王/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>先来句毒鸡汤</p>
-<blockquote>
-<p>“What I Cannot create, I do not understand” — Richard Feynman</p>
-</blockquote>
-<p>作为JS家族中的四大天王，new，apply，bind，call。可谓是出现频率极高，虽然用法简单，效果清晰，但是我也一直没去仔细了解过他们的运行机制和实现方法。千载难逢的机会，那就来一步一步的仔细研究一下。</p>
-<p>先说明，new是一个关键词，而bind，apply，call，均为Function.prototype中的方法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/08/new-bind-apply-call-%E5%9B%9B%E5%A4%A7%E5%A4%A9%E7%8E%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1393,13 +1314,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">62k</span>
+    <span title="站点总字数">63k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:43</span>
+    <span title="站点阅读时长">1:45</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

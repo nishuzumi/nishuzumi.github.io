@@ -25,23 +25,20 @@
     var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta name="description" content="前言 🎤 整个页面加载是用户体验界面最重要的一部分，当你对浏览器对页面生命周期更为了解后，可以更好优化很多场景下的问题。">
+  <meta name="description" content="前言 🎤 在JS中，默认的语言特性并没有提供深拷贝功能，只提供了浅拷贝，比如Object.assign()。所以本文将会简单的，通过两种方式实现深拷贝。  递归 12345678910111213141516function copy(obj,cache)&amp;#123;    cache &#x3D; cache || new WeakMap()    if(typeof obj !&#x3D; &amp;#x27;obj">
 <meta property="og:type" content="article">
-<meta property="og:title" content="页面📃的生命周期小记">
-<meta property="og:url" content="https://binzinstar.com/2020/11/18/page-life/index.html">
+<meta property="og:title" content="简单实现深拷贝">
+<meta property="og:url" content="https://binzinstar.com/2020/11/19/deep-clone/index.html">
 <meta property="og:site_name" content="盒子笔记">
-<meta property="og:description" content="前言 🎤 整个页面加载是用户体验界面最重要的一部分，当你对浏览器对页面生命周期更为了解后，可以更好优化很多场景下的问题。">
+<meta property="og:description" content="前言 🎤 在JS中，默认的语言特性并没有提供深拷贝功能，只提供了浅拷贝，比如Object.assign()。所以本文将会简单的，通过两种方式实现深拷贝。  递归 12345678910111213141516function copy(obj,cache)&amp;#123;    cache &#x3D; cache || new WeakMap()    if(typeof obj !&#x3D; &amp;#x27;obj">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://binzinstar.com/images/page-life-2020-11-18-19-32-37.png">
-<meta property="article:published_time" content="2020-11-18T06:27:45.000Z">
-<meta property="article:modified_time" content="2020-11-18T11:32:38.625Z">
+<meta property="article:published_time" content="2020-11-19T09:28:41.000Z">
+<meta property="article:modified_time" content="2020-11-19T10:39:00.152Z">
 <meta property="article:author" content="BoxChen">
-<meta property="article:tag" content="浏览器">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://binzinstar.com/images/page-life-2020-11-18-19-32-37.png">
 
 
-<link rel="canonical" href="https://binzinstar.com/2020/11/18/page-life/">
+<link rel="canonical" href="https://binzinstar.com/2020/11/19/deep-clone/">
 
 
 <script class="page-configurations">
@@ -54,7 +51,7 @@
   };
 </script>
 
-  <title>页面📃的生命周期小记 | 盒子笔记</title>
+  <title>简单实现深拷贝 | 盒子笔记</title>
   
 
 
@@ -157,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E4%BA%8B%E4%BB%B6-domcontentloaded-load-beforceunloadunload"><span class="nav-number">2.</span> <span class="nav-text"> 三个事件 DOMContentLoaded load beforceunload&#x2F;unload</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#domcontentloaded"><span class="nav-number">2.1.</span> <span class="nav-text"> DOMContentLoaded</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#script"><span class="nav-number">2.1.1.</span> <span class="nav-text"> Script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#style"><span class="nav-number">2.1.2.</span> <span class="nav-text"> Style</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%85%85"><span class="nav-number">2.1.3.</span> <span class="nav-text"> 自动填充</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onload"><span class="nav-number">2.2.</span> <span class="nav-text"> onload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onbeforceunloadonunload"><span class="nav-number">2.3.</span> <span class="nav-text"> onbeforceunload&#x2F;onunload</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E6%9C%BA%E4%B8%8D%E5%AF%B9"><span class="nav-number">3.</span> <span class="nav-text"> 时机不对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#async-defer"><span class="nav-number">4.</span> <span class="nav-text"> async defer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text"> 总结 👨‍🏫</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">2.</span> <span class="nav-text"> 递归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3"><span class="nav-number">3.</span> <span class="nav-text"> 迭代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text"> 总结 👨‍🏫</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -222,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/18/page-life/">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/19/deep-clone/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -235,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          页面📃的生命周期小记
+          简单实现深拷贝
         </h1>
 
         <div class="post-meta-container">
@@ -247,7 +244,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-11-18 14:27:45 / 修改时间：19:32:38" itemprop="dateCreated datePublished" datetime="2020-11-18T14:27:45+08:00">2020-11-18</time>
+      <time title="创建时间：2020-11-19 17:28:41 / 修改时间：18:39:00" itemprop="dateCreated datePublished" datetime="2020-11-19T17:28:41+08:00">2020-11-19</time>
     </span>
 
   
@@ -259,8 +256,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2020/11/18/page-life/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/18/page-life/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2020/11/19/deep-clone/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/19/deep-clone/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -272,14 +269,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -291,60 +288,15 @@
     
     <div class="post-body" itemprop="articleBody">
         <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>整个页面加载是用户体验界面最重要的一部分，当你对浏览器对页面生命周期更为了解后，可以更好优化很多场景下的问题。</p>
-<a id="more"></a>
-<h2 id="三个事件-domcontentloaded-load-beforceunloadunload"><a class="markdownIt-Anchor" href="#三个事件-domcontentloaded-load-beforceunloadunload"></a> 三个事件 DOMContentLoaded load beforceunload/unload</h2>
-<p>一个页面由三个重要事件构成</p>
-<ul>
-<li>DOMContentLoaded 表示浏览器已经完全加载完HTML并且构建完成DOM树🌲，但是此时一些外部资源并不一定完成，比如（样式表，图像，iframe等等）。</li>
-<li>load 表示浏览器已经彻底的加载完成了所有的内容</li>
-<li>unload 当用户离开页面时</li>
-<li>beforceunload 当用户离开页面前<br />
-同时，<code>DOMContentLoaded</code>为document上的事件，而其他的为<code>window</code>上。</li>
-</ul>
-<h3 id="domcontentloaded"><a class="markdownIt-Anchor" href="#domcontentloaded"></a> DOMContentLoaded</h3>
-<p>监听：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">&quot;DOMContentLoaded&quot;</span>,<span class="function">()=&gt;</span>&#123;&#125;)</span><br></pre></td></tr></table></figure>
-<p>要注意的是，文档中任何<code>&lt;script&gt;</code>都会在<code>DOMContentLoaded</code>触发之前执行完成。</p>
-<h4 id="script"><a class="markdownIt-Anchor" href="#script"></a> Script</h4>
-<p>要注意的是，当浏览器在处理页面的时候，遇到了任何<code>&lt;script&gt;</code>，都会让脚本先执行完成。<br />
-除了动态插入的脚本或者具有<code>async</code>的脚本。</p>
-<h4 id="style"><a class="markdownIt-Anchor" href="#style"></a> Style</h4>
-<p><code>DOMContentLoaded</code>一般不会被样式表堵塞，但是如果在<code>&lt;link&gt;</code>标签之后有任何的<code>&lt;script&gt;</code>标签出现，那么就会强制等待样式表加载完成才会触发<code>DOMContentLoaded</code>。<br />
-<strong>请注意，是任何的<code>&lt;script&gt;</code>标签</strong></p>
-<h4 id="自动填充"><a class="markdownIt-Anchor" href="#自动填充"></a> 自动填充</h4>
-<p>浏览器会尝试自动填充表单，而且是在触发<code>DOMContentLoaded</code>的时候，如果说页面被某个奇怪的东西堵塞了，那么自动填充也不会被触发。</p>
-<h3 id="onload"><a class="markdownIt-Anchor" href="#onload"></a> onload</h3>
-<p>当整个页面上一切的东西动被加载完成的时候，便会执行<code>window.onload</code>回调。在这个阶段，任何内容（除了动态插入的）都已经准备就绪。</p>
-<h3 id="onbeforceunloadonunload"><a class="markdownIt-Anchor" href="#onbeforceunloadonunload"></a> onbeforceunload/onunload</h3>
-<p>beforceunload和unload比较特殊，在这两个事件中，任何<code>alert,confirm</code>都会被浏览器阻止。但是如果在<code>beforeunload</code>的回调中<code>return false</code>，浏览器则会提醒用户是否要离开此页面，当然<code>unload</code>中是无法做到此类操作的，因为在unload中，已成定局。</p>
-<h2 id="时机不对"><a class="markdownIt-Anchor" href="#时机不对"></a> 时机不对</h2>
-<p>如果你在页面加载完成之后才去监听<code>DOMContentLoaded</code>，那你永远也不会得到任何回应。不过浏览器中可以通过读取状态标识来判断是否加载完成。比如可以通过<code>document.readyState</code>进行判断。它的值有三种情况：</p>
-<ul>
-<li>loading 页面正在加载</li>
-<li>interactive 页面已经加载了，但是外部资源的状况还不明朗</li>
-<li>complete 这个页面上的任何东西都已经被加载了</li>
-</ul>
-<h2 id="async-defer"><a class="markdownIt-Anchor" href="#async-defer"></a> async defer</h2>
-<p>既然提到了，那么也就顺势的讲一下。<br />
-<code>async和defer</code>都是让script脚本进行并行加载的关键词,他们的区别其实在于执行时间点。同时，如果两个同时存在，那么会优先<code>async</code>。<br />
-关于defer</p>
-<ul>
-<li>即使加载完成，也会按照出现顺序执行。</li>
-<li>只会在页面解析完成后执行，但是在<code>DOMContentLoaded</code>之前执行。<br />
-关于async</li>
-<li>加载完成立刻执行，没有先后顺序</li>
-</ul>
-<p>但是，如果<code>&lt;script&gt;</code>标签中有脚本内容，这两个属性都无效。</p>
-<img src="/images/page-life-2020-11-18-19-32-37.png" class=""> 
+<p>在JS中，默认的语言特性并没有提供深拷贝功能，只提供了浅拷贝，比如<code>Object.assign()</code>。所以本文将会简单的，通过两种方式实现深拷贝。</p>
+<h2 id="递归"><a class="markdownIt-Anchor" href="#递归"></a> 递归</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy</span>(<span class="params">obj,cache</span>)</span>&#123;</span><br><span class="line">    cache = cache || <span class="keyword">new</span> <span class="built_in">WeakMap</span>()</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params"><span class="keyword">typeof</span> obj != <span class="string">&#x27;object&#x27;</span> || obj === <span class="literal">null</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 判断是否为对象 不是就直接返回</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(cache.has(obj)) <span class="keyword">return</span> cache.get(obj) <span class="comment">// 查询缓存</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> cloneObj = <span class="built_in">Array</span>.isArray(obj)?[]:&#123;&#125;</span><br><span class="line">    cache.set(obj,cloneObj)</span><br><span class="line">    <span class="function"><span class="title">for</span>(<span class="params">key <span class="keyword">of</span> <span class="built_in">Object</span>.keys(obj)</span>)</span>&#123;</span><br><span class="line">        cloneObj[key] = copy(obj[key],cache) <span class="comment">// 递归掉用</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cloneObj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实想法很简单，不是对象的直接赋值，是对象的看看有没有生成过，没有就调用递归调用，有就直接拿值。为什么要用<code>WeakMap</code>？懂得都懂。</p>
+<h2 id="迭代"><a class="markdownIt-Anchor" href="#迭代"></a> 迭代</h2>
+<p>迭代的想法和递归的有些变动，但是核心思想还是万变不离其宗。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy2</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> cache = <span class="keyword">new</span> <span class="built_in">WeakMap</span>() <span class="comment">// 查找表（不代表拷贝完成）</span></span><br><span class="line">    <span class="keyword">let</span> tasks = []</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">cloneT</span>(<span class="params">o</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span>  <span class="built_in">Array</span>.isArray(o)?[]:&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> obj != <span class="string">&#x27;object&#x27;</span> || !obj) <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> cp = cloneT(obj)</span><br><span class="line">    tasks.push(obj) <span class="comment">// 任务队列，有对象需要拷贝就会放进来</span></span><br><span class="line">    cache.set(obj,cp) <span class="comment">// 设置对应的clone</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">while</span>(<span class="params">tasks.length &gt; <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> task = tasks.shift() <span class="comment">// 找到一个任务</span></span><br><span class="line">        <span class="keyword">let</span> clone = cache.get(task) <span class="comment">// 找到对应的clone</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="title">for</span>(<span class="params"><span class="keyword">let</span> [key,value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(task)</span>)</span>&#123;</span><br><span class="line">            <span class="function"><span class="title">if</span>(<span class="params"><span class="keyword">typeof</span> value != <span class="string">&#x27;object&#x27;</span> || !value</span>)</span>&#123; <span class="comment">// 不是对象直接返回</span></span><br><span class="line">                clone[key] = value</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!cache.has(value))&#123; <span class="comment">// 是对象 但是不在查找表内就创立一个对应的类型 用于写入</span></span><br><span class="line">                tasks.push(value)</span><br><span class="line">                cache.set(value,cloneT(value))</span><br><span class="line">            &#125;</span><br><span class="line">            clone[key] = cache.get(value) <span class="comment">// 设置引用</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结 👨‍🏫</h2>
-<p>页面在加载时有三层状态</p>
-<ol>
-<li>完全什么都不知道的情况</li>
-<li>DOM元素已经加载完成了，但是外部资源的情况不太清楚</li>
-<li>全部的东西都加载完成了，包括外部资源</li>
-</ol>
-<p>而<code>DOMContentLoaded</code>处于（2）的状态。<code>onLoad</code>处于（3）的状态。但是两者都可以获取到DOM元素。</p>
+<p>总的来说还是很简单的，但是这里面可能没考虑到更多的情况，还有待优化和完善。</p>
 
     </div>
 
@@ -353,22 +305,16 @@
     
 
     <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag"># 浏览器</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/11/17/css-block/" rel="prev" title="CSS盒模型">
-                  <i class="fa fa-chevron-left"></i> CSS盒模型
+                <a href="/2020/11/19/request/" rel="prev" title="请求 in Browser">
+                  <i class="fa fa-chevron-left"></i> 请求 in Browser
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/11/18/cache/" rel="next" title="Web缓存">
-                  Web缓存 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -501,9 +447,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://binzinstar.com/2020/11/18/page-life/";
-    this.page.identifier = "2020/11/18/page-life/";
-    this.page.title = "页面📃的生命周期小记";
+    this.page.url = "https://binzinstar.com/2020/11/19/deep-clone/";
+    this.page.identifier = "2020/11/19/deep-clone/";
+    this.page.title = "简单实现深拷贝";
     };
   NexT.utils.loadComments('#disqus_thread', () => {
     if (window.DISQUS) {
