@@ -25,13 +25,15 @@
     var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="前言 🎤 本文会总结在浏览器中常见的网络请求方式。">
+<meta property="og:type" content="article">
 <meta property="og:title" content="请求 in Browser">
 <meta property="og:url" content="https://binzinstar.com/2020/11/19/request/index.html">
 <meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 🎤 本文会总结在浏览器中常见的网络请求方式。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-19T07:18:15.000Z">
-<meta property="article:modified_time" content="2020-11-19T07:18:32.087Z">
+<meta property="article:modified_time" content="2020-11-19T13:01:51.677Z">
 <meta property="article:author" content="BoxChen">
 <meta name="twitter:card" content="summary">
 
@@ -139,7 +141,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -152,6 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ajax"><span class="nav-number">2.</span> <span class="nav-text"> Ajax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fetch"><span class="nav-number">3.</span> <span class="nav-text"> Fetch</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fetch%E7%9A%84%E5%BC%BA%E5%88%B6%E4%B8%AD%E6%96%AD"><span class="nav-number">3.1.</span> <span class="nav-text"> Fetch的强制中断</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%BF%E8%BD%AE%E8%AF%A2long-polling"><span class="nav-number">4.</span> <span class="nav-text"> 长轮询(Long polling)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#server-send-events"><span class="nav-number">5.</span> <span class="nav-text"> Server Send Events</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E8%B5%B7%E4%BA%8B%E4%BB%B6%E6%B5%81"><span class="nav-number">5.1.</span> <span class="nav-text"> 发起事件流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E6%95%B0%E6%8D%AE"><span class="nav-number">5.2.</span> <span class="nav-text"> 接受数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%88%E6%81%AFid"><span class="nav-number">5.3.</span> <span class="nav-text"> 消息ID</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#websocket"><span class="nav-number">6.</span> <span class="nav-text"> WebSocket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text"> 总结 👨‍🏫</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -241,7 +244,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-11-19 15:18:15 / 修改时间：15:18:32" itemprop="dateCreated datePublished" datetime="2020-11-19T15:18:15+08:00">2020-11-19</time>
+      <time title="创建时间：2020-11-19 15:18:15 / 修改时间：21:01:51" itemprop="dateCreated datePublished" datetime="2020-11-19T15:18:15+08:00">2020-11-19</time>
     </span>
 
   
@@ -266,14 +269,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
+      <span>2.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -284,7 +287,51 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
+<p>本文会总结在浏览器中常见的网络请求方式。</p>
+<a id="more"></a>
+<h2 id="ajax"><a class="markdownIt-Anchor" href="#ajax"></a> Ajax</h2>
+<p>老生常谈Ajax，不支持跨域。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajax</span>(<span class="params">method,url,cb,data = &#123;&#125;</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> u = <span class="keyword">new</span> URL(url)</span><br><span class="line">    <span class="keyword">let</span> dataRaw = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">method.toLowerCase() == <span class="string">&#x27;get&#x27;</span></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">Object</span>.keys(data).forEach(<span class="function">(<span class="params">key</span>)=&gt;</span>u.searchParams.set(key,data[key]))</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        dataRaw = <span class="built_in">Object</span>.keys(data).map(<span class="function">(<span class="params">key</span>)=&gt;</span><span class="string">`<span class="subst">$&#123;key&#125;</span>=<span class="subst">$&#123;data[key]&#125;</span>`</span>).join(<span class="string">&#x27;&amp;&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest</span><br><span class="line">    xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="title">if</span>(<span class="params">xhr.readyState === <span class="number">4</span></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(xhr.status === <span class="number">200</span> || xhr.status === <span class="number">304</span>)</span><br><span class="line">                <span class="keyword">return</span> cb(xhr.responseText)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(xhr.status)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    xhr.open(method,u.toString(),<span class="literal">false</span>)</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">method.toLowerCase() == <span class="string">&#x27;post&#x27;</span></span>)</span>&#123;</span><br><span class="line">        xhr.setRequestHeader(<span class="string">&#x27;Content-Type&#x27;</span>,<span class="string">&#x27;application/x-www-form-urlencoded&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    xhr.send(dataRaw)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要注意的几点是：</p>
+<ul>
+<li>发送post时候需要设置头部</li>
+<li>只有当readystate为4时请求才算完成</li>
+<li>错误的情况一样要等到readystate为4才能得知</li>
+</ul>
+<h2 id="fetch"><a class="markdownIt-Anchor" href="#fetch"></a> Fetch</h2>
+<p>Fetch是现代化浏览器提供的一个高层封装的网络请求方法。他可以让你用非常简明优雅的方式创建网络请求。支持跨域。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fetch(<span class="string">&#x27;http://example.com/movies.json&#x27;</span>)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> response.json();</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span>(<span class="params">myJson</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(myJson);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="fetch的强制中断"><a class="markdownIt-Anchor" href="#fetch的强制中断"></a> Fetch的强制中断</h3>
+<p>Fetch有一个singal功能，允许开发者强制中断请求，只不过这个特性不是支持情况参差不齐。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> controller = <span class="keyword">new</span> AbortController()</span><br><span class="line">fetch(<span class="string">&#x27;http://example.com/movies.json&#x27;</span>,&#123;<span class="attr">signal</span>:controller.signal&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="长轮询long-polling"><a class="markdownIt-Anchor" href="#长轮询long-polling"></a> 长轮询(Long polling)</h2>
+<p>长轮询是一种机智而且巧妙的轮询方式，他能减少轮询带来的网络占用，同时也能保证消息的及时性。<br />
+长轮询和普通轮询操作方式基本一样，差别在于服务器的返回控制。这需要服务端程序能支持挂起链接，在一般情况下，各种后端程序都可以支持。<br />
+当客户端发起请求时，后端会接受请求，并且处于长时间的等待状态，直到某些条件满足时，才会进行数据返回。比如，客户端需要监听用户是否点击邮箱内的激活链接，当发起请求时，后端将会挂起前端请求，直到用户点击激活链接并激活，后端才返回链接。接着前端根据需求决定是否继续发起请求。</p>
+<p>这种请求方式一般放在消息量较少的情况，如果消息量增大，可以选用<code>WebSocket</code>或者<code>Server Send Events</code>。</p>
+<h2 id="server-send-events"><a class="markdownIt-Anchor" href="#server-send-events"></a> Server Send Events</h2>
+<p><code>Server Send Events</code>是一种较早出现的单向数据传输方案（但是IE依然不支持）。它允许一种订阅的方式让服务器不断的传输数据到客户端。这种方法需要前后端进行配合改造，并不是能直接无痛使用的方案。同时，他也是一个HTTP协议的请求。支持跨域。</p>
+<h3 id="发起事件流"><a class="markdownIt-Anchor" href="#发起事件流"></a> 发起事件流</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> eventSource = <span class="keyword">new</span> EventSource(<span class="string">&quot;https://www.example.com/index.php&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="接受数据"><a class="markdownIt-Anchor" href="#接受数据"></a> 接受数据</h3>
+<p>服务端需要使用一种特殊的格式来写入</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//etc</span></span><br><span class="line"><span class="built_in">data</span>: hello? </span><br><span class="line"></span><br><span class="line"><span class="built_in">data</span>: i am</span><br><span class="line">segment</span><br><span class="line"></span><br><span class="line"><span class="built_in">data</span>: ok</span><br><span class="line"><span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string">如上所示，数据需要用`</span>\n\n<span class="string">`进行分离，才算一个信息段。同时要以`</span><span class="built_in">data</span>:<span class="string">`开头。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">客户端则需要</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>js</span><br><span class="line">eventSource.onmessage = function(ev)&#123;</span><br><span class="line">    console.<span class="keyword">log</span>(ev.<span class="built_in">data</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// or addEventListener</span></span><br></pre></td></tr></table></figure>
+<p>好处不止这些，我们不需要处理断线的情况，客户端会帮助我们自动重连，这可是WebSocket没有的好处。不过，在遇到一些错误的状态码（除:200.301,307），或者返回的头部中不为<code>Content-Type: text/event-stream</code>。则不会进行重新连接。</p>
+<p>如果你想主动断开连接，则需要使用<code>evnetSource.close()</code>。</p>
+<h3 id="消息id"><a class="markdownIt-Anchor" href="#消息id"></a> 消息ID</h3>
+<p>通常情况下，在每个消息应该附带一个<code>id:</code>比如：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">data</span>: hello</span><br><span class="line"><span class="attribute">id</span>: 1</span><br><span class="line"></span><br><span class="line"><span class="attribute">data</span>: world</span><br><span class="line"><span class="attribute">id:2</span></span><br><span class="line"><span class="attribute"></span></span><br></pre></td></tr></table></figure>
+<p>当浏览器检测到具有ID内容时，则会自动的更新<code>eventSource.lastEventId</code>。并且在断行重连时，会设置一个<code>Last-Event-ID</code>的头部。</p>
+<p><code>Server Sent Events</code>相比<code>WebSocket</code>来说，功能更为轻量，但是在某些特殊场景下，也能发挥不错的效果。</p>
+<h2 id="websocket"><a class="markdownIt-Anchor" href="#websocket"></a> WebSocket</h2>
+<p>伟大的WebSocket是前端中最为核心的一个网络请求功能。对于实时性高的网络应用，它简直一项是开天辟地的创举，这标志着网页多人游戏的无依赖网络层的诞生，标志着前端交易系统可能性的胜利，标志着前端游戏无框架主义开发者从此站起来了！<br />
+<code>WebSocket</code>使用者一种特殊的协议，常常表现为<code>ws://</code>或者<code>wss://</code>开头。一个<code>WebSocket</code>对象上有着四种基础事件,<code>open</code>,<code>message</code>,<code>error</code>,<code>close</code>。如果你想发送数据，则可以使用<code>.send()</code>进行发送。支持跨域。</p>
+<p>因为使用<code>WebSocket</code>地难度已经达到了一个令人发指的简单程度，所以就不再进行简单内容的叙述。<br />
+而且<code>WebSocket</code>知名和流行程度已经达到了一个新的境界，如果你说你是前端不知道<code>WebSocket</code>，那么真有可能会贻笑大方。</p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结 👨‍🏫</h2>
+<p><code>Ajax</code>是浏览器最早出现的网络请求方式，在此之前JS只是一个网页小玩具。随之事件的进步和发展，又出现了<code>Server Send Events</code>这种高级一点的信息传递方式。再后来现代浏览器又提供了<code>fetch</code>和<code>WebSocket</code>这两种对标<code>Ajax和Server Send Events</code>的新功能。互联网的发展之速度仿佛转上了加速器一般大步向前。</p>
+
     </div>
 
     
@@ -370,13 +417,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">63k</span>
+    <span title="站点总字数">66k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:45</span>
+    <span title="站点阅读时长">1:50</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
