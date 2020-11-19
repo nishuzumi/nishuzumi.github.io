@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+
+  <meta name="description" content="前言 🎤  捕获和冒泡允许我们实现一种被称为 事件委托 的强大的事件处理模式。 这个想法是，如果我们有许多以类似方式处理的元素，那么就不必为每个元素分配一个处理程序 —— 而是将单个处理程序放在它们的共同祖先上。   事件的传递 当一个事件发生在具有父元素当元素上时，有两种阶段： 捕获阶段 捕获阶段会从最外层的父元素开始查找，是否注册了相关的事件，比如onclick,如果是，则允许。 然后他会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="细看事件委托">
+<meta property="og:url" content="https://binzinstar.com/2020/11/18/event-delegation/index.html">
+<meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 🎤  捕获和冒泡允许我们实现一种被称为 事件委托 的强大的事件处理模式。 这个想法是，如果我们有许多以类似方式处理的元素，那么就不必为每个元素分配一个处理程序 —— 而是将单个处理程序放在它们的共同祖先上。   事件的传递 当一个事件发生在具有父元素当元素上时，有两种阶段： 捕获阶段 捕获阶段会从最外层的父元素开始查找，是否注册了相关的事件，比如onclick,如果是，则允许。 然后他会">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://binzinstar.com/images/event-delegation-2020-11-19-12-51-31.png">
+<meta property="article:published_time" content="2020-11-18T12:39:00.000Z">
+<meta property="article:modified_time" content="2020-11-19T06:34:41.694Z">
+<meta property="article:author" content="BoxChen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://binzinstar.com/images/event-delegation-2020-11-19-12-51-31.png">
+
+
+<link rel="canonical" href="https://binzinstar.com/2020/11/18/event-delegation/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>细看事件委托 | 盒子笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">盒子笔记</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9A%84%E4%BC%A0%E9%80%92"><span class="nav-number">2.</span> <span class="nav-text"> 事件的传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text"> 事件的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%B8%8F%E6%B3%A8%E6%84%8F"><span class="nav-number">3.1.</span> <span class="nav-text"> ⚠️注意</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%89%98"><span class="nav-number">4.</span> <span class="nav-text"> 事件委托</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text"> 总结</span></a></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="BoxChen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">BoxChen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </section>
+      </div>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/18/event-delegation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          细看事件委托
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-18 20:39:00" itemprop="dateCreated datePublished" datetime="2020-11-18T20:39:00+08:00">2020-11-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-19 14:34:41" itemprop="dateModified" datetime="2020-11-19T14:34:41+08:00">2020-11-19</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/18/event-delegation/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/18/event-delegation/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
+<blockquote>
+<p>捕获和冒泡允许我们实现一种被称为 事件委托 的强大的事件处理模式。<br />
+这个想法是，如果我们有许多以类似方式处理的元素，那么就不必为每个元素分配一个处理程序 —— 而是将单个处理程序放在它们的共同祖先上。</p>
+</blockquote>
+<h2 id="事件的传递"><a class="markdownIt-Anchor" href="#事件的传递"></a> 事件的传递</h2>
+<p>当一个事件发生在具有父元素当元素上时，有两种阶段：<br />
+<strong>捕获阶段</strong><br />
+捕获阶段会从最外层的父元素开始查找，是否注册了相关的事件，比如<code>onclick</code>,如果是，则允许。<br />
+然后他会找到下一层的父元素，继续执行这个流程，直到到达实际点击的元素。<br />
+<strong>冒泡阶段</strong><br />
+冒泡阶段恰好相反，他会先处理自身的<code>onclick</code>，然后找到最近的父元素，并且继续执行，然后再是上上层的父元素，直到到达<code>&lt;html&gt;</code>为止。</p>
+<blockquote>
+<p>豆知识：这两种阶段是微软和网景提出的两种阶段，最后w3c指定了统一标准。并且定义他们的执行顺序为先捕获再冒泡。</p>
+</blockquote>
+<p>同时要注意几点：</p>
+<ul>
+<li>on*系列的执行程序，比如<code>onclick</code>均在冒泡上触发。</li>
+<li>addEventListener(type,callback,capture = false) 第三个参数为false（默认）时，注册为冒泡，否则为捕获</li>
+<li><s>因为微软是老大，所以大家一般默认使用冒泡</s></li>
+</ul>
+<p>同时，在DOM事件中，传播分为三个阶段</p>
+<ul>
+<li>捕获阶段</li>
+<li>目标（到达）阶段 （不常使用）</li>
+<li>冒泡阶段</li>
+</ul>
+<img src="/images/event-delegation-2020-11-19-12-51-31.png" class="">   
+<p>一般来说，我们默认情况下都是在使用冒泡阶段，但是并不是说捕获阶段就没有任何作用。我们可以在捕获阶段中使用<code>event.stopPropagation()</code>来中止捕获或者冒泡阶段的传递。</p>
+<h2 id="事件的处理"><a class="markdownIt-Anchor" href="#事件的处理"></a> 事件的处理</h2>
+<p>因此，当出现冒泡事件时，最先被触发的，自然是元素本身上面的监听程序。当事件触发时，会向元素上的监听器传递一个<code>event</code>对象。<code>event</code>中常用的属性为：</p>
+<ul>
+<li>event.target 触发元素</li>
+<li>event.currentTarget 当前执行程序挂载的元素</li>
+<li>event.eventPhase 当前阶段（capturing=1，target=2，bubbling=3）<br />
+<strong>并且，程序中的<code>this</code>，默认情况下指向<code>event.currentTarget</code>。</strong><br />
+比如，你在<code>body</code>上设定了<code>onclick</code>，当点击<code>body</code>中的<code>button</code>后，如果冒泡达到<code>body.onclick</code>时，event中属性的内容应该分别为</li>
+<li>event.target == button</li>
+<li>event.currentTarget == body</li>
+<li>event.eventPhase == 3</li>
+</ul>
+<p>不过，如果在一个元素上注册了多个监听器，那么他们的执行顺序会按照注册顺序来执行。如果你希望停止执行同一个元素其他的监听器并且停止冒泡，那么可以用<code>event.stopImmediatePropagation()</code>来强制停止。</p>
+<h3 id="️注意"><a class="markdownIt-Anchor" href="#️注意"></a> ⚠️注意</h3>
+<p>不要认为可以优化很多性能而自作主张的在每个监听器上面都阻止冒泡，除非整个程序完全由你掌控。很多函数库或者UI框架或多或少的使用来事件委托功能，如果没有十足的把握，请不要轻易的阻止冒泡或者事件传递。</p>
+<h2 id="事件委托"><a class="markdownIt-Anchor" href="#事件委托"></a> 事件委托</h2>
+<p>事件委托其实就是依赖于事件传递的一种程序设计方式。在处理程序中，用户点击到的元素不一定是真正想要的元素。比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// html</span></span><br><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">&#x27;main&#x27;</span>&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">&#x27;button&#x27;</span>&gt;</span><br><span class="line">        &lt;span&gt;😊&lt;<span class="regexp">/span&gt;&lt;span&gt;点我！&lt;/</span>span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="comment">// js</span></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">&#x27;.main&#x27;</span>).addEventListener(<span class="string">&#x27;click&#x27;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">  alert(<span class="built_in">this</span>.tagName+ev.target.tagName) <span class="comment">// DIVSPAN</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>很明显，我们想判断的是它有没有点击按钮，而不是SPAN。<br />
+因此我们可以在代码中进行一些判断，比如:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">object.onclick = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> target = ev.target.closest(<span class="string">&#x27;.button&#x27;</span>) <span class="comment">//判断自身或者上级中是否有可以被选择器选择的元素</span></span><br><span class="line">    <span class="keyword">if</span>(!target) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span>(!object.containts(target)) <span class="keyword">return</span>; <span class="comment">// 如果不是当前元素的后代元素</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>当一个事件触发时，会将💉事件穿透整个🧅层级结构：</p>
+<ul>
+<li>穿入的情况叫做捕获阶段</li>
+<li>穿到目标的时候叫做到达阶段</li>
+<li>过度穿透的时候叫做冒泡阶段。<br />
+当你使用<code>event.stopPropagation()</code>，会停止继续穿透。</li>
+</ul>
+<p>在使用<code>addEventListener</code>时第三个参数用于设定注册在捕获还是冒泡阶段。<br />
+传递到程序中的<code>event</code>对象中：</p>
+<ul>
+<li>event.target 表示目标元素</li>
+<li>event.currencyTarget(==this) 表示当前处理元素</li>
+<li>event.eventPhase 表示当前阶段</li>
+</ul>
+<p>不要随便的阻止事件传播。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/18/cache/" rel="prev" title="Web缓存">
+                  <i class="fa fa-chevron-left"></i> Web缓存
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BoxChen</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">62k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:43</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://nishuzumi.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://binzinstar.com/2020/11/18/event-delegation/";
+    this.page.identifier = "2020/11/18/event-delegation/";
+    this.page.title = "细看事件委托";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
