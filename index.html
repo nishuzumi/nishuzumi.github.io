@@ -239,7 +239,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-11-22 10:16:40 / 修改时间：17:25:03" itemprop="dateCreated datePublished" datetime="2020-11-22T10:16:40+08:00">2020-11-22</time>
+      <time title="创建时间：2020-11-22 10:16:40 / 修改时间：17:28:16" itemprop="dateCreated datePublished" datetime="2020-11-22T10:16:40+08:00">2020-11-22</time>
     </span>
 
   
@@ -285,109 +285,14 @@
           <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
 <p>理解浏览器页面渲染原理有时候会帮助我们更好的对页面加载进行优化，作为前端开发者这是必不可少的技能。<br />
 浏览一个顺畅而且精美的页面会潜在的提升用户的好感程度，甚至能直接转换用户成为有效用户。</p>
-<h2 id="渲染流程"><a class="markdownIt-Anchor" href="#渲染流程"></a> 渲染流程</h2>
-<p>浏览器加载页面大致分为以下流程</p>
-<ul>
-<li>DNS查找</li>
-<li>建立连接</li>
-<li>传输内容</li>
-<li>解析内容</li>
-<li>进行渲染</li>
-</ul>
-<h3 id="dns查找"><a class="markdownIt-Anchor" href="#dns查找"></a> DNS查找</h3>
-<p>当用户输入一个URL到地址栏中，或者点击链接，提交表单，都会开始产生这些流程。<br />
-当浏览器收到一个URL，首先回到HOST中进行查找，当找不到HOST中的对应IP时，便会向DNS服务器进行请求，当请求成功后，这个目标IP地址会被缓存一段时间，以用来下一次的查找。<br />
-一般情况下，一个页面会尝试一次DNS查找。但是，如果页面中大量的引用了外部资源，并且不在同一个域名之下，会导致多次的DNS查找。<br />
-DNS查找对网络稳定的<em>PC</em>用户可能没有直接的影响，但是在移动网络的情况下，任何网络连接的建立都是一个漫长的过程。<br />
-同时DNS查找不是一帆风顺的，你可以把它认为是一个甩锅的过程。简单的说，用户请求查找DNS时，会向设定好的直接DNS服务器发起请求，也就是你IP设置中自动，或者手动设置的DNS服务器，当直接DNS服务器找不到时，或者没有缓存时，则会向13台根域名服务器转发请求，要注意的是，<strong>这些请求都会由直接DNS服务器进行处理，和客户端交互的只有一个直接DNS服务器</strong>。接着，管理了对应根域名的服务，比如<em>cn</em>的根域名服务器，同样的会进行查找，如果找不到它就会返回下一级的域名的DNS服务器，比如<em><a target="_blank" rel="noopener" href="http://juejin.cn">juejin.cn</a></em>的DNS服务器，同时甩锅给直接DNS服务器，于是直接DNS服务器就回去询问<em><a target="_blank" rel="noopener" href="http://juejin.cn">juejin.cn</a></em>的域名服务器，直到目标地址被找到或者返回不存在。不过DNS的处理并没有那么简单，还存在转发模式等情况，这个不在这里展开。</p>
-<h3 id="建立连接"><a class="markdownIt-Anchor" href="#建立连接"></a> 建立连接</h3>
-<p>众所周知我们的浏览器使用的是<em>HTTP协议</em>，而在传输层使用的则是<em>TCP协议</em>。因此，建立TCP连接则是万物开始的第一步。</p>
-<h4 id="tcp握手"><a class="markdownIt-Anchor" href="#tcp握手"></a> TCP握手 🤝</h4>
-<p>当我们需要和一个服务器进行通讯，首先要做的就是进行TCP连接，这里就是经典的<em>三次握手法则</em>。<em>C：听得到吗？S：听得到，你听得到我吗？C：听得到。</em></p>
-<h4 id="tls协商"><a class="markdownIt-Anchor" href="#tls协商"></a> TLS协商</h4>
-<p>如果你需要在HTTPS上面建立通讯，那么就还需要进行一次TLS协商。主要流程为：</p>
-<ol>
-<li>客户端向服务端请求公钥</li>
-<li>生成一个对话密钥</li>
-<li>使用对话密钥加密数据。</li>
-</ol>
-<p>双钥加密先明确几点</p>
-<ul>
-<li>对话密钥为对称加密密钥</li>
-<li>公钥可以加密也可以解密</li>
-<li>私钥可以加密也可以解密</li>
-<li>公钥加密只有私钥可以解密</li>
-<li>私钥加密公钥和私钥都可以解密，因为私钥可以推算出公钥</li>
-</ul>
-<p>在第一步，<em>客户端向服务端请求公钥</em>时，为了防止篡改，将公钥通过CA机构私钥加密生成证书，然后传递。</p>
-<ol>
-<li>第一步客户端Hello，将会传送以下数据，<em>协议版本，客户端生成的随机数，加密方式，压缩算法</em>。</li>
-<li>接着，服务端进行回应，这个时候服务端会传递，<em>决定使用的加密协议版本，服务器随机数，决定的加密方式，还有服务端证书</em><br />
-然后，客户端开始校验服务器证书是不是可信机构，不可信就会在浏览器中显示警告信息。如果没有问题，就会取出<em>服务器公钥</em>。到这就完成了<strong>客户端向服务器请求公钥</strong></li>
-</ol>
-<p>此时我们的客户端已经有了这些数据：<strong>客户端随机数，服务端随机数，服务端公钥</strong>。<br />
-3. 客户端再次回应服务端，将会传递：<em>又一个随机数（pre-master key，简称PMK），改变编码通知（后面的信息都会使用商量好的加密方式和密钥发送），握手结束通知</em><br />
-此时，客户端，服务端都有了三个随机数，于是使用这三个随机数，生成一个会话密钥。<br />
-4. 服务端返回最后响应。</p>
-<h3 id="获取数据"><a class="markdownIt-Anchor" href="#获取数据"></a> 获取数据</h3>
-<p>当成功建立连接后，服务器就会开始传输内容，一般来说是一个HTML文件。此时会有个细节，就是TCP慢启动，或者说是14KB原则。</p>
-<h4 id="tcp慢启动14kb"><a class="markdownIt-Anchor" href="#tcp慢启动14kb"></a> TCP慢启动/14kb</h4>
-<p>为了方式新的连接瞬间把网络宽大打满，所以TCP会采用一种慢启动的方式来进行通讯。在首次数据往返时，服务器最多发送10个数据包（大约14KB，具体数字为1432B到1452B之间）具体分析请看<a target="_blank" rel="noopener" href="https://github.com/879479119/879479119.github.io/issues/7">为什么都说首屏html大小限制在14KB以内</a>。当收到包后，返回ACK，服务器就会发送上一次两倍的数据量，如<code>14kb-&gt;28kb-&gt;56kb-&gt;....</code>。直到请求完成。所以，如果想要有风驰电掣般的加载速度，首页的HTML文档需要控制在14KB以内，不过，MVVC的出现，让首页14KB已经成为常态。</p>
-<h4 id="拥堵控制"><a class="markdownIt-Anchor" href="#拥堵控制"></a> 拥堵控制</h4>
-<p>当服务器过快的发送了大量的数据时，有可能会被丢弃，客户端也不会返回ACK，所以，当出现无法接收到确认帧时，就会开始降速。</p>
-<h3 id="解析内容"><a class="markdownIt-Anchor" href="#解析内容"></a> 解析内容</h3>
-<p>一旦浏览器收到第一个数据块时，他就会立刻开始“推测性解析”。解析的内容是将文档转换为DOM和CSSOM进行处理，并且等待绘制。<br />
-这个解析并不是要等待HTML文档完全下载，他会在收到片段时就开始尝试解析。但是，在渲染之前，所有的HTML，CSS，JS都需要解析完成。</p>
-<h4 id="构建dom树"><a class="markdownIt-Anchor" href="#构建dom树"></a> 构建DOM树 🌲</h4>
-<p>首先会处理HTML标记并且构建DOM树，HTML标记包括了开始和结束标记，属性名和值。解析后对标记会加入到文档中构建文档树。<br />
-DOM树会描述文档内容，一般情况下<code>HTML</code>标签为第一个，也是根节点。</p>
-<img src="/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B-2020-11-22-15-52-09.png" class="">  
-<p>当浏览器发现非堵塞当资源，比如图片或者某些情况下CSS文件。但是遇到<code>script</code>标签当时候，在没有<code>async</code>和<code>defer</code>的情况下，则会被堵塞并且停止HTML的解析。</p>
-<h4 id="预加载扫描器"><a class="markdownIt-Anchor" href="#预加载扫描器"></a> 预加载扫描器</h4>
-<p>在解析DOM树的时候，主线程会被完全堵塞，当出现这种情况时，预加载扫描器会寻找高优先的资源，比如CSS，JS，或者Web字体。一般情况下获取CSS不会堵塞HTML的下载和解析，但是在遇到JS的时候，则会发生堵塞。比如在<code>link</code>标签之后产出现了<code>script</code>那么就会产生堵塞。</p>
-<h4 id="构建cssom树"><a class="markdownIt-Anchor" href="#构建cssom树"></a> 构建CSSOM树 🌲</h4>
-<p>CSSOM树和DOM树是完全独立的两棵树，只不过CSSOM树的解析非常快，甚至常常小于一次DNS查找的耗时。</p>
-<h4 id="js编译"><a class="markdownIt-Anchor" href="#js编译"></a> JS编译</h4>
-<p>脚本文件会被解释，编译，解析然后运行。</p>
-<h3 id="渲染"><a class="markdownIt-Anchor" href="#渲染"></a> 渲染</h3>
-<p>当一切准备就绪的时候，就会开始进行渲染了。渲染步骤包括样式，布局，绘制。在某些情况下还有合成，甚至会触发GPU进行硬件加速。</p>
-<h4 id="样式-style"><a class="markdownIt-Anchor" href="#样式-style"></a> 样式 Style</h4>
-<p>此时需要将DOM和CSSOM树合并成Render树🌲，任何含有<code>display:none</code>的节点都会被忽略，不会出现在Render树上，而具有<code>visibility:hidden</code>的会存在于树上，因为他们只是用户不可见。</p>
-<h4 id="布局-layout"><a class="markdownIt-Anchor" href="#布局-layout"></a> 布局 Layout</h4>
-<p>这一步开始进行计算每个元素的大小位置，这个过程中，有可能因为图片载入成功导致页面布局发生改变，从而引起回流。</p>
-<h4 id="绘制-paint"><a class="markdownIt-Anchor" href="#绘制-paint"></a> 绘制 Paint</h4>
-<p>最后就是进行绘制了，这一步会把每个节点绘制到屏幕上，同时也会应用样式，比如颜色，边框，阴影等。<br />
-为了保证速度，任何渲染部分的内容，都需要在16.67MS之内完成，也就是至少每秒60次渲染的速度。为了保证重绘速度快，屏幕上的绘图常常会分为多个图层，在必要的时候发生合成。<br />
-在某些条件下，一些元素会被提升到GPU层上进行绘制。比如<code>&lt;video&gt;</code>和<code>&lt;canvas&gt;</code>，再或者CSS中的<code>opacity</code>，3D变换，<code>filter</code>，<code>will-change</code>等等，这些都会产生独立的复合图层。</p>
-<h4 id="合成-compositing"><a class="markdownIt-Anchor" href="#合成-compositing"></a> 合成 Compositing</h4>
-<p>当多个层绘制好后，互相重叠的情况下，就需要进行合成，来保证他们的绘制顺序不会发生问题。<br />
-如果触发了回流，那么就会重新触发<code>绘制</code>和<code>合成</code>这两个步骤。所以，如果你提前设定好了图片的宽高，就会减少浏览器的绘制回流。</p>
-<h3 id="交互"><a class="markdownIt-Anchor" href="#交互"></a> 交互</h3>
-<p>就算页面绘制完成了，但是依然可能无法进行交互，比如主线程被某些JS进行堵塞占用，此时无法触发新的宏任务处理，就无法进入交互流程。（任何交互都属于宏任务。）</p>
-<h2 id="优化"><a class="markdownIt-Anchor" href="#优化"></a> 优化</h2>
-<p>在页面加载中，有非常多的可以进行优化的内容。</p>
-<h3 id="dns-prefetch"><a class="markdownIt-Anchor" href="#dns-prefetch"></a> dns-prefetch</h3>
-<p>当浏览器加载多个外部资源的时候，如果不在同一个域下，则会继续触发DNS查找，为了提前解析DNS，加快加载速度，可以创建一个<code>&lt;link&gt;</code>标签并且添加rel属性。如</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;dns-prefetch&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://fonts.googleapis.com/&quot;</span>&gt;</span> </span><br></pre></td></tr></table></figure>
-<p>同时，你也可以将它和<code>preconnect</code>组合使用。比如：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;preconnect&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://fonts.gstatic.com/&quot;</span> <span class="attr">crossorigin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;dns-prefetch&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://fonts.gstatic.com/&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>不过这样也并不是没有坏处的，如果如果页面需要建立很多连接，那么预先连接反而会适得其反。<br />
-那这样做的好处在哪呢？是因为如果有些不兼容<code>preconnect</code>的浏览器依然可以回退使用备选方案<code>dns-prefetch</code>。就算浏览器也不支持<code>dns-prefetch</code>，那顶多是占不到便宜，不会导致页面出现问题。</p>
-<h3 id="动画"><a class="markdownIt-Anchor" href="#动画"></a> 动画</h3>
-<h4 id="css"><a class="markdownIt-Anchor" href="#css"></a> CSS</h4>
-<p>CSS中可以使用<code>transactions</code>或者<code>animations</code>来进行编写动画。<code>transactions</code>用于描写元素的开始和结束状态。而<code>animations</code>允许开发者定义两个状态之前的变换处理，比如速度或者中间帧状态等等。</p>
-<h4 id="requestanimationframe"><a class="markdownIt-Anchor" href="#requestanimationframe"></a> requestAnimationFrame</h4>
-<p>requestAnimationFrame提供来一种通过JS来进行绘制动画的高效节能方式。它的好处不再赘述。</p>
-<p>值得注意的是，CSS动画和<code>requestAnimationFrame</code>都会在页面不在可视范围之内，或者浏览器后台运行时，暂停运行。</p>
-<h4 id="性能"><a class="markdownIt-Anchor" href="#性能"></a> 性能</h4>
-<p>一般情况下，他们的性能应该是基本一致的。但是更为推荐使用CSS动画。<br />
-这事因为,如果你动画设计到的属性中，不会触发<em>重布局</em>，那么就可以通过某些触发独立复合图层的方式将其变为独立复合图层，使用GPU来对他进行绘制。这样就可以脱离主线程实现动画效果。</p>
-<h3 id="元素观察"><a class="markdownIt-Anchor" href="#元素观察"></a> 元素观察</h3>
-<p>在某些场景下，往往会对一些元素内容进行判断是否可见。常规的使用方法则是频繁调用<code>getBoundingClientRect</code>获取相关的内容信息来进行判断，如果需要检测的元素过多，那么也是对性能的一种损耗。最合适的场景就是一些无限滚动的页面。<br />
-在这种场景下，可以使用<code>Intersection Observer</code>进行优化。它运行你设定一个回调函数，当目标元素和可视窗口，或者某些元素发生交集的时候执行。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> options = &#123;</span><br><span class="line">    root: <span class="built_in">document</span>.querySelector(<span class="string">&#x27;#scrollArea&#x27;</span>), </span><br><span class="line">    rootMargin: <span class="string">&#x27;0px&#x27;</span>, </span><br><span class="line">    threshold: <span class="number">1.0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> observer = <span class="keyword">new</span> IntersectionObserver(callback, options);</span><br><span class="line"><span class="keyword">let</span> target = <span class="built_in">document</span>.querySelector(<span class="string">&#x27;#listItem&#x27;</span>);</span><br><span class="line">observer.observe(target);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> callback =<span class="function">(<span class="params">entries, observer</span>) =&gt;</span> &#123; </span><br><span class="line">  entries.forEach(<span class="function"><span class="params">entry</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Each entry describes an intersection change for one observed</span></span><br><span class="line">    <span class="comment">// target element:</span></span><br><span class="line">    <span class="comment">//   entry.boundingClientRect</span></span><br><span class="line">    <span class="comment">//   entry.intersectionRatio</span></span><br><span class="line">    <span class="comment">//   entry.intersectionRect</span></span><br><span class="line">    <span class="comment">//   entry.isIntersecting</span></span><br><span class="line">    <span class="comment">//   entry.rootBounds</span></span><br><span class="line">    <span class="comment">//   entry.target</span></span><br><span class="line">    <span class="comment">//   entry.time</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>不过，如果你只是打算使用图片懒加载，可以简单的给<code>&lt;img&gt;</code>添加<code>loading='lazy'</code>即可。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
