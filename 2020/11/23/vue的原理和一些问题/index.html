@@ -25,29 +25,43 @@
     var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="盒子笔记">
-<meta property="og:url" content="https://binzinstar.com/index.html">
+  <meta name="description" content="前言 🎤 一个小小的笔记本📒  变化检测  Object的变化检测 在getter中收集依赖，在setter中更新依赖。 当在getter中检测到某个函数调用到时候，就把它推入一个Dep对象中进行管理。  definedReactive definedReactive会给每个属性增加监听捕获的能力，会在内部维护一个Dep对象。他给每个属性都添加上了getter和setter。用来记录和触发对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue的笔记">
+<meta property="og:url" content="https://binzinstar.com/2020/11/23/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="盒子笔记">
+<meta property="og:description" content="前言 🎤 一个小小的笔记本📒  变化检测  Object的变化检测 在getter中收集依赖，在setter中更新依赖。 当在getter中检测到某个函数调用到时候，就把它推入一个Dep对象中进行管理。  definedReactive definedReactive会给每个属性增加监听捕获的能力，会在内部维护一个Dep对象。他给每个属性都添加上了getter和setter。用来记录和触发对">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-23-14-17-45.png">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-23-15-55-26.png">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-13-37-19.png">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-13-52-40.png">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-14-31-05.png">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-16-24-37.png">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-16-25-48.png">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-16-27-46.png">
+<meta property="og:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-16-29-11.png">
+<meta property="article:published_time" content="2020-11-23T04:35:31.000Z">
+<meta property="article:modified_time" content="2020-11-24T08:52:02.269Z">
 <meta property="article:author" content="BoxChen">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://binzinstar.com/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-23-14-17-45.png">
 
 
-<link rel="canonical" href="https://binzinstar.com/">
+<link rel="canonical" href="https://binzinstar.com/2020/11/23/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">
 
 
 <script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>盒子笔记</title>
+  <title>vue的笔记 | 盒子笔记</title>
   
 
 
@@ -137,7 +151,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -150,6 +164,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%98%E5%8C%96%E6%A3%80%E6%B5%8B"><span class="nav-number">2.</span> <span class="nav-text"> 变化检测</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#object%E7%9A%84%E5%8F%98%E5%8C%96%E6%A3%80%E6%B5%8B"><span class="nav-number">2.1.</span> <span class="nav-text"> Object的变化检测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#definedreactive"><span class="nav-number">2.1.1.</span> <span class="nav-text"> definedReactive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#watcher"><span class="nav-number">2.1.2.</span> <span class="nav-text"> Watcher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#observer"><span class="nav-number">2.1.3.</span> <span class="nav-text"> Observer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">2.1.4.</span> <span class="nav-text"> 小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#array%E7%9A%84%E5%8F%98%E5%8C%96%E6%A3%80%E6%B5%8B"><span class="nav-number">2.2.</span> <span class="nav-text"> Array的变化检测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E8%8A%82"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 小节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E5%8C%96%E6%A3%80%E6%B5%8B%E7%9B%B8%E5%85%B3api%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.3.</span> <span class="nav-text"> 变化检测相关API实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vmwatch"><span class="nav-number">2.3.1.</span> <span class="nav-text"> vm.$watch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#deep-%E5%B0%86%E4%BC%9A%E7%9B%91%E5%90%AC%E5%86%85%E9%83%A8%E5%86%85%E5%AE%B9"><span class="nav-number">2.3.1.1.</span> <span class="nav-text"> deep 将会监听内部内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#immediate-%E6%B3%A8%E5%86%8C%E6%97%B6%E4%BC%9A%E7%AB%8B%E5%88%BB%E8%A7%A6%E5%8F%91%E5%9B%9E%E8%B0%83"><span class="nav-number">2.3.2.</span> <span class="nav-text"> immediate 注册时会立刻触发回调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#watch%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">2.3.3.</span> <span class="nav-text"> watch实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#deep"><span class="nav-number">2.3.3.1.</span> <span class="nav-text"> deep</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vmset"><span class="nav-number">2.3.4.</span> <span class="nav-text"> vm.$set</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.3.4.1.</span> <span class="nav-text"> 具体实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vmdelete"><span class="nav-number">2.3.5.</span> <span class="nav-text"> vm.$delete</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0-2"><span class="nav-number">2.3.5.1.</span> <span class="nav-text"> 具体实现</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9Fdom"><span class="nav-number">3.</span> <span class="nav-text"> 虚拟DOM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vnode"><span class="nav-number">4.</span> <span class="nav-text"> VNode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%E8%8A%82%E7%82%B9"><span class="nav-number">4.0.1.</span> <span class="nav-text"> 注释节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E8%8A%82%E7%82%B9"><span class="nav-number">4.0.2.</span> <span class="nav-text"> 文本节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%8B%E9%9A%86%E8%8A%82%E7%82%B9"><span class="nav-number">4.0.3.</span> <span class="nav-text"> 克隆节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%B4%A0%E8%8A%82%E7%82%B9"><span class="nav-number">4.0.4.</span> <span class="nav-text"> 元素节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E8%8A%82%E7%82%B9"><span class="nav-number">4.0.5.</span> <span class="nav-text"> 组件节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E8%8A%82%E7%82%B9"><span class="nav-number">4.0.6.</span> <span class="nav-text"> 函数式节点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#patch"><span class="nav-number">5.</span> <span class="nav-text"> patch</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9"><span class="nav-number">5.0.1.</span> <span class="nav-text"> 新增节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="nav-number">5.0.2.</span> <span class="nav-text"> 删除节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E8%8A%82%E7%82%B9"><span class="nav-number">5.0.3.</span> <span class="nav-text"> 更新节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%8A%82%E7%82%B9"><span class="nav-number">5.1.</span> <span class="nav-text"> 创建节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9-2"><span class="nav-number">5.2.</span> <span class="nav-text"> 删除节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E8%8A%82%E7%82%B9-2"><span class="nav-number">5.3.</span> <span class="nav-text"> 更新节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%8A%82%E7%82%B9"><span class="nav-number">5.3.1.</span> <span class="nav-text"> 静态节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E8%8A%82%E7%82%B9"><span class="nav-number">5.3.2.</span> <span class="nav-text"> 虚拟节点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89text"><span class="nav-number">5.3.2.1.</span> <span class="nav-text"> 有Text</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0text"><span class="nav-number">5.3.2.2.</span> <span class="nav-text"> 无Text</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E5%AD%90%E8%8A%82%E7%82%B9"><span class="nav-number">5.4.</span> <span class="nav-text"> 更新子节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="nav-number">5.4.1.</span> <span class="nav-text"> 更新策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="nav-number">5.4.2.</span> <span class="nav-text"> 优化策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E7%89%88%E7%BC%96%E8%AF%91"><span class="nav-number">6.</span> <span class="nav-text"> 模版编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E7%89%88%E7%BC%96%E8%AF%91%E4%B8%BA%E6%B8%B2%E6%9F%93%E5%87%BD%E6%95%B0"><span class="nav-number">6.1.</span> <span class="nav-text"> 模版编译为渲染函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E5%99%A8"><span class="nav-number">6.1.1.</span> <span class="nav-text"> 解析器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E5%99%A8"><span class="nav-number">6.1.2.</span> <span class="nav-text"> 优化器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8"><span class="nav-number">6.1.3.</span> <span class="nav-text"> 代码生成器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E5%92%8C%E5%85%A8%E5%B1%80api"><span class="nav-number">7.</span> <span class="nav-text"> 实例方法和全局API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3%E6%96%B9%E6%B3%95"><span class="nav-number">7.1.</span> <span class="nav-text"> 生命周期相关方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#forceupdate"><span class="nav-number">7.1.1.</span> <span class="nav-text"> forceUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#destory"><span class="nav-number">7.1.2.</span> <span class="nav-text"> destory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nexttick"><span class="nav-number">7.1.3.</span> <span class="nav-text"> nextTick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mount"><span class="nav-number">7.1.4.</span> <span class="nav-text"> mount</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">8.</span> <span class="nav-text"> 生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5"><span class="nav-number">8.1.</span> <span class="nav-text"> 初始化阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E7%89%88%E7%BC%96%E8%AF%91%E9%98%B6%E6%AE%B5"><span class="nav-number">8.2.</span> <span class="nav-text"> 模版编译阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%82%E8%BD%BD%E9%98%B6%E6%AE%B5"><span class="nav-number">8.3.</span> <span class="nav-text"> 挂载阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD%E9%98%B6%E6%AE%B5"><span class="nav-number">8.4.</span> <span class="nav-text"> 卸载阶段</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text"> 一些问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#v-model%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A"><span class="nav-number">9.1.</span> <span class="nav-text"> v-model双向绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#v-for-key%E9%97%AE%E9%A2%98"><span class="nav-number">9.2.</span> <span class="nav-text"> v-for key问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#computed%E5%92%8Cwatch"><span class="nav-number">9.3.</span> <span class="nav-text"> computed和watch</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -201,11 +216,12 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
       
 
       
-    
+
+  
 
 
 <div class="post-block">
@@ -225,10 +241,9 @@
       <meta itemprop="name" content="盒子笔记">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/23/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">vue的笔记</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          vue的笔记
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -288,7 +303,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h1>
+        <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h1>
 <p>一个小小的笔记本📒</p>
 <h1 id="变化检测"><a class="markdownIt-Anchor" href="#变化检测"></a> 变化检测</h1>
 <h2 id="object的变化检测"><a class="markdownIt-Anchor" href="#object的变化检测"></a> Object的变化检测</h2>
@@ -514,7 +529,6 @@ patch主要做三件事情：</p>
 <p>computed的内容会在变化后运算，并且生成缓存，如果有地方使用这个内容，并不会重新执行computed。<br />
 watch用于监听对象内容的变化，当内容发生变化时，就会执行watch内容。</p>
 
-      
     </div>
 
     
@@ -522,973 +536,18 @@ watch用于监听对象内容的变化，当内容发生变化时，就会执行
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/22/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%844%E7%A7%8D%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/22/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%844%E7%A7%8D%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">图片懒加载的4种方式</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-22 19:41:06" itemprop="dateCreated datePublished" datetime="2020-11-22T19:41:06+08:00">2020-11-22</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-23 11:59:33" itemprop="dateModified" datetime="2020-11-23T11:59:33+08:00">2020-11-23</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/22/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%844%E7%A7%8D%E6%96%B9%E5%BC%8F/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/22/图片懒加载的4种方式/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>经典问题，就不用多说</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/22/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%844%E7%A7%8D%E6%96%B9%E5%BC%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">浏览器页面渲染流程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-22 10:16:40 / 修改时间：17:28:16" itemprop="dateCreated datePublished" datetime="2020-11-22T10:16:40+08:00">2020-11-22</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/22/浏览器页面渲染流程/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>理解浏览器页面渲染原理有时候会帮助我们更好的对页面加载进行优化，作为前端开发者这是必不可少的技能。<br />
-浏览一个顺畅而且精美的页面会潜在的提升用户的好感程度，甚至能直接转换用户成为有效用户。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/22/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/22/%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%844%E7%A7%8D%E6%96%B9%E5%BC%8F/" rel="prev" title="图片懒加载的4种方式">
+                  <i class="fa fa-chevron-left"></i> 图片懒加载的4种方式
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/21/%E4%BD%9C%E7%94%A8%E5%9F%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/21/%E4%BD%9C%E7%94%A8%E5%9F%9F/" class="post-title-link" itemprop="url">小记作用域</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-21 11:11:55" itemprop="dateCreated datePublished" datetime="2020-11-21T11:11:55+08:00">2020-11-21</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-22 12:31:24" itemprop="dateModified" datetime="2020-11-22T12:31:24+08:00">2020-11-22</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/21/%E4%BD%9C%E7%94%A8%E5%9F%9F/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/21/作用域/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>深入研究一下JS的作用域。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/21/%E4%BD%9C%E7%94%A8%E5%9F%9F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
+            <div class="post-nav-item">
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/20/6%E7%A7%8D%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/20/6%E7%A7%8D%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/" class="post-title-link" itemprop="url">7种方法实现斐波那契数列(不包括公式法)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-20 16:29:56 / 修改时间：16:48:26" itemprop="dateCreated datePublished" datetime="2020-11-20T16:29:56+08:00">2020-11-20</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/20/6%E7%A7%8D%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/20/6种方法实现斐波那契数列/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>闲来无事想到折腾点没用的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/20/6%E7%A7%8D%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/19/deep-clone/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/19/deep-clone/" class="post-title-link" itemprop="url">简单实现深拷贝</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-19 17:28:41 / 修改时间：18:42:44" itemprop="dateCreated datePublished" datetime="2020-11-19T17:28:41+08:00">2020-11-19</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/19/deep-clone/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/19/deep-clone/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>在JS中，默认的语言特性并没有提供深拷贝功能，只提供了浅拷贝，比如<code>Object.assign()</code>。所以本文将会简单的，通过两种方式实现深拷贝。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/19/deep-clone/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/19/request/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/19/request/" class="post-title-link" itemprop="url">请求 in Browser</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-19 15:18:15 / 修改时间：21:01:51" itemprop="dateCreated datePublished" datetime="2020-11-19T15:18:15+08:00">2020-11-19</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/19/request/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/19/request/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>本文会总结在浏览器中常见的网络请求方式。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/19/request/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/18/event-delegation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/18/event-delegation/" class="post-title-link" itemprop="url">细看事件委托</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-18 20:39:00" itemprop="dateCreated datePublished" datetime="2020-11-18T20:39:00+08:00">2020-11-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-19 15:18:59" itemprop="dateModified" datetime="2020-11-19T15:18:59+08:00">2020-11-19</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/18/event-delegation/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/18/event-delegation/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<blockquote>
-<p>捕获和冒泡允许我们实现一种被称为 事件委托 的强大的事件处理模式。<br />
-这个想法是，如果我们有许多以类似方式处理的元素，那么就不必为每个元素分配一个处理程序 —— 而是将单个处理程序放在它们的共同祖先上。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/18/event-delegation/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/18/cache/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/18/cache/" class="post-title-link" itemprop="url">Web缓存</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-18 17:16:05" itemprop="dateCreated datePublished" datetime="2020-11-18T17:16:05+08:00">2020-11-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-20 09:46:19" itemprop="dateModified" datetime="2020-11-20T09:46:19+08:00">2020-11-20</time>
-      </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/18/cache/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/18/cache/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>Web中的缓存包含多个方面，从服务端的缓存机制到客户端的缓存机制，缺一不可，并且缓存在用户体验方面非常重要，本文将会记录和补充Web中的各种缓存内容。<br />
-本文主要以MDN为基础，进行其他的细节补充。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/18/cache/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/18/page-life/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/18/page-life/" class="post-title-link" itemprop="url">页面📃的生命周期小记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-18 14:27:45 / 修改时间：19:32:38" itemprop="dateCreated datePublished" datetime="2020-11-18T14:27:45+08:00">2020-11-18</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/18/page-life/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/18/page-life/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>整个页面加载是用户体验界面最重要的一部分，当你对浏览器对页面生命周期更为了解后，可以更好优化很多场景下的问题。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/18/page-life/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          </div>
     </footer>
   </article>
 </div>
@@ -1497,14 +556,15 @@ watch用于监听对象内容的变化，当内容发生变化时，就会执行
 
 
 
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
-
-
 
       
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -1615,6 +675,26 @@ watch用于监听对象内容的变化，当内容发生变化时，就会执行
   }
   // defer loading until the whole page loading is completed
   window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://binzinstar.com/2020/11/23/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/";
+    this.page.identifier = "2020/11/23/vue的原理和一些问题/";
+    this.page.title = "vue的笔记";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nishuzumi.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
 </script>
 
 </body>
