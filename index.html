@@ -164,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -213,6 +213,117 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/24/display-flex-grid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="BoxChen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="盒子笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/24/display-flex-grid/" class="post-title-link" itemprop="url">display:flex grid && float</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-24 18:45:36" itemprop="dateCreated datePublished" datetime="2020-11-24T18:45:36+08:00">2020-11-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-25 15:26:33" itemprop="dateModified" datetime="2020-11-25T15:26:33+08:00">2020-11-25</time>
+      </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/11/24/display-flex-grid/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/24/display-flex-grid/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
+<p>了解一下flex和grid两种布局手段<br />
+⚠️ 此文章内容还未完善</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/24/display-flex-grid/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/23/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -245,7 +356,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-24 16:52:02" itemprop="dateModified" datetime="2020-11-24T16:52:02+08:00">2020-11-24</time>
+        <time title="修改时间：2020-11-24 19:16:17" itemprop="dateModified" datetime="2020-11-24T19:16:17+08:00">2020-11-24</time>
       </span>
 
   
@@ -290,230 +401,14 @@
     <div class="post-body" itemprop="articleBody">
           <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h1>
 <p>一个小小的笔记本📒</p>
-<h1 id="变化检测"><a class="markdownIt-Anchor" href="#变化检测"></a> 变化检测</h1>
-<h2 id="object的变化检测"><a class="markdownIt-Anchor" href="#object的变化检测"></a> Object的变化检测</h2>
-<p>在getter中收集依赖，在setter中更新依赖。<br />
-当在getter中检测到某个函数调用到时候，就把它推入一个<code>Dep</code>对象中进行管理。</p>
-<h3 id="definedreactive"><a class="markdownIt-Anchor" href="#definedreactive"></a> definedReactive</h3>
-<p>definedReactive会给每个属性增加监听捕获的能力，会在内部维护一个<code>Dep</code>对象。他给每个属性都添加上了<code>getter</code>和<code>setter</code>。用来记录和触发对应的行为。</p>
-<h3 id="watcher"><a class="markdownIt-Anchor" href="#watcher"></a> Watcher</h3>
-<p>watcher则是真正需要监听数据和触发回调的部分。比如：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">&#x27;a.b.c&#x27;</span>,<span class="function">()=&gt;</span>&#123;newVal,oldVal&#125;)</span><br></pre></td></tr></table></figure>
-<p>当<code>data.a.b.c</code>发生改变时，触发回调。</p>
-<p>Watcher会通过触碰getter的方式注册回调到Dep中，方便未来触发<code>setter</code>时找到<code>watcher</code>。<br />
-有了Watcher还需要对对象中每一个元素进行修改，添加getter和setter。<br />
-但是在Vue2中，无法对增加data中属性进行监听，也无法对删除进行监听。因为无法监听。所以Vue提供了vm.<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>e</mi><mi>t</mi><mi mathvariant="normal">和</mi><mi>v</mi><mi>m</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">set和vm.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mord mathdefault">t</span><span class="mord cjk_fallback">和</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">m</span><span class="mord">.</span></span></span></span>delete</p>
-<h3 id="observer"><a class="markdownIt-Anchor" href="#observer"></a> Observer</h3>
-<p>Observer就是给对象的每个属性添加回调注册的对象。</p>
-<h3 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h3>
-<p>Dep为依赖存储，Watcher为依赖添加和回调器，Observer用于给每个属性添加依赖存储。</p>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-23-14-17-45.png" class="">
-<h2 id="array的变化检测"><a class="markdownIt-Anchor" href="#array的变化检测"></a> Array的变化检测</h2>
-<p>添加拦截器进行拦截，只能拦截改变数组的方法，比如<code>push,pop,shift,unshift,splice,reverse,sort</code>。<br />
-基本原理是创建一个新的原型对象，同时设定这些方法，加入拦截器。这样如果遇到数组类型，就可以直接设定<code>__proto__</code>。如果不能设定，就直接替换数组上的方法实例（准确的说应该是添加）。<br />
-不同的是，对数组的<code>Dep</code>不在<code>defineReactive</code>创建的闭包之中，而是在<code>Observer</code>之中。<br />
-当一个数组触发了7个方法之一时，就会在自身上尝试查找<code>__ob__</code>,然后向其中的dep进行触发通知。<br />
-与此同时，不单单是数组的变化需要监听，数组中的对象也是一样需要监听，同样的会进行遍历，创建<code>Observer</code>。同时还要在拦截原型中对<code>push,unshift,splice</code>进行新元素的内容拦截和注册<code>Observer</code>。<br />
-但是对于直接进行下标访问的时候，比如<code>this.list[0] = 2</code>，这种是无法进行监听的，所以无能为力。</p>
-<h3 id="小节"><a class="markdownIt-Anchor" href="#小节"></a> 小节</h3>
-<p>Array的拦截有些区别，需要在做一些特殊处理，并且只能拦截方法调用，对于下标访问这种实在是无能为力。</p>
-<h2 id="变化检测相关api实现"><a class="markdownIt-Anchor" href="#变化检测相关api实现"></a> 变化检测相关API实现</h2>
-<h3 id="vmwatch"><a class="markdownIt-Anchor" href="#vmwatch"></a> vm.$watch</h3>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param <span class="type">&#123;string | Function&#125;</span> <span class="variable">expOrFn</span></span></span></span><br><span class="line"><span class="comment">* <span class="doctag">@param <span class="type">&#123;Function |Object &#125;</span> <span class="variable">callback</span></span></span></span><br><span class="line"><span class="comment">* <span class="doctag">@param <span class="type">&#123;&#123; deep:Boolean,immediate:Boolean &#125;</span></span>&#125; options</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return <span class="type">&#123;Function&#125;</span> <span class="variable">unwatch</span></span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">vm.$watch = <span class="function"><span class="keyword">function</span>(<span class="params">expOrFn,callback,options</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个用于观察一个表达式或者一个<code>computed</code>函数的变化内容。</p>
-<p>记录一下两个参数作用</p>
-<h4 id="deep-将会监听内部内容"><a class="markdownIt-Anchor" href="#deep-将会监听内部内容"></a> deep 将会监听内部内容</h4>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">&#x27;obj&#x27;</span>,cb,&#123;<span class="attr">deep</span>:<span class="literal">true</span>&#125;)</span><br><span class="line">vm.obj.inner = <span class="number">123</span></span><br><span class="line"><span class="comment">// cb将会被触发</span></span><br></pre></td></tr></table></figure>
-<h3 id="immediate-注册时会立刻触发回调"><a class="markdownIt-Anchor" href="#immediate-注册时会立刻触发回调"></a> immediate 注册时会立刻触发回调</h3>
-<p>如果设定为true，那么在注册时会立刻触发，不需要等待到监听内容发生变化。</p>
-<h3 id="watch实现原理"><a class="markdownIt-Anchor" href="#watch实现原理"></a> watch实现原理</h3>
-<p>watch其实是对Watcher对一种封装。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype.$watch = <span class="function"><span class="keyword">function</span>(<span class="params">expOrFn,cb,options</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> vm = <span class="built_in">this</span></span><br><span class="line">    options = options || &#123;&#125;</span><br><span class="line">    <span class="keyword">const</span> watcher = <span class="keyword">new</span> Watcher(vm,expOrFn,cb,options)</span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">options.immediate</span>)</span>&#123;</span><br><span class="line">        cb.call(vm,watcher.value)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">unwatchFn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        watcher.teardown()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>同时，为了实现取消监听，在Watcher中也要保存对应监听的<code>dep</code>内容。于是就会产生双向绑定。</p>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-23-15-55-26.png" class="">  
-<p>因为巧妙的getter设计，让Vue简单而且方便的实现了对内容的监听，同时还能支持监听多个内容。</p>
-<h4 id="deep"><a class="markdownIt-Anchor" href="#deep"></a> deep</h4>
-<p>如果要实现deep，需要给对象的子元素们逐一添加监听。简单来说就是循环遍历，查找<code>__ob__</code>，然后判断是否有过监听，如果没有就依次触发getter。</p>
-<h3 id="vmset"><a class="markdownIt-Anchor" href="#vmset"></a> vm.$set</h3>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param <span class="type">&#123;Object | Array&#125;</span> <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment">* <span class="doctag">@param <span class="type">&#123;string | number&#125;</span> <span class="variable">key</span></span></span></span><br><span class="line"><span class="comment">* <span class="doctag">@param <span class="type">&#123;any&#125;</span> <span class="variable">value</span></span></span></span><br><span class="line"><span class="comment">* <span class="doctag">@return <span class="type">&#123;Function&#125;</span> <span class="variable">unwatch</span></span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">vm.$set(target,key,value)&#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>用于在object上设定一个属性。这个方法主要用来解决无法检测属性添加的限制。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype.$set = <span class="function"><span class="keyword">function</span>(<span class="params">target,key,value</span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="具体实现"><a class="markdownIt-Anchor" href="#具体实现"></a> 具体实现</h4>
-<p>处理Array首先需要判断是否为数组，并且key是否为一个合法的数组index。然后会调用数组上的<code>splice</code>方法。<br />
-接着判断Object的情况，首先判断是否已经存在，如果已经存在那就直接set触发setter。<br />
-如果是新增，首先会判断<code>target</code>是否合法，因为不允许在Vue上进行属性监听。然后，如果<code>target.__ob__</code>不存在的话，也不会进行监听处理。只有条件都符合的情况下，就会创建新的Reactive，同时触发父对象的通知。</p>
-<h3 id="vmdelete"><a class="markdownIt-Anchor" href="#vmdelete"></a> vm.$delete</h3>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param <span class="type">&#123;Object | Array&#125;</span> <span class="variable">target</span></span></span></span><br><span class="line"><span class="comment">* <span class="doctag">@param <span class="type">&#123;string | number&#125;</span> <span class="variable">key</span></span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">vm.$delete( target, key )</span><br></pre></td></tr></table></figure>
-<p>同样的限制，用于删除对象或者数组中的属性。</p>
-<h4 id="具体实现-2"><a class="markdownIt-Anchor" href="#具体实现-2"></a> 具体实现</h4>
-<p>他的具体实现和set基本是一个流程，具体逻辑稍微一些不同而已。</p>
-<h1 id="虚拟dom"><a class="markdownIt-Anchor" href="#虚拟dom"></a> 虚拟DOM</h1>
-<p>Vue2速度的核心点就在于这个Virtual Dom的提速，所以可以说这个是支撑了整个Vue的灵魂功能。它不但降低了DOM渲染带来的速度问题，同时还给跨平台渲染提供了基础。<br />
-早期的Vue使用了更加细粒度的监听方法，导致开销很大，所以在Vue2使用了中等粒度的监听方法。监听级别为一个Watcher。<br />
-在Vue中的虚拟Dom是将一个VNode渲染到视图上。但是如果直接把有元素变动的VNode直接替换DOM，那么其中有很多没变动的元素一样需要进行重计算布局渲染，导致速度下降。所以在每次渲染之前，都会进行DIFF算法，找出实际上变动的元素进行更新。<br />
-实际上，虚拟DOM只做了两件事情</p>
-<ul>
-<li>提供真实DOM映射的虚拟VNode节点</li>
-<li>将虚拟节点与旧的节点进行比较，然后更新视图</li>
-</ul>
-<p>通过核心算法Patch进行判断，来实现上面的功能。</p>
-<h1 id="vnode"><a class="markdownIt-Anchor" href="#vnode"></a> VNode</h1>
-<p>VNode是一个类，他可以实例化出不同的vnode实例。你可以理解vnode为一个节点描述对象，通过它可以去创建一个真正的DOM节点。<br />
-值得注意的是，<strong>Vue的检测策略为组件级别</strong>，当状态发生变化时，通知到组件，然后由组件进行虚拟DOM计算。<br />
-vnode类型有以下几种</p>
-<ul>
-<li>注释节点</li>
-<li>文本节点</li>
-<li>元素节点</li>
-<li>组件节点</li>
-<li>函数式节点</li>
-<li>克隆节点</li>
-</ul>
-<h3 id="注释节点"><a class="markdownIt-Anchor" href="#注释节点"></a> 注释节点</h3>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> createEmptyVNode = <span class="function"><span class="params">text</span> =&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> node = <span class="keyword">new</span> VNode</span><br><span class="line">    node.text = text</span><br><span class="line">    node.isComment = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内容</span></span><br><span class="line">&#123;</span><br><span class="line">    text: <span class="string">&quot;注释节点&quot;</span></span><br><span class="line">    isComment: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="文本节点"><a class="markdownIt-Anchor" href="#文本节点"></a> 文本节点</h3>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> VNode(<span class="literal">undefined</span>,<span class="literal">undefined</span>,<span class="literal">undefined</span>,<span class="built_in">String</span>(val))</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// </span></span><br><span class="line">&#123;</span><br><span class="line">    text:<span class="string">&quot;Hello World&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="克隆节点"><a class="markdownIt-Anchor" href="#克隆节点"></a> 克隆节点</h3>
-<p>克隆节点是将属性复制，让新旧两个节点保持一致，作用是优化静态节点和插槽节点（Slot Node）<br />
-创建克隆节点就是传统意义上的进行克隆，没有什么特殊情况。唯一不同的是<code>isCloned = true</code>。</p>
-<h3 id="元素节点"><a class="markdownIt-Anchor" href="#元素节点"></a> 元素节点</h3>
-<p>元素节点一般映射的是真实元素。存在以下四种有效属性：</p>
-<ul>
-<li>tag：就是标签，如div ul li</li>
-<li>data：节点上的数据，比如class style等</li>
-<li>children：子节点列表</li>
-<li>context：当前组件的vue实例</li>
-</ul>
-<h3 id="组件节点"><a class="markdownIt-Anchor" href="#组件节点"></a> 组件节点</h3>
-<p>和元素节点相似，但是有两个特有属性：</p>
-<ul>
-<li>componentOptions：组件参数，比如propsData，tag，children等</li>
-<li>componentInstance：组件实例，也就是Vue实例，实际上每个组件都是一个Vue实例</li>
-</ul>
-<h3 id="函数式节点"><a class="markdownIt-Anchor" href="#函数式节点"></a> 函数式节点</h3>
-<p>和组件节点相似，但是有<code>functionalContext</code>和<code>functionalOptions</code>两个独有属性。</p>
-<h1 id="patch"><a class="markdownIt-Anchor" href="#patch"></a> patch</h1>
-<p>Virtual DOM最核心的算法就是patch，他可以将vnode渲染成真实的DOM。它也可以称之为patching，主要作用是通过对比结果找出需要更新的节点进行更新。实际上就是在DOM上修改进行更新节点的操作。总所周知，DOM的操作远不如JS计算快，所以如果能尽量小的修改DOM内容，就可以增加渲染速度。<br />
-patch主要做三件事情：</p>
-<ul>
-<li>创建新增节点</li>
-<li>删除废弃节点</li>
-<li>修改需要更新的节点</li>
-</ul>
-<h3 id="新增节点"><a class="markdownIt-Anchor" href="#新增节点"></a> 新增节点</h3>
-<p>当不存在oldVnode节点的时候，就会使用vnode直接进行渲染。<br />
-同时，当oldVnode和vnode完全不是一个节点的时候，也会触发一次新增节点渲染。</p>
-<h3 id="删除节点"><a class="markdownIt-Anchor" href="#删除节点"></a> 删除节点</h3>
-<p>就是简单的删除节点</p>
-<h3 id="更新节点"><a class="markdownIt-Anchor" href="#更新节点"></a> 更新节点</h3>
-<p>当两个节点是同一个节点，但是内容不太相同是，就会使用对比内容变化进行更新。</p>
-<h2 id="创建节点"><a class="markdownIt-Anchor" href="#创建节点"></a> 创建节点</h2>
-<p>创建节点的过程也非常的简单，当一个vnode节点含有tag属性时，就可以知道他是一个元素节点，通过遍历vnode的children节点，依次进行<code>document.createElement</code>就可以创建出实际的DOM节点，然后通过<code>parentNode.append</code>插入页面。同样的，如果是文本节点，那么可以通过<code>document.createTextNode</code>创建。如果是注释节点，就通过<code>document.createComment</code>创建。</p>
-<h2 id="删除节点-2"><a class="markdownIt-Anchor" href="#删除节点-2"></a> 删除节点</h2>
-<p>删除节点同样的简单，记录下要删除的开始和结束index，然后循环中将其删除即可。</p>
-<h2 id="更新节点-2"><a class="markdownIt-Anchor" href="#更新节点-2"></a> 更新节点</h2>
-<p>更新节点分为多种情况</p>
-<h3 id="静态节点"><a class="markdownIt-Anchor" href="#静态节点"></a> 静态节点</h3>
-<p>某些永远不会发生改变的节点我们称之为静态节点，比如<code>&lt;p&gt;我是静态节点&lt;/p&gt;</code>，这种节点一旦渲染完成就不会收到影响，因为他们不包含任何的动态数据处理。</p>
-<h3 id="虚拟节点"><a class="markdownIt-Anchor" href="#虚拟节点"></a> 虚拟节点</h3>
-<p>当两个vnode节点不是静态节点的时候，就需要进行对比判断，首先判断的情况是有<code>text</code>属性。</p>
-<h4 id="有text"><a class="markdownIt-Anchor" href="#有text"></a> 有Text</h4>
-<p>如果有text，那么就会直接调用<code>setTextContent</code>方法–<code>node.textContent</code>，将DOM节点内容改为text内容。</p>
-<h4 id="无text"><a class="markdownIt-Anchor" href="#无text"></a> 无Text</h4>
-<p>如果没有Text，那么有可能是一个元素节点，这个时候又有两种情况。</p>
-<ol>
-<li>有children的情况<br />
-如果有children那么就会对children进行比较，如果oldVnode没有children，那么旧节点可能是文本节点或者是一个空标签，如果是文本节点，就把它变成一个空标签，然后children中对节点挨个加入。</li>
-<li>没有对情况<br />
-如果新节点没有children，那么就说明是个空节点，此时直接删除旧节点中的各种内容，让他变成一个空标签。</li>
-</ol>
-<h2 id="更新子节点"><a class="markdownIt-Anchor" href="#更新子节点"></a> 更新子节点</h2>
-<p>更新子节点分为四种操作，更新，新增，删除，移动。</p>
-<h3 id="更新策略"><a class="markdownIt-Anchor" href="#更新策略"></a> 更新策略</h3>
-<ol>
-<li>创建子节点<br />
-循环比较的时候，如果发现old之中没有新的节点，那么就会产生一个插入动作。</li>
-</ol>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-13-37-19.png" class="">
-<ol start="2">
-<li>更新子节点<br />
-当在两个vnode之中都存在一个相同的节点，那么就需要进行更新操作</li>
-<li>移动子节点<br />
-当某个节点相同，但是位置不同的时候，就需要进行移动子节点。通过<code>Node.insertBefore()</code>即可移动。</li>
-<li>删除子节点<br />
-当节点在newChildren中存在，在old中不存在的时候，就会产生删除。</li>
-</ol>
-<h3 id="优化策略"><a class="markdownIt-Anchor" href="#优化策略"></a> 优化策略</h3>
-<p>有一个优化检测方式，会尝试新旧children的开头结尾元素是否相同，同时还会去对比是否交叉相同。</p>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-13-52-40.png" class="">  
-<p>通过这个方法不断的从两侧向中间收敛判断，如果是在是不符合这些条件，就会使用暴力查找。</p>
-<h1 id="模版编译"><a class="markdownIt-Anchor" href="#模版编译"></a> 模版编译</h1>
-<h2 id="模版编译为渲染函数"><a class="markdownIt-Anchor" href="#模版编译为渲染函数"></a> 模版编译为渲染函数</h2>
-<p>模版编译大体分为三个部分：</p>
-<ul>
-<li>解析为AST</li>
-<li>遍历AST标记静态节点</li>
-<li>使用AST生成渲染函数<br />
-由三个模块实现，分别是：</li>
-<li>解析器</li>
-<li>优化器</li>
-<li>代码生成器</li>
-</ul>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-14-31-05.png" class="">  
-<h3 id="解析器"><a class="markdownIt-Anchor" href="#解析器"></a> 解析器</h3>
-<p>解析器分为好几个包括HTML，文本，过滤器解析器。文本解析器主要用于解析带变量的问题，比如<code>Hello &#123;&#123; name &#125;&#125;</code>。<br />
-而HTML解析器比较重要，当HTML解析起解析到标签开始结束，或者文本，注释时，就会触发钩子函数。主线上要做的事情就是监听HTML解析器，当钩子函数触发时，就生成AST节点。</p>
-<h3 id="优化器"><a class="markdownIt-Anchor" href="#优化器"></a> 优化器</h3>
-<p>优化器用来遍历AST找出静态子树，并且打上标记。每次重渲染，不会为静态节点创建新的虚拟节点，而是直接克隆。</p>
-<h3 id="代码生成器"><a class="markdownIt-Anchor" href="#代码生成器"></a> 代码生成器</h3>
-<p>代码生成器则是编译的最后步骤，他将AST转换成渲染函数，也可以称之为代码字符串。<br />
-比如<code>&lt;p title=&quot;Berwin&quot; @click=&quot;c&quot;&gt;1&lt;/p&gt;</code>生成的是：<code>with(this)&#123;return _c('p',&#123;attrs:&#123;&quot;title&quot;:&quot;Berwin&quot;&#125;,on:&#123;&quot;click&quot;:c&#125;&#125;,[_v(&quot;1&quot;)])&#125;</code>。将其格式化，得到的结果是：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> _c(</span><br><span class="line">        <span class="string">&#x27;p&#x27;</span>,</span><br><span class="line">        &#123;</span><br><span class="line">            attrs: &#123; <span class="string">&quot;title&quot;</span>: <span class="string">&quot;Berwin&quot;</span> &#125;,</span><br><span class="line">            on: &#123; <span class="string">&quot;click&quot;</span>: c &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        [_v(<span class="string">&quot;1&quot;</span>)]</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>随后通过<code>new Function(code)</code>即可创建一个函数。</p>
-<h1 id="实例方法和全局api"><a class="markdownIt-Anchor" href="#实例方法和全局api"></a> 实例方法和全局API</h1>
-<p>在Vue中，有一些Mixin函数，他们的作用其实就是把一些操作挂载到目标对象的prototype之上。同时Vue还提供了<code>$on,$once,$off,$emit</code>这几个用于事件的方法。这几个方法和js的事件系统基本保持一致。</p>
-<h2 id="生命周期相关方法"><a class="markdownIt-Anchor" href="#生命周期相关方法"></a> 生命周期相关方法</h2>
-<p>关于生命周期的方法有</p>
-<ul>
-<li>$mount</li>
-<li>$forceUpdate</li>
-<li>$nextTick</li>
-<li>$destory</li>
-</ul>
-<h3 id="forceupdate"><a class="markdownIt-Anchor" href="#forceupdate"></a> forceUpdate</h3>
-<p><code>vm.$forceUpdate</code>会让Vue强制重新渲染，，不过它只会影响实例本身和插入插槽的子组件，而不是所有的子组件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype.$forceUpdate = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> vm = <span class="built_in">this</span></span><br><span class="line">    <span class="function"><span class="title">if</span>(<span class="params">vm._watcher</span>)</span>&#123;</span><br><span class="line">        vm._watcher.update()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="destory"><a class="markdownIt-Anchor" href="#destory"></a> destory</h3>
-<p>在destory中，主要需要做的就是清理和其他实例的连接，解绑监听和指令。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype.$destory = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> vm = <span class="built_in">this</span></span><br><span class="line">    <span class="keyword">if</span>(vm._isBeingDestoryed) <span class="keyword">return</span></span><br><span class="line">    callHook(vm.<span class="string">&#x27;beforeDestory&#x27;</span>)</span><br><span class="line">    vm._isBeingDestoryed = <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这其中执行了一次生命周期事件调用。<br />
-具体的删除逻辑这就不再显示。</p>
-<h3 id="nexttick"><a class="markdownIt-Anchor" href="#nexttick"></a> nextTick</h3>
-<p>其实就是微任务，只不过在多个版本里面出现了多种解决方案，从微任务到宏任务再到双选择，最后回到了微任务。</p>
-<h3 id="mount"><a class="markdownIt-Anchor" href="#mount"></a> mount</h3>
-<p>这个方法常常由Vue内部进行调用。</p>
-<h1 id="生命周期"><a class="markdownIt-Anchor" href="#生命周期"></a> 生命周期</h1>
-<h2 id="初始化阶段"><a class="markdownIt-Anchor" href="#初始化阶段"></a> 初始化阶段</h2>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-16-24-37.png" class="">
-<p>这个阶段主要是Vue进行一些属性初始化等内容</p>
-<h2 id="模版编译阶段"><a class="markdownIt-Anchor" href="#模版编译阶段"></a> 模版编译阶段</h2>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-16-25-48.png" class="">
-<p>这个阶段用于编译模版内容到代码文本中。</p>
-<h2 id="挂载阶段"><a class="markdownIt-Anchor" href="#挂载阶段"></a> 挂载阶段</h2>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-16-27-46.png" class="">
-<p>这个阶段用于将实例挂载到DOM上，并且会开始watcher进入监听状态。大部分情况下，Vue到组件都在这个阶段。当出现更新时，便会触发<code>beforeUpdate</code>，然后是<code>updated</code></p>
-<h2 id="卸载阶段"><a class="markdownIt-Anchor" href="#卸载阶段"></a> 卸载阶段</h2>
-<img src="/images/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98-2020-11-24-16-29-11.png" class="">
-<p>当进入卸载阶段，整个Vue组件就会从父元素中删除，并且取消依赖监听。</p>
-<h1 id="一些问题"><a class="markdownIt-Anchor" href="#一些问题"></a> 一些问题</h1>
-<h2 id="v-model双向绑定"><a class="markdownIt-Anchor" href="#v-model双向绑定"></a> v-model双向绑定</h2>
-<p>v-model是一个类似语法糖当存在，他会在不同当元素上注入不同的property和监听不同的事件，来完成双向绑定的操作。</p>
-<h2 id="v-for-key问题"><a class="markdownIt-Anchor" href="#v-for-key问题"></a> v-for key问题</h2>
-<p>当在使用v-for的时候，index和元素并没有产生关联。所以当元素发生变动时，vue只能感知到元素发生了变动，但是不会知道具体怎么改变。因此在patch进行比较的时候，当删除一个元素的时候，vue只能感知到三个元素变成了两个。于是就把最后一个元素删除了。所以，当添加key的时候，vue的判断元素是否相同则会使用key作为标准。因为vue是<em>就地更新算法</em>，如果不使用key，就会导致性能浪费。</p>
-<h2 id="computed和watch"><a class="markdownIt-Anchor" href="#computed和watch"></a> computed和watch</h2>
-<p>computed的内容会在变化后运算，并且生成缓存，如果有地方使用这个内容，并不会重新执行computed。<br />
-watch用于监听对象内容的变化，当内容发生变化时，就会执行watch内容。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/23/vue%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1392,110 +1287,6 @@ watch用于监听对象内容的变化，当内容发生变化时，就会执行
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/18/page-life/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="BoxChen">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="盒子笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/18/page-life/" class="post-title-link" itemprop="url">页面📃的生命周期小记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2020-11-18 14:27:45 / 修改时间：19:32:38" itemprop="dateCreated datePublished" datetime="2020-11-18T14:27:45+08:00">2020-11-18</time>
-    </span>
-
-  
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2020/11/18/page-life/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/18/page-life/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h2>
-<p>整个页面加载是用户体验界面最重要的一部分，当你对浏览器对页面生命周期更为了解后，可以更好优化很多场景下的问题。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/18/page-life/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1551,13 +1342,13 @@ watch用于监听对象内容的变化，当内容发生变化时，就会执行
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">86k</span>
+    <span title="站点总字数">90k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:23</span>
+    <span title="站点阅读时长">2:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
