@@ -33,7 +33,7 @@
 <meta property="og:description" content="前言 🎤 本文说说CSS中选择器优先级和一些不常见的使用方法">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-25T07:31:53.000Z">
-<meta property="article:modified_time" content="2020-11-26T04:51:08.308Z">
+<meta property="article:modified_time" content="2020-11-26T09:47:06.372Z">
 <meta property="article:author" content="BoxChen">
 <meta name="twitter:card" content="summary">
 
@@ -154,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.</span> <span class="nav-text"> 优先级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text"> 选择器类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E9%80%89%E6%8B%A9"><span class="nav-number">2.1.1.</span> <span class="nav-text"> 关系选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#important-%E4%BE%8B%E5%A4%96%E8%A7%84%E5%88%99"><span class="nav-number">2.2.</span> <span class="nav-text"> !important 例外规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#is%E5%92%8Cnot"><span class="nav-number">2.3.</span> <span class="nav-text"> :is()和:not()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.4.</span> <span class="nav-text"> 形式优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E8%A7%86dom%E6%A0%91%E8%B7%9D%E7%A6%BB"><span class="nav-number">2.5.</span> <span class="nav-text"> 无视DOM树距离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E6%B7%BB%E5%8A%A0-%E7%BB%A7%E6%89%BF%E6%A0%B7%E5%BC%8F"><span class="nav-number">2.6.</span> <span class="nav-text"> 直接添加 继承样式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%AA%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text"> 伪选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#root"><span class="nav-number">3.1.</span> <span class="nav-text"> :root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target"><span class="nav-number">3.2.</span> <span class="nav-text"> :target</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text"> 自定义属性</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.</span> <span class="nav-text"> 优先级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%99%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text"> 选择器类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E9%80%89%E6%8B%A9"><span class="nav-number">2.1.1.</span> <span class="nav-text"> 关系选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#important-%E4%BE%8B%E5%A4%96%E8%A7%84%E5%88%99"><span class="nav-number">2.2.</span> <span class="nav-text"> !important 例外规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#is%E5%92%8Cnot"><span class="nav-number">2.3.</span> <span class="nav-text"> :is()和:not()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.4.</span> <span class="nav-text"> 形式优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E8%A7%86dom%E6%A0%91%E8%B7%9D%E7%A6%BB"><span class="nav-number">2.5.</span> <span class="nav-text"> 无视DOM树距离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E6%B7%BB%E5%8A%A0-%E7%BB%A7%E6%89%BF%E6%A0%B7%E5%BC%8F"><span class="nav-number">2.6.</span> <span class="nav-text"> 直接添加 继承样式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%AA%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text"> 伪选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#root"><span class="nav-number">3.1.</span> <span class="nav-text"> :root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target"><span class="nav-number">3.2.</span> <span class="nav-text"> :target</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text"> 自定义属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A5%87%E5%A6%99%E7%9A%84position"><span class="nav-number">5.</span> <span class="nav-text"> 奇妙的position</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fixed"><span class="nav-number">5.1.</span> <span class="nav-text"> fixed</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -250,7 +250,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-26 12:51:08" itemprop="dateModified" datetime="2020-11-26T12:51:08+08:00">2020-11-26</time>
+        <time title="修改时间：2020-11-26 17:47:06" itemprop="dateModified" datetime="2020-11-26T17:47:06+08:00">2020-11-26</time>
       </span>
 
   
@@ -275,7 +275,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -338,6 +338,10 @@
 <p>你可以在CSS文档中使用自定义属性，一般以<code>--</code>开头。该属性具有继承性，并且大小写敏感。如果需要使用，则需要用<code>var()</code>进行包裹即可使用。<br />
 备选值：<code>var(--my-var,var(--my-backgroun,pink))</code><br />
 无效值：当使用无效值，则会自动忽略。</p>
+<h1 id="奇妙的position"><a class="markdownIt-Anchor" href="#奇妙的position"></a> 奇妙的position</h1>
+<h2 id="fixed"><a class="markdownIt-Anchor" href="#fixed"></a> fixed</h2>
+<p>众所周知，而且几乎所有人都认为，fixed是基于视窗定位的。也确实，大部分情况下确实如此，但是有一种情况，恰恰相反。<br />
+当某个元素当祖先元素之中，其属性中含有<code>transform</code>,<code>perspective</code>,<code>filter</code>的时候，元素会相对于该祖先元素进行定位，而不是<code>viewport</code>。</p>
 
     </div>
 
