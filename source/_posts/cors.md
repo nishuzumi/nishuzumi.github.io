@@ -48,7 +48,7 @@ Access-Control-Max-Age: 86400
 同时`Access-Control-Max-Age`可以表示在一定时间内不需要为同一个请求发送预检请求。
 
 ## 附带身份凭证
-一般情况下，跨源的`XMLHttpRequest`和`Fetch`都不会发送凭证，如果需要在XHR中发送凭证，则需要设定一个特殊的标识位。
+**一般情况下，跨源的`XMLHttpRequest`和`Fetch`都不会发送凭证**，如果需要在XHR中发送凭证，则需要设定一个特殊的标识位。
 ```js
 function call(){
     let xhr = new XMLHttpRequest;

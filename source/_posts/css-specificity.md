@@ -83,3 +83,12 @@ HTML:
 ## fixed
 众所周知，而且几乎所有人都认为，fixed是基于视窗定位的。也确实，大部分情况下确实如此，但是有一种情况，恰恰相反。  
 当某个元素当祖先元素之中，其属性中含有`transform`,`perspective`,`filter`的时候，元素会相对于该祖先元素进行定位，而不是`viewport`。
+
+# attr
+一个理论上能支持任何的CSS属性但是目前只能支持Content属性的超级高级css功能。
+
+```css
+div{
+  content:attr(data-content);
+}
+```
