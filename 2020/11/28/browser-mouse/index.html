@@ -25,20 +25,20 @@
     var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta name="description" content="前言 🎤 浏览器本身不允许跨源请求，目的是为了保证安全。">
+  <meta name="description" content="前言 🎤 本文将讲解有关浏览器中鼠标事件的特性和一些其他相关的事件。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跨源资源共享">
-<meta property="og:url" content="https://binzinstar.com/2020/11/26/cors/index.html">
+<meta property="og:title" content="浏览器中的鼠标事件">
+<meta property="og:url" content="https://binzinstar.com/2020/11/28/browser-mouse/index.html">
 <meta property="og:site_name" content="盒子笔记">
-<meta property="og:description" content="前言 🎤 浏览器本身不允许跨源请求，目的是为了保证安全。">
+<meta property="og:description" content="前言 🎤 本文将讲解有关浏览器中鼠标事件的特性和一些其他相关的事件。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-26T09:50:23.000Z">
-<meta property="article:modified_time" content="2020-11-27T07:53:15.795Z">
+<meta property="article:published_time" content="2020-11-28T08:09:47.000Z">
+<meta property="article:modified_time" content="2020-11-28T11:07:54.887Z">
 <meta property="article:author" content="BoxChen">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://binzinstar.com/2020/11/26/cors/">
+<link rel="canonical" href="https://binzinstar.com/2020/11/28/browser-mouse/">
 
 
 <script class="page-configurations">
@@ -51,7 +51,7 @@
   };
 </script>
 
-  <title>跨源资源共享 | 盒子笔记</title>
+  <title>浏览器中的鼠标事件 | 盒子笔记</title>
   
 
 
@@ -154,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text"> 安全性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%A8"><span class="nav-number">3.</span> <span class="nav-text"> 跨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E8%AF%B7%E6%B1%82"><span class="nav-number">4.</span> <span class="nav-text"> 两种请求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%AF%B7%E6%B1%82"><span class="nav-number">4.1.</span> <span class="nav-text"> 简单请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E6%A3%80%E8%AF%B7%E6%B1%82-preflight"><span class="nav-number">4.2.</span> <span class="nav-text"> 预检请求 Preflight</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%B8%A6%E8%BA%AB%E4%BB%BD%E5%87%AD%E8%AF%81"><span class="nav-number">4.3.</span> <span class="nav-text"> 附带身份凭证</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text"> 鼠标事件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mouseenter-%E8%BF%9B%E5%85%A5%E5%85%83%E7%B4%A0"><span class="nav-number">2.1.</span> <span class="nav-text"> mouseenter 进入元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mouseover-%E5%85%89%E6%A0%87%E5%9C%A8%E5%85%B6%E4%B9%8B%E4%B8%8A"><span class="nav-number">2.2.</span> <span class="nav-text"> mouseover 光标在其之上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E8%B4%B4%E5%A3%ABmouseenter-mouseover%E5%8C%BA%E5%88%AB"><span class="nav-number">2.3.</span> <span class="nav-text"> 小贴士：mouseenter mouseover区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mouseleave-%E7%A6%BB%E5%BC%80%E5%85%83%E7%B4%A0"><span class="nav-number">2.4.</span> <span class="nav-text"> mouseleave 离开元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mouseout-%E5%85%89%E6%A0%87%E5%9C%A8%E5%85%B6%E4%B9%8B%E5%A4%96"><span class="nav-number">2.5.</span> <span class="nav-text"> mouseout 光标在其之外</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E8%B4%B4%E5%A3%AB%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3"><span class="nav-number">2.6.</span> <span class="nav-text"> 小贴士：如何理解？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mousedown-%E9%BC%A0%E6%A0%87%E6%8C%89%E4%B8%8B"><span class="nav-number">2.7.</span> <span class="nav-text"> mousedown 鼠标按下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mouseup-%E9%BC%A0%E6%A0%87%E9%87%8A%E6%94%BE"><span class="nav-number">2.8.</span> <span class="nav-text"> mouseup 鼠标释放</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E8%B4%B4%E5%A3%AB-mousedownmouseup-%E4%B8%8Eclick"><span class="nav-number">2.9.</span> <span class="nav-text"> 小贴士 mousedown&#x2F;mouseup 与click</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dblclick-%E5%8F%8C%E5%87%BB"><span class="nav-number">2.10.</span> <span class="nav-text"> dblclick 双击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contextmenu"><span class="nav-number">2.11.</span> <span class="nav-text"> contextmenu</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mousemove"><span class="nav-number">2.12.</span> <span class="nav-text"> mousemove</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.13.</span> <span class="nav-text"> 总结</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -219,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/26/cors/">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/28/browser-mouse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          跨源资源共享
+          浏览器中的鼠标事件
         </h1>
 
         <div class="post-meta-container">
@@ -242,16 +242,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-11-26 17:50:23" itemprop="dateCreated datePublished" datetime="2020-11-26T17:50:23+08:00">2020-11-26</time>
+      <time title="创建时间：2020-11-28 16:09:47 / 修改时间：19:07:54" itemprop="dateCreated datePublished" datetime="2020-11-28T16:09:47+08:00">2020-11-28</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-27 15:53:15" itemprop="dateModified" datetime="2020-11-27T15:53:15+08:00">2020-11-27</time>
-      </span>
 
   
   
@@ -262,8 +256,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2020/11/26/cors/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/26/cors/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2020/11/28/browser-mouse/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/28/browser-mouse/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -275,7 +269,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>908</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -294,43 +288,38 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h1>
-<p>浏览器本身不允许跨源请求，目的是为了保证安全。</p>
+<p>本文将讲解有关浏览器中鼠标事件的特性和一些其他相关的事件。</p>
 <a id="more"></a>
-<h1 id="安全性"><a class="markdownIt-Anchor" href="#安全性"></a> 安全性</h1>
-<p>XHR和Fetch都遵循同源策略，只允许他们从同一个域进行内容加载，除非包含了正确都CORS头。</p>
-<h1 id="跨"><a class="markdownIt-Anchor" href="#跨"></a> 跨</h1>
-<p>早期的AJAX确实不支持跨源访问，这个是浏览器和服务器一同决定的，同时IE10以下都不支持CORS，因此，很多时候大家都会说AJAX不支持跨源请求。<br />
-同时，在遇到这几种条件才会触发跨域请求：</p>
-<ul>
-<li>由XHR和Fetch发起的跨域请求</li>
-<li>Web字体</li>
-<li>WebGL贴图</li>
-<li><code>drawImage</code>绘制图片到canvas时</li>
-</ul>
-<h1 id="两种请求"><a class="markdownIt-Anchor" href="#两种请求"></a> 两种请求</h1>
-<p>CORS分为两种请求，一种是<em>简单请求</em>，一种是<em>非简单请求</em>。<br />
-简单请求需要满足两个条件</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;get&#x27;</span>,<span class="string">&#x27;head&#x27;</span>,<span class="string">&#x27;post&#x27;</span>].indexOf(method) != -<span class="number">1</span></span><br><span class="line">&amp;&amp;</span><br></pre></td></tr></table></figure>
-<p>头信息不超过这几种：</p>
-<ul>
-<li>Accept</li>
-<li>Accept-Language</li>
-<li>Content-Langugae</li>
-<li>Last-Event-ID</li>
-<li>Content-Type:‘application/x-www-form-urlencoded’,‘multipart/form-data’,‘text/plain’</li>
-</ul>
-<p>这事需要兼容表单，因为表单一直可以跨域请求。所以早期的AJAX也属于这种情况。</p>
-<h2 id="简单请求"><a class="markdownIt-Anchor" href="#简单请求"></a> 简单请求</h2>
-<p>当有简单请求需要发送时，浏览器并不会进行<code>preflight</code>处理，因为这种跨域请求和普通表单毫无两样。不过，这种请求在发送的时候，会强制带上<code>Origin</code>的头部，用来给服务器进行同源判断。而服务端如果没有返回<code>Access-Control-Allow-Origin</code>，或者不为<code>*</code>，或者返回了一个域名但是和<code>Origin</code>不是一个域，那么都会请求失败。</p>
-<h2 id="预检请求-preflight"><a class="markdownIt-Anchor" href="#预检请求-preflight"></a> 预检请求 Preflight</h2>
-<p>当遇到一个非简单请求当时候，浏览器会尝试发出预检请求——<em>OPTIONS</em>，这个请求会确认服务器是否允许该请求，以避免对用户数据产生不良影响。<br />
-在预检请求的时候，会带有一个<code>Access-Control-Request-Headers</code>的头字段，这个字段内容会包含了那些不包含在简单请求中头字段的键名。如果预检完成，才会继续发送真正的请求。比如浏览器返回预检内容为：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: http://example.com</span><br><span class="line">Access-Control-Allow-Methods: POST,GET,OPTIONS</span><br><span class="line">Access-Control-Allow-Headers: Content-Type,Custom-Type</span><br><span class="line">Access-Control-Max-Age: 86400</span><br></pre></td></tr></table></figure>
-<p>同时<code>Access-Control-Max-Age</code>可以表示在一定时间内不需要为同一个请求发送预检请求。</p>
-<h2 id="附带身份凭证"><a class="markdownIt-Anchor" href="#附带身份凭证"></a> 附带身份凭证</h2>
-<p><strong>一般情况下，跨源的<code>XMLHttpRequest</code>和<code>Fetch</code>都不会发送凭证</strong>，如果需要在XHR中发送凭证，则需要设定一个特殊的标识位。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">call</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest;</span><br><span class="line">    xhr.open(<span class="string">&#x27;GET&#x27;</span>,url,<span class="literal">true</span>)</span><br><span class="line">    xhr.withCredentials = <span class="literal">true</span>;</span><br><span class="line">    xhr.send()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然，这需要服务器返回的头内容中需要含有<code>Access-Control-Allow-Credentials:true</code>，否则不会返回内容。并且需要注意的是，如果需要允许携带Credentials，那么服务器的<code>Access-Control-Allow-Origin</code>不能为<code>*</code>，否则会直接失败。</p>
+<h1 id="鼠标事件"><a class="markdownIt-Anchor" href="#鼠标事件"></a> 鼠标事件</h1>
+<h2 id="mouseenter-进入元素"><a class="markdownIt-Anchor" href="#mouseenter-进入元素"></a> mouseenter 进入元素</h2>
+<p>这个事件和一般的事件不太一样，当鼠标移动进入一个元素时，就会立刻触发，但是，并不会触发冒泡事件。不过会依次通知所有被新进入的元素。该事件不可取消，不可冒泡。</p>
+<h2 id="mouseover-光标在其之上"><a class="markdownIt-Anchor" href="#mouseover-光标在其之上"></a> mouseover 光标在其之上</h2>
+<p>当元素位于某个元素上方式，会触发该事件。该事件可以被取消，可以冒泡</p>
+<h2 id="小贴士mouseenter-mouseover区别"><a class="markdownIt-Anchor" href="#小贴士mouseenter-mouseover区别"></a> 小贴士：mouseenter mouseover区别</h2>
+<p>最大的区别在于，进入内部元素时，上层元素的绑定是否会执行。<br />
+<code>mouseenter</code>当效果更加贴近人类思维，在鼠标进入元素后，无论是否进入子元素，都不会被多次触发。<br />
+而<code>mouseover</code>当效果则是浏览器的冒泡效果，当鼠标进入子元素后，如果子元素没有阻止传播，那么外层元素的绑定会被再次触发。</p>
+<h2 id="mouseleave-离开元素"><a class="markdownIt-Anchor" href="#mouseleave-离开元素"></a> mouseleave 离开元素</h2>
+<p>这个事件和<code>mouseenter</code>是恰好相反的效果。</p>
+<h2 id="mouseout-光标在其之外"><a class="markdownIt-Anchor" href="#mouseout-光标在其之外"></a> mouseout 光标在其之外</h2>
+<p>同样的是<code>mouseover</code>相反的效果。</p>
+<h2 id="小贴士如何理解"><a class="markdownIt-Anchor" href="#小贴士如何理解"></a> 小贴士：如何理解？</h2>
+<p>可以简单的认为<code>mouseenter</code>,<code>mouseleave</code>是根据元素的<code>getBoundingClientRect</code>进行判断鼠标的坐标是否在其之内。<br />
+而<code>mouseover</code>,<code>mouseout</code>，则是基于浏览器的元素事件触发。</p>
+<h2 id="mousedown-鼠标按下"><a class="markdownIt-Anchor" href="#mousedown-鼠标按下"></a> mousedown 鼠标按下</h2>
+<p>该事件会在按下时触发，并且会产生冒泡，可以取消。需要注意的是，该事件是多种事件的默认行为，比如drag/drop，开始文本选择，按下滚动。</p>
+<h2 id="mouseup-鼠标释放"><a class="markdownIt-Anchor" href="#mouseup-鼠标释放"></a> mouseup 鼠标释放</h2>
+<p>当鼠标在元素中释放的时候，会触发此事件，同时可以进行冒泡，并且可以取消。</p>
+<h2 id="小贴士-mousedownmouseup-与click"><a class="markdownIt-Anchor" href="#小贴士-mousedownmouseup-与click"></a> 小贴士 mousedown/mouseup 与click</h2>
+<p>当定点设备在一个元素上按下并且放开后，会触发click事件。也就是说，如果一个元素触发了<code>mousedown</code>和<code>mouseup</code>，那么它就会触发<code>click</code>。</p>
+<h2 id="dblclick-双击"><a class="markdownIt-Anchor" href="#dblclick-双击"></a> dblclick 双击</h2>
+<p>当在单个元素下双击时触发此事件，可以终端冒泡。</p>
+<h2 id="contextmenu"><a class="markdownIt-Anchor" href="#contextmenu"></a> contextmenu</h2>
+<p>当点击右键的时候，会触发这个事件。可以撤销。</p>
+<h2 id="mousemove"><a class="markdownIt-Anchor" href="#mousemove"></a> mousemove</h2>
+<p>鼠标移动事件，具有冒泡，可以撤销。</p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>只有<code>mouseenter</code>和<code>mouseleave</code>是偏向底层的定位判断方式，其他的鼠标事件均可触发冒泡，并且撤销。</p>
 
     </div>
 
@@ -344,13 +333,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/11/25/css-specificity/" rel="prev" title="CSS小结 优先级 变量">
-                  <i class="fa fa-chevron-left"></i> CSS小结 优先级 变量
+                <a href="/2020/11/28/css-tip/" rel="prev" title="纯CSS实现Tip提示">
+                  <i class="fa fa-chevron-left"></i> 纯CSS实现Tip提示
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/11/26/fetch/" rel="next" title="fetch">
-                  fetch <i class="fa fa-chevron-right"></i>
+                <a href="/2020/11/28/add-event-listener/" rel="next" title="小记addEventListener">
+                  小记addEventListener <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -484,9 +473,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://binzinstar.com/2020/11/26/cors/";
-    this.page.identifier = "2020/11/26/cors/";
-    this.page.title = "跨源资源共享";
+    this.page.url = "https://binzinstar.com/2020/11/28/browser-mouse/";
+    this.page.identifier = "2020/11/28/browser-mouse/";
+    this.page.title = "浏览器中的鼠标事件";
     };
   NexT.utils.loadComments('#disqus_thread', () => {
     if (window.DISQUS) {

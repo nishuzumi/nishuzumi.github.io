@@ -33,7 +33,7 @@
 <meta property="og:description" content="前言 🎤 Fetch是现代浏览器中提供的一个用于取代XHR的网络请求方式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-26T11:53:59.000Z">
-<meta property="article:modified_time" content="2020-11-26T12:17:37.248Z">
+<meta property="article:modified_time" content="2020-11-27T09:09:33.034Z">
 <meta property="article:author" content="BoxChen">
 <meta name="twitter:card" content="summary">
 
@@ -154,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text"> 简单使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text"> 常用的参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%A6%E5%87%AD%E6%8D%AE%E8%AF%B7%E6%B1%82"><span class="nav-number">4.</span> <span class="nav-text"> 带凭据请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#response%E5%AF%B9%E8%B1%A1"><span class="nav-number">5.</span> <span class="nav-text"> Response对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#body"><span class="nav-number">6.</span> <span class="nav-text"> body</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B"><span class="nav-number">7.</span> <span class="nav-text"> 检测</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%A8%E5%9F%9F%E8%A7%84%E5%88%99"><span class="nav-number">2.</span> <span class="nav-text"> 跨域规则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text"> 简单使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text"> 常用的参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%A6%E5%87%AD%E6%8D%AE%E8%AF%B7%E6%B1%82"><span class="nav-number">5.</span> <span class="nav-text"> 带凭据请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#response%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.</span> <span class="nav-text"> Response对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#body"><span class="nav-number">7.</span> <span class="nav-text"> body</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B"><span class="nav-number">8.</span> <span class="nav-text"> 检测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="nav-number">9.</span> <span class="nav-text"> 参数解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">9.1.</span> <span class="nav-text"> method</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#headers"><span class="nav-number">9.2.</span> <span class="nav-text"> headers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#body-2"><span class="nav-number">9.3.</span> <span class="nav-text"> body</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mode"><span class="nav-number">9.4.</span> <span class="nav-text"> mode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#credentials"><span class="nav-number">9.5.</span> <span class="nav-text"> credentials</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cache"><span class="nav-number">9.6.</span> <span class="nav-text"> cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redirect"><span class="nav-number">9.7.</span> <span class="nav-text"> redirect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#referrer"><span class="nav-number">9.8.</span> <span class="nav-text"> referrer</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%84%E5%8A%A0%E5%86%85%E5%AE%B9"><span class="nav-number">10.</span> <span class="nav-text"> 附加内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#formdata"><span class="nav-number">10.1.</span> <span class="nav-text"> FormData</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#urlsearchparams"><span class="nav-number">10.2.</span> <span class="nav-text"> URLSearchParams</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usvstring"><span class="nav-number">10.3.</span> <span class="nav-text"> USVString</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -169,7 +169,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -242,10 +242,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-11-26 19:53:59 / 修改时间：20:17:37" itemprop="dateCreated datePublished" datetime="2020-11-26T19:53:59+08:00">2020-11-26</time>
+      <time title="创建时间：2020-11-26 19:53:59" itemprop="dateCreated datePublished" datetime="2020-11-26T19:53:59+08:00">2020-11-26</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-27 17:09:33" itemprop="dateModified" datetime="2020-11-27T17:09:33+08:00">2020-11-27</time>
+      </span>
 
   
   
@@ -269,14 +275,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1k</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -290,6 +296,8 @@
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h1>
 <p>Fetch是现代浏览器中提供的一个用于取代XHR的网络请求方式</p>
 <a id="more"></a>
+<h1 id="跨域规则"><a class="markdownIt-Anchor" href="#跨域规则"></a> 跨域规则</h1>
+<p>fetch默认情况下为同源规则，只允许同源跨域，并且默认是附带同源cookie（在早期版本时有些浏览器默认为不附带任何凭证）</p>
 <h1 id="简单使用"><a class="markdownIt-Anchor" href="#简单使用"></a> 简单使用</h1>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fetch(<span class="string">&#x27;http://baidu.com&#x27;</span>).then(<span class="function"><span class="params">response</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> response.json()</span><br><span class="line">&#125;)</span><br><span class="line">.then(<span class="function"><span class="params">json</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(jsoo)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <h1 id="常用的参数"><a class="markdownIt-Anchor" href="#常用的参数"></a> 常用的参数</h1>
@@ -325,6 +333,38 @@
 <h1 id="检测"><a class="markdownIt-Anchor" href="#检测"></a> 检测</h1>
 <p>如果你想直到浏览器是否支持<code>fetch</code>可以使用</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">if</span>(<span class="params">self.fetch</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//yes</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="comment">//no</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="参数解析"><a class="markdownIt-Anchor" href="#参数解析"></a> 参数解析</h1>
+<h2 id="method"><a class="markdownIt-Anchor" href="#method"></a> method</h2>
+<p>请求的方法，比如<code>GET</code>,<code>POST</code>,<code>PUT</code>等等</p>
+<h2 id="headers"><a class="markdownIt-Anchor" href="#headers"></a> headers</h2>
+<p>想要添加的头数据，以对象形式传入，可以小写头部字段</p>
+<h2 id="body-2"><a class="markdownIt-Anchor" href="#body-2"></a> body</h2>
+<p>任何你想传入的body，可以是<code>Blob</code>,<code>BufferSource</code>,<code>FormData</code>,<code>URLSearchParams</code>,<code>USVString</code>，请注意，<code>GET</code>和<code>HEAD</code>没有Body。</p>
+<h2 id="mode"><a class="markdownIt-Anchor" href="#mode"></a> mode</h2>
+<p>请求模式，默认为<code>cors</code>，可选内容有：<code>cors</code>,<code>no-cors</code>,<code>same-origin</code>,<code>navigate</code>。</p>
+<h2 id="credentials"><a class="markdownIt-Anchor" href="#credentials"></a> credentials</h2>
+<p>可选内容有：<code>omit</code>,<code>same-origin</code>,<code>include</code><br />
+分别为忽略，同源携带，强制携带</p>
+<h2 id="cache"><a class="markdownIt-Anchor" href="#cache"></a> cache</h2>
+<p>可选内容为：<code>default</code>,<code>no-store</code>,<code>reload</code>,<code>no-cache</code>,<code>force-cache</code>,<code>only-if-cached</code></p>
+<ul>
+<li>default 有缓存且有效则返回缓存，有缓存但是过期则尝试更新，无缓存则直接请求</li>
+<li>no-store 直接请求 无视缓存 而且不保存缓存</li>
+<li>reload 直接请求 无视缓存 但是保存缓存</li>
+<li>no-cache 有缓存但是直接请求，如果缓存有效，则用缓存，否则更新</li>
+<li>force-cache 强制使用缓存，不管过期</li>
+<li>only-if-cached 只找缓存，如果没有就报错</li>
+</ul>
+<h2 id="redirect"><a class="markdownIt-Anchor" href="#redirect"></a> redirect</h2>
+<p>重定向处理模式：<code>follow</code>,<code>error</code>,<code>manual</code>。默认情况下为自动处理。</p>
+<h2 id="referrer"><a class="markdownIt-Anchor" href="#referrer"></a> referrer</h2>
+<p>可选内容为：<code>no-referrer</code>,<code>client</code>。默认为<code>client</code></p>
+<h1 id="附加内容"><a class="markdownIt-Anchor" href="#附加内容"></a> 附加内容</h1>
+<h2 id="formdata"><a class="markdownIt-Anchor" href="#formdata"></a> FormData</h2>
+<p>该接口提供了一种使用键值对的方式进行构造，同时也可以轻松的通过<code>XMLHttpRequest.send()</code>进行发送。FormData无法直接使用对象进行内容填充，只能通过不断的set来添加内容。同时set函数中，如果第二个参数是一个blob或者file内容，那么第三个参数可以传入一个文件名。</p>
+<h2 id="urlsearchparams"><a class="markdownIt-Anchor" href="#urlsearchparams"></a> URLSearchParams</h2>
+<h2 id="usvstring"><a class="markdownIt-Anchor" href="#usvstring"></a> USVString</h2>
+
     </div>
 
     
@@ -342,6 +382,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2020/11/28/css-tip/" rel="next" title="纯CSS实现Tip提示">
+                  纯CSS实现Tip提示 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -407,13 +450,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">94k</span>
+    <span title="站点总字数">99k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:37</span>
+    <span title="站点阅读时长">2:44</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
