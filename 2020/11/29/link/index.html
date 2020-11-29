@@ -25,20 +25,20 @@
     var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta name="description" content="前言 🎤 浏览器本身不允许跨源请求，目的是为了保证安全。">
+  <meta name="description" content="前言 🎤 Link标签中，常用的方式就是用来倒入样式表，但是其实，Link的功能远不止这点。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跨源资源共享">
-<meta property="og:url" content="https://binzinstar.com/2020/11/26/cors/index.html">
+<meta property="og:title" content="Link标签">
+<meta property="og:url" content="https://binzinstar.com/2020/11/29/link/index.html">
 <meta property="og:site_name" content="盒子笔记">
-<meta property="og:description" content="前言 🎤 浏览器本身不允许跨源请求，目的是为了保证安全。">
+<meta property="og:description" content="前言 🎤 Link标签中，常用的方式就是用来倒入样式表，但是其实，Link的功能远不止这点。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-26T09:50:23.000Z">
-<meta property="article:modified_time" content="2020-11-27T07:53:15.795Z">
+<meta property="article:published_time" content="2020-11-29T02:41:49.000Z">
+<meta property="article:modified_time" content="2020-11-29T04:36:11.923Z">
 <meta property="article:author" content="BoxChen">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://binzinstar.com/2020/11/26/cors/">
+<link rel="canonical" href="https://binzinstar.com/2020/11/29/link/">
 
 
 <script class="page-configurations">
@@ -51,7 +51,7 @@
   };
 </script>
 
-  <title>跨源资源共享 | 盒子笔记</title>
+  <title>Link标签 | 盒子笔记</title>
   
 
 
@@ -154,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text"> 安全性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%A8"><span class="nav-number">3.</span> <span class="nav-text"> 跨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E8%AF%B7%E6%B1%82"><span class="nav-number">4.</span> <span class="nav-text"> 两种请求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%AF%B7%E6%B1%82"><span class="nav-number">4.1.</span> <span class="nav-text"> 简单请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E6%A3%80%E8%AF%B7%E6%B1%82-preflight"><span class="nav-number">4.2.</span> <span class="nav-text"> 预检请求 Preflight</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%B8%A6%E8%BA%AB%E4%BB%BD%E5%87%AD%E8%AF%81"><span class="nav-number">4.3.</span> <span class="nav-text"> 附带身份凭证</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refpreload"><span class="nav-number">2.</span> <span class="nav-text"> ref&#x3D;preload</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%A8%E5%9F%9F"><span class="nav-number">2.1.</span> <span class="nav-text"> 跨域</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#refprefetch"><span class="nav-number">3.</span> <span class="nav-text"> ref&#x3D;prefetch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#media"><span class="nav-number">4.</span> <span class="nav-text"> media</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#crossorigin"><span class="nav-number">5.</span> <span class="nav-text"> crossorigin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#importance"><span class="nav-number">6.</span> <span class="nav-text"> importance</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#referrerpolicy"><span class="nav-number">7.</span> <span class="nav-text"> referrerpolicy</span></a></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -219,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/26/cors/">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/29/link/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          跨源资源共享
+          Link标签
         </h1>
 
         <div class="post-meta-container">
@@ -242,16 +242,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-11-26 17:50:23" itemprop="dateCreated datePublished" datetime="2020-11-26T17:50:23+08:00">2020-11-26</time>
+      <time title="创建时间：2020-11-29 10:41:49 / 修改时间：12:36:11" itemprop="dateCreated datePublished" datetime="2020-11-29T10:41:49+08:00">2020-11-29</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-27 15:53:15" itemprop="dateModified" datetime="2020-11-27T15:53:15+08:00">2020-11-27</time>
-      </span>
 
   
   
@@ -262,8 +256,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2020/11/26/cors/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/26/cors/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2020/11/29/link/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/29/link/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -275,7 +269,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -294,43 +288,52 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h1>
-<p>浏览器本身不允许跨源请求，目的是为了保证安全。</p>
+<p>Link标签中，常用的方式就是用来倒入样式表，但是其实，Link的功能远不止这点。</p>
 <a id="more"></a>
-<h1 id="安全性"><a class="markdownIt-Anchor" href="#安全性"></a> 安全性</h1>
-<p>XHR和Fetch都遵循同源策略，只允许他们从同一个域进行内容加载，除非包含了正确都CORS头。</p>
-<h1 id="跨"><a class="markdownIt-Anchor" href="#跨"></a> 跨</h1>
-<p>早期的AJAX确实不支持跨源访问，这个是浏览器和服务器一同决定的，同时IE10以下都不支持CORS，因此，很多时候大家都会说AJAX不支持跨源请求。<br />
-同时，在遇到这几种条件才会触发跨域请求：</p>
+<h1 id="refpreload"><a class="markdownIt-Anchor" href="#refpreload"></a> ref=preload</h1>
+<p>当你写出</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">ref</span>=<span class="string">&#x27;preload&#x27;</span> <span class="attr">href</span>=<span class="string">&#x27;some.js&#x27;</span> <span class="attr">as</span>=<span class="string">&#x27;script&#x27;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>浏览器的预加载器会在监测到该资源后，优先的进行内容的下载，并且不会被堵塞。只不过，同样的他也不会主动运行。并且，必须要填写<code>as</code>属性，否则浏览器会使用<strong>较低</strong>的优先级进行加载。<br />
+当然不是所有内容都可以被预加载，一般情况下，以下内容可以被预加载。</p>
 <ul>
-<li>由XHR和Fetch发起的跨域请求</li>
-<li>Web字体</li>
-<li>WebGL贴图</li>
-<li><code>drawImage</code>绘制图片到canvas时</li>
+<li>audio 音频文件</li>
+<li>document 一个需要被嵌入到<code>&lt;iframe&gt;||&lt;frame&gt;</code>中的HTML文档</li>
+<li>embed 一个被嵌入<code>&lt;embed&gt;</code>元素中的资源（很不常用，并且大部分浏览器已经弃用）</li>
+<li>fetch 需要通过fetch或者XHR获取的资源，比如ArrayBuffer或者JSON文件</li>
+<li>font 字体文件</li>
+<li>image 图片</li>
+<li>object 嵌入到<code>&lt;embed&gt;</code>元素中的文件</li>
+<li>script js文件</li>
+<li>style 样式表</li>
+<li>track WebVTT文件</li>
+<li>worker 一个js web worker</li>
+<li>video 视频文件</li>
 </ul>
-<h1 id="两种请求"><a class="markdownIt-Anchor" href="#两种请求"></a> 两种请求</h1>
-<p>CORS分为两种请求，一种是<em>简单请求</em>，一种是<em>非简单请求</em>。<br />
-简单请求需要满足两个条件</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;get&#x27;</span>,<span class="string">&#x27;head&#x27;</span>,<span class="string">&#x27;post&#x27;</span>].indexOf(method) != -<span class="number">1</span></span><br><span class="line">&amp;&amp;</span><br></pre></td></tr></table></figure>
-<p>头信息不超过这几种：</p>
+<h2 id="跨域"><a class="markdownIt-Anchor" href="#跨域"></a> 跨域</h2>
+<p>如果需要设定跨域，那么需要在link的标签上设定<code>crossorign</code>属性</p>
+<h1 id="refprefetch"><a class="markdownIt-Anchor" href="#refprefetch"></a> ref=prefetch</h1>
+<p>prefetch是一种页面预取技术，他允许浏览器在空闲时间下载用户将来不久会访问的文档，就好比在连续观看图片的时候，可以取到下一页的内容，让观看体验更加的流畅。虽然预取中也可以获取图片等内容，但是和<code>preload</code>等有不同的一点是，<code>prefetch</code>是在浏览器空闲时才会执行，而<code>preload</code>则是在页面加载时就开始预取。<br />
+同样的，你可以使用<code>&lt;link rel='next' href='2.html'&gt;</code>来预载文档。</p>
+<h1 id="media"><a class="markdownIt-Anchor" href="#media"></a> media</h1>
+<p>你在link可以使用几乎和CSS中一样的媒体查询，这样浏览器就会自动判断并且按需加载。比如</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link <span class="attribute">rel</span>=<span class="string">&#x27;stylesheet&#x27;</span> <span class="attribute">href</span>=<span class="string">&#x27;mobile.css&#x27;</span> <span class="attribute">media</span>=<span class="string">&#x27;screen and (max-width:600px)&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="crossorigin"><a class="markdownIt-Anchor" href="#crossorigin"></a> crossorigin</h1>
+<p>用于指定是否使用CORS。可选值有两种</p>
 <ul>
-<li>Accept</li>
-<li>Accept-Language</li>
-<li>Content-Langugae</li>
-<li>Last-Event-ID</li>
-<li>Content-Type:‘application/x-www-form-urlencoded’,‘multipart/form-data’,‘text/plain’</li>
+<li>anonymous 不带任何凭证</li>
+<li>use-credential 发送cookie和http基本认证信息。</li>
 </ul>
-<p>这事需要兼容表单，因为表单一直可以跨域请求。所以早期的AJAX也属于这种情况。</p>
-<h2 id="简单请求"><a class="markdownIt-Anchor" href="#简单请求"></a> 简单请求</h2>
-<p>当有简单请求需要发送时，浏览器并不会进行<code>preflight</code>处理，因为这种跨域请求和普通表单毫无两样。不过，这种请求在发送的时候，会强制带上<code>Origin</code>的头部，用来给服务器进行同源判断。而服务端如果没有返回<code>Access-Control-Allow-Origin</code>，或者不为<code>*</code>，或者返回了一个域名但是和<code>Origin</code>不是一个域，那么都会请求失败。</p>
-<h2 id="预检请求-preflight"><a class="markdownIt-Anchor" href="#预检请求-preflight"></a> 预检请求 Preflight</h2>
-<p>当遇到一个非简单请求当时候，浏览器会尝试发出预检请求——<em>OPTIONS</em>，这个请求会确认服务器是否允许该请求，以避免对用户数据产生不良影响。<br />
-在预检请求的时候，会带有一个<code>Access-Control-Request-Headers</code>的头字段，这个字段内容会包含了那些不包含在简单请求中头字段的键名。如果预检完成，才会继续发送真正的请求。比如浏览器返回预检内容为：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: http://example.com</span><br><span class="line">Access-Control-Allow-Methods: POST,GET,OPTIONS</span><br><span class="line">Access-Control-Allow-Headers: Content-Type,Custom-Type</span><br><span class="line">Access-Control-Max-Age: 86400</span><br></pre></td></tr></table></figure>
-<p>同时<code>Access-Control-Max-Age</code>可以表示在一定时间内不需要为同一个请求发送预检请求。</p>
-<h2 id="附带身份凭证"><a class="markdownIt-Anchor" href="#附带身份凭证"></a> 附带身份凭证</h2>
-<p><strong>一般情况下，跨源的<code>XMLHttpRequest</code>和<code>Fetch</code>都不会发送凭证</strong>，如果需要在XHR中发送凭证，则需要设定一个特殊的标识位。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">call</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest;</span><br><span class="line">    xhr.open(<span class="string">&#x27;GET&#x27;</span>,url,<span class="literal">true</span>)</span><br><span class="line">    xhr.withCredentials = <span class="literal">true</span>;</span><br><span class="line">    xhr.send()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然，这需要服务器返回的头内容中需要含有<code>Access-Control-Allow-Credentials:true</code>，否则不会返回内容。并且需要注意的是，如果需要允许携带Credentials，那么服务器的<code>Access-Control-Allow-Origin</code>不能为<code>*</code>，否则会直接失败。</p>
+<h1 id="importance"><a class="markdownIt-Anchor" href="#importance"></a> importance</h1>
+<p>相对重要性，默认为<code>auto</code>，可以设定为<code>high</code>或者<code>low</code></p>
+<h1 id="referrerpolicy"><a class="markdownIt-Anchor" href="#referrerpolicy"></a> referrerpolicy</h1>
+<p>用于设定Referer标头</p>
+<ul>
+<li>no-referrer 不发送标头</li>
+<li>no-referrer-when-downgrade 当发生安全等级降级的情况下不发送（HTTPS-&gt;HTTP）。</li>
+<li>origin 表示该页面的源会成为标头内容</li>
+<li>origin-when-cross-origin 当同源是会发送完整URL，否则只发送源</li>
+<li>unsafe-url 无论是同源还是非同源，都发送完整URL</li>
+</ul>
 
     </div>
 
@@ -344,14 +347,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/11/25/css-specificity/" rel="prev" title="CSS小结 优先级 变量">
-                  <i class="fa fa-chevron-left"></i> CSS小结 优先级 变量
+                <a href="/2020/11/28/add-event-listener/" rel="prev" title="小记addEventListener">
+                  <i class="fa fa-chevron-left"></i> 小记addEventListener
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/11/26/fetch/" rel="next" title="fetch">
-                  fetch <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -484,9 +484,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://binzinstar.com/2020/11/26/cors/";
-    this.page.identifier = "2020/11/26/cors/";
-    this.page.title = "跨源资源共享";
+    this.page.url = "https://binzinstar.com/2020/11/29/link/";
+    this.page.identifier = "2020/11/29/link/";
+    this.page.title = "Link标签";
     };
   NexT.utils.loadComments('#disqus_thread', () => {
     if (window.DISQUS) {
