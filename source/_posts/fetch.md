@@ -101,4 +101,6 @@ if(self.fetch){
 ## FormData
 该接口提供了一种使用键值对的方式进行构造，同时也可以轻松的通过`XMLHttpRequest.send()`进行发送。FormData无法直接使用对象进行内容填充，只能通过不断的set来添加内容。同时set函数中，如果第二个参数是一个blob或者file内容，那么第三个参数可以传入一个文件名。
 ## URLSearchParams
+网页中的参数对象，可以传入`USVString`或者传入一个`URLSearchParams`（弃用）。
 ## USVString
+USVString会映射为String。

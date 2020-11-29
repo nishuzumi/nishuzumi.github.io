@@ -52,3 +52,6 @@ try{
 
 # passive
 一般情况下，`Window`，`Document`，`Document.body`，`touchstart`，`touchemove`的`passive`均为默认`true`。这是防止某些监听器中阻止了默认事件导致页面效果异常。
+
+# 对立方法 removeEventListener
+用于移除在某个元素上监听对事件，一般情况下和`addEventListener`对参数保持一致即可。
