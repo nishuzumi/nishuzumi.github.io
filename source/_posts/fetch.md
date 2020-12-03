@@ -2,6 +2,10 @@
 title: fetch
 date: 2020-11-26 19:53:59
 tags:
+catagories:
+- [JS]
+- [前端]
+- [浏览器]
 ---
 # 前言 🎤
 Fetch是现代浏览器中提供的一个用于取代XHR的网络请求方式

@@ -2,10 +2,14 @@
 title: 小记addEventListener
 date: 2020-11-28 19:41:50
 tags:
+catagories:
+- [JS]
+- [前端]
+- [浏览器]
 ---
 # 前言 🎤
 addEventListener，没那么简单。
-
+<!--more-->
 # 常用情况
 一般使用addEventListener的情况基本只会使用到前两个参数
 ```js
