@@ -25,20 +25,22 @@
     var CONFIG = {"hostname":"binzinstar.com","root":"/","scheme":"Gemini","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
-  <meta name="description" content="前言 🎤 浏览器本身不允许跨源请求，目的是为了保证安全。">
+  <meta name="description" content="前言 🎤 CSS动画是CSS中一个重要特性，它不但让浏览器中有着更好的样式效果，也丰富了画面的观赏性。 CSS中我理解为有两种动画，一种是插值动画，一种是插帧动画。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跨源资源共享">
-<meta property="og:url" content="https://binzinstar.com/2020/11/26/cors/index.html">
+<meta property="og:title" content="CSS动画">
+<meta property="og:url" content="https://binzinstar.com/2020/12/03/2020-12-3css-animation/index.html">
 <meta property="og:site_name" content="盒子笔记">
-<meta property="og:description" content="前言 🎤 浏览器本身不允许跨源请求，目的是为了保证安全。">
+<meta property="og:description" content="前言 🎤 CSS动画是CSS中一个重要特性，它不但让浏览器中有着更好的样式效果，也丰富了画面的观赏性。 CSS中我理解为有两种动画，一种是插值动画，一种是插帧动画。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-26T09:50:23.000Z">
-<meta property="article:modified_time" content="2020-11-27T07:53:15.795Z">
+<meta property="article:published_time" content="2020-12-03T05:56:09.000Z">
+<meta property="article:modified_time" content="2020-12-04T02:29:23.513Z">
 <meta property="article:author" content="BoxChen">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="浏览器">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://binzinstar.com/2020/11/26/cors/">
+<link rel="canonical" href="https://binzinstar.com/2020/12/03/2020-12-3css-animation/">
 
 
 <script class="page-configurations">
@@ -51,7 +53,7 @@
   };
 </script>
 
-  <title>跨源资源共享 | 盒子笔记</title>
+  <title>CSS动画 | 盒子笔记</title>
   
 
 
@@ -154,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text"> 安全性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%A8"><span class="nav-number">3.</span> <span class="nav-text"> 跨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E8%AF%B7%E6%B1%82"><span class="nav-number">4.</span> <span class="nav-text"> 两种请求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%AF%B7%E6%B1%82"><span class="nav-number">4.1.</span> <span class="nav-text"> 简单请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E6%A3%80%E8%AF%B7%E6%B1%82-preflight"><span class="nav-number">4.2.</span> <span class="nav-text"> 预检请求 Preflight</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%B8%A6%E8%BA%AB%E4%BB%BD%E5%87%AD%E8%AF%81"><span class="nav-number">4.3.</span> <span class="nav-text"> 附带身份凭证</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言 🎤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB%E6%8F%92%E5%B8%A7%E5%8A%A8%E7%94%BB"><span class="nav-number">2.</span> <span class="nav-text"> 动画（插帧动画）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8keyframes%E5%AE%9A%E4%B9%89%E5%8A%A8%E7%94%BB%E5%BA%8F%E5%88%97"><span class="nav-number">2.1.</span> <span class="nav-text"> 使用keyframes定义动画序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text"> 动画事件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E5%8A%A8%E7%94%BBtransitions"><span class="nav-number">3.</span> <span class="nav-text"> 插值动画（transitions）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text"> 事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%93%E5%B1%9E%E6%80%A7%E7%BC%BA%E5%A4%B1%E6%97%B6"><span class="nav-number">3.2.</span> <span class="nav-text"> 当属性缺失时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#all"><span class="nav-number">3.3.</span> <span class="nav-text"> ALL</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -219,7 +221,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/11/26/cors/">
+    <link itemprop="mainEntityOfPage" href="https://binzinstar.com/2020/12/03/2020-12-3css-animation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -232,7 +234,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          跨源资源共享
+          CSS动画
         </h1>
 
         <div class="post-meta-container">
@@ -243,14 +245,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-11-26 17:50:23" itemprop="dateCreated datePublished" datetime="2020-11-26T17:50:23+08:00">2020-11-26</time>
+      <time title="创建时间：2020-12-03 13:56:09" itemprop="dateCreated datePublished" datetime="2020-12-03T13:56:09+08:00">2020-12-03</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-11-27 15:53:15" itemprop="dateModified" datetime="2020-11-27T15:53:15+08:00">2020-11-27</time>
+        <time title="修改时间：2020-12-04 10:29:23" itemprop="dateModified" datetime="2020-12-04T10:29:23+08:00">2020-12-04</time>
       </span>
 
   
@@ -262,8 +264,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2020/11/26/cors/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/11/26/cors/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2020/12/03/2020-12-3css-animation/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/12/03/2020-12-3css-animation/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -275,14 +277,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>1.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -294,43 +296,46 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言 🎤</h1>
-<p>浏览器本身不允许跨源请求，目的是为了保证安全。</p>
+<p>CSS动画是CSS中一个重要特性，它不但让浏览器中有着更好的样式效果，也丰富了画面的观赏性。<br />
+CSS中我理解为有两种动画，一种是插值动画，一种是插帧动画。</p>
 <a id="more"></a>
-<h1 id="安全性"><a class="markdownIt-Anchor" href="#安全性"></a> 安全性</h1>
-<p>XHR和Fetch都遵循同源策略，只允许他们从同一个域进行内容加载，除非包含了正确都CORS头。</p>
-<h1 id="跨"><a class="markdownIt-Anchor" href="#跨"></a> 跨</h1>
-<p>早期的AJAX确实不支持跨源访问，这个是浏览器和服务器一同决定的，同时IE10以下都不支持CORS，因此，很多时候大家都会说AJAX不支持跨源请求。<br />
-同时，在遇到这几种条件才会触发跨域请求：</p>
+<h1 id="动画插帧动画"><a class="markdownIt-Anchor" href="#动画插帧动画"></a> 动画（插帧动画）</h1>
+<p>所谓的插帧动画其实就是序列动画，在CSS中如果你需要创建动画序列，你需要使用<code>animation</code>和其子属性，该属性允许你配置动画时间，时长和其他动画细节，但是这些属性不能配置动画的实际表现，实际表现是由<code>@keyframes</code>来决定。</p>
+<p><code>animation</code>的子属性有：</p>
 <ul>
-<li>由XHR和Fetch发起的跨域请求</li>
-<li>Web字体</li>
-<li>WebGL贴图</li>
-<li><code>drawImage</code>绘制图片到canvas时</li>
+<li>animation-delay 设置延迟，指元素加载完成到动画运行的这段时间</li>
+<li>animation-direction 用于设置动画在运行结束后是反向运行还是直接重置</li>
+<li>animation-duration 设置一个动画的周期时长</li>
+<li>animation-iteration-count 设置动画的重复次数，可以指定infinite无限次重复</li>
+<li>animation-name 指定由<code>@keyframe</code>描述的关键帧名称</li>
+<li>animation-play-state 是否允许暂停和恢复</li>
+<li>animation-timing-function 设置动画速度，也就是设置加速曲线</li>
+<li>animation-fill-mode 指定动画前后如何设定样式</li>
 </ul>
-<h1 id="两种请求"><a class="markdownIt-Anchor" href="#两种请求"></a> 两种请求</h1>
-<p>CORS分为两种请求，一种是<em>简单请求</em>，一种是<em>非简单请求</em>。<br />
-简单请求需要满足两个条件</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;get&#x27;</span>,<span class="string">&#x27;head&#x27;</span>,<span class="string">&#x27;post&#x27;</span>].indexOf(method) != -<span class="number">1</span></span><br><span class="line">&amp;&amp;</span><br></pre></td></tr></table></figure>
-<p>头信息不超过这几种：</p>
+<h2 id="使用keyframes定义动画序列"><a class="markdownIt-Anchor" href="#使用keyframes定义动画序列"></a> 使用keyframes定义动画序列</h2>
+<p>动画序列中，可以使用<code>from</code>,<code>%0</code>来表示动画的开始。用<code>to</code>,<code>%100</code>表示动画结束的时机。</p>
+<h2 id="动画事件"><a class="markdownIt-Anchor" href="#动画事件"></a> 动画事件</h2>
+<p>在CSS动画的运行过程中，可以在JS中监听到他们事件的触发。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> e = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;#button&#x27;</span>)</span><br><span class="line">e.addEventListener(<span class="string">&quot;animationstart&quot;</span>,<span class="function">()=&gt;</span>&#123;&#125;,<span class="literal">false</span>)</span><br><span class="line">e.addEventListener(<span class="string">&quot;animationend&quot;</span>,<span class="function">()=&gt;</span>&#123;&#125;,<span class="literal">false</span>)</span><br><span class="line">e.addEventListener(<span class="string">&quot;animationiteration&quot;</span>,<span class="function">()=&gt;</span>&#123;&#125;,<span class="literal">false</span>)</span><br><span class="line"></span><br><span class="line">e.className = <span class="string">&#x27;i am keyframe name&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>在代码最后才设置class的原因很简单，因为添加监听器的时候，动画可能已经开始了。</p>
+<h1 id="插值动画transitions"><a class="markdownIt-Anchor" href="#插值动画transitions"></a> 插值动画（transitions）</h1>
+<p>其实这个动画的感觉很想Flash的补间动画，浏览器会通过计算开始和结束时候的状态来给中间内容进行插值，从而形成动画。<br />
+transactions属性用来决定什么属性会发生动画效果，并且何时开始，持续多久，以及动画的变速曲线。<br />
+不过要注意的是，可以进行动画的CSS属性是一个有限集合，但是大部分的CSS属性都能支持动画，不过仍然要注意的是，一些值为<code>auto</code>的动画可能不和预期一样，请小心使用。</p>
+<h2 id="事件"><a class="markdownIt-Anchor" href="#事件"></a> 事件</h2>
+<p>在transitions完成的时候会触发一个事件，在标准浏览器下，这个事件是<code>transitionend</code>，在WebKit下是<code>webkitTransitionEnd</code>。<code>transitionend</code>提供两个属性：</p>
 <ul>
-<li>Accept</li>
-<li>Accept-Language</li>
-<li>Content-Langugae</li>
-<li>Last-Event-ID</li>
-<li>Content-Type:‘application/x-www-form-urlencoded’,‘multipart/form-data’,‘text/plain’</li>
+<li>propertyName 表示以及完成过渡的属性</li>
+<li>elapsedTime 表示已经运行了的时间</li>
 </ul>
-<p>这事需要兼容表单，因为表单一直可以跨域请求。所以早期的AJAX也属于这种情况。</p>
-<h2 id="简单请求"><a class="markdownIt-Anchor" href="#简单请求"></a> 简单请求</h2>
-<p>当有简单请求需要发送时，浏览器并不会进行<code>preflight</code>处理，因为这种跨域请求和普通表单毫无两样。不过，这种请求在发送的时候，会强制带上<code>Origin</code>的头部，用来给服务器进行同源判断。而服务端如果没有返回<code>Access-Control-Allow-Origin</code>，或者不为<code>*</code>，或者返回了一个域名但是和<code>Origin</code>不是一个域，那么都会请求失败。</p>
-<h2 id="预检请求-preflight"><a class="markdownIt-Anchor" href="#预检请求-preflight"></a> 预检请求 Preflight</h2>
-<p>当遇到一个非简单请求当时候，浏览器会尝试发出预检请求——<em>OPTIONS</em>，这个请求会确认服务器是否允许该请求，以避免对用户数据产生不良影响。<br />
-在预检请求的时候，会带有一个<code>Access-Control-Request-Headers</code>的头字段，这个字段内容会包含了那些不包含在简单请求中头字段的键名。如果预检完成，才会继续发送真正的请求。比如浏览器返回预检内容为：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: http://example.com</span><br><span class="line">Access-Control-Allow-Methods: POST,GET,OPTIONS</span><br><span class="line">Access-Control-Allow-Headers: Content-Type,Custom-Type</span><br><span class="line">Access-Control-Max-Age: 86400</span><br></pre></td></tr></table></figure>
-<p>同时<code>Access-Control-Max-Age</code>可以表示在一定时间内不需要为同一个请求发送预检请求。</p>
-<h2 id="附带身份凭证"><a class="markdownIt-Anchor" href="#附带身份凭证"></a> 附带身份凭证</h2>
-<p><strong>一般情况下，跨源的<code>XMLHttpRequest</code>和<code>Fetch</code>都不会发送凭证</strong>，如果需要在XHR中发送凭证，则需要设定一个特殊的标识位。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">call</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest;</span><br><span class="line">    xhr.open(<span class="string">&#x27;GET&#x27;</span>,url,<span class="literal">true</span>)</span><br><span class="line">    xhr.withCredentials = <span class="literal">true</span>;</span><br><span class="line">    xhr.send()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然，这需要服务器返回的头内容中需要含有<code>Access-Control-Allow-Credentials:true</code>，否则不会返回内容。并且需要注意的是，如果需要允许携带Credentials，那么服务器的<code>Access-Control-Allow-Origin</code>不能为<code>*</code>，否则会直接失败。</p>
+<h2 id="当属性缺失时"><a class="markdownIt-Anchor" href="#当属性缺失时"></a> 当属性缺失时</h2>
+<p>如果遇到下面场景</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">    <span class="attribute">transition-property</span>: opacity,left,top,height;</span><br><span class="line">    <span class="attribute">transition-duration</span>: <span class="number">3s</span>,<span class="number">5s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会自动变成</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">    <span class="attribute">transition-property</span>: opcity,left,top,height;</span><br><span class="line">    <span class="attribute">transition-duration</span>: <span class="number">3s</span>,<span class="number">5s</span>,<span class="number">3s</span>,<span class="number">5s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是如果是属性缺失，那么<code>duration</code>会被截断。</p>
+<h2 id="all"><a class="markdownIt-Anchor" href="#all"></a> ALL</h2>
+<p>当你想一劳永逸的时候，可以使用<code>transition:all &lt;duration&gt;</code>。</p>
 
     </div>
 
@@ -339,19 +344,20 @@
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CSS/" rel="tag"># CSS</a>
+              <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag"># 浏览器</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/11/25/css-specificity/" rel="prev" title="CSS小结 优先级 变量">
-                  <i class="fa fa-chevron-left"></i> CSS小结 优先级 变量
+                <a href="/2020/12/02/2020-12-2-web-worker/" rel="prev" title="Web Worker">
+                  <i class="fa fa-chevron-left"></i> Web Worker
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/11/26/fetch/" rel="next" title="fetch">
-                  fetch <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -484,9 +490,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://binzinstar.com/2020/11/26/cors/";
-    this.page.identifier = "2020/11/26/cors/";
-    this.page.title = "跨源资源共享";
+    this.page.url = "https://binzinstar.com/2020/12/03/2020-12-3css-animation/";
+    this.page.identifier = "2020/12/03/2020-12-3css-animation/";
+    this.page.title = "CSS动画";
     };
   NexT.utils.loadComments('#disqus_thread', () => {
     if (window.DISQUS) {
