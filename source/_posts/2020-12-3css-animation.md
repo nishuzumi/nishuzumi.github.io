@@ -65,4 +65,4 @@ div{
 但是如果是属性缺失，那么`duration`会被截断。
 
 ## ALL
-当你想一劳永逸的时候，可以使用`transition:all <duration>`。
+当你想一劳永逸的时候，可以使用`transition:all <duration>`或者直接忽略第一个参数。
